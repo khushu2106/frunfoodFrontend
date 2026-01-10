@@ -1,0 +1,71 @@
+.payment-container {
+  min-height: 100vh;
+  background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-card {
+  background: white;
+  width: 420px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.payment-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.order-summary {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.order-summary .total {
+  font-weight: bold;
+}
+
+.payment-methods h4 {
+  margin-bottom: 10px;
+}
+
+.payment-methods label {
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.card-details input,
+.payment-methods input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 12px;
+  background: #9e1270;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-pay:hover {
+  background: #ebb5df;
+  color:black;
+}
