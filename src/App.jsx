@@ -2,12 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 import HeroHome from './Components/Home/HeroHome/HeroHome';
-import HeroSection from './Components/Home/HeroHome/HeroSection';
+// import HeroSection from './Components/Home/HeroHome/HeroSection';
 import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
 import CategoryProduct from './Components/Home/Products/CategoryProduct';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
-
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard';
 import Balance from './Components/Pages/Admin/Balance';
@@ -18,6 +17,10 @@ import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 // import Chat from './Components/Pages/Admin/Chat';
 // import Authentication from './Components/Pages/Admin/Authentication';
+import AddProduct from './Components/Pages/Admin/Products/AddProduct';
+import Registration from './Components/Pages/Auth/Registration';
+import Login from './Components/Pages/Auth/Login';
+import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
 
 function App() {
   return (
@@ -27,7 +30,7 @@ function App() {
         <Route path='/' element={
           <>
             <HeroHome />
-            <HeroSection />
+            {/* <HeroSection /> */}
             <CategoryProduct />
             <ProductList />
           </>
@@ -36,6 +39,9 @@ function App() {
         <Route path='/shop' element={<CategoryProduct />} />
         <Route path='/product/:id' element={<ProductDetails />} />
         <Route path='/about' element={<Aboutus />} />
+        <Route path='/register' element={<Registration />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
 
         {/* Admin Panel with Sidebar Layout */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -48,6 +54,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           {/* <Route path="authentication" element={<Authentication />} /> */}
+          <Route path="add-product" element={<AddProduct />} />
         </Route>
 
         <Route path="*" element={<div>Page Not Found</div>} />

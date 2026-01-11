@@ -5,14 +5,14 @@ import "./AdminSidebar.css";
 const AdminSidebar = () => {
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard" },
+    { name: "Add Product", path: "/admin/add-product" },
     { name: "Balance", path: "/admin/balance" },
     { name: "Invoice", path: "/admin/invoice" },
     { name: "Cards", path: "/admin/cards" },
     { name: "Transaction", path: "/admin/transaction" },
     { name: "Chat", path: "/admin/chat" },
     { name: "Profile", path: "/admin/profile" },
-    { name: "Settings", path: "/admin/settings" },
-    { name: "Authentication", path: "/admin/authentication" },
+    { name: "Settings", path: "/admin/settings" }
   ];
 
   return (

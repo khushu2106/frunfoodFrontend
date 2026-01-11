@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 const Login = () => {
@@ -7,7 +7,9 @@ const Login = () => {
     email: "",
     password: "",
   });
-
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [isLoading , setIsLoading] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -15,10 +17,35 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
-    // TODO: API call for login
+    setIsLoading(true)
+    setError(" ");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+
+        console.log("Login successful! ");
+
+        navigate("/");
+      }
+      else {
+        setError(data.error || "Invalid login credentials");
+      }
+    } catch (err) {
+      setError("Server error. Please try agin later. ")
+    } finally{
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -34,7 +61,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
-              value={formData.email}
+              value={formData.email} 
               onChange={handleChange}
               required
             />
@@ -46,7 +73,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              value={formData.password}
+              value={formData.password} 
               onChange={handleChange}
               required
             />
@@ -56,16 +83,15 @@ const Login = () => {
             <p className="forgot">
               <Link to="/forgot-password">Forgot password?</Link>
             </p>
-
           </div>
 
-          <button type="submit" className="btn-primary">
-            Login
+          <button type="submit" className="btn-primary" disabled={isLoading}>
+            {isLoading ? "Logging in...":"Login"}
           </button>
         </form>
 
         <p className="auth-footer">
-          Don’t have an account?  <Link to="/register">Register</Link>
+          Don’t have an account? <Link to="/register">Register</Link>
         </p>
       </div>
     </div>
