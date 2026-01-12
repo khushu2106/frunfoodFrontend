@@ -18,6 +18,7 @@ import Settings from './Components/Pages/Admin/Settings';
 // import Chat from './Components/Pages/Admin/Chat';
 // import Authentication from './Components/Pages/Admin/Authentication';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
+import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import Registration from './Components/Pages/Auth/Registration';
 import Login from './Components/Pages/Auth/Login';
 import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
@@ -55,6 +56,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           {/* <Route path="authentication" element={<Authentication />} /> */}
           <Route path="add-product" element={<AddProduct />} />
+          <Route path="update-product" element={<UpdateProduct />} />
         </Route>
 
         <Route path="*" element={<div>Page Not Found</div>} />
