@@ -1,101 +1,67 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
-/* Common Layout */
-import Header from "./Components/Common/Header/Header";
-import Footer from "./Components/Common/Footer/Footer";
-
-/* Auth Pages */
-import Login from "./Components/Pages/Auth/Login";
-import Registration from "./Components/Pages/Auth/Registration";
-import Logout from "./Components/Pages/Auth/Logout";
-import ForgotPassword from "./Components/Pages/Auth/ForgotPassword";
-
-/* User Pages */
-import Cart from "./Components/Pages/Cart/Cart";
-import Wishlist from "./Components/Pages/Wishlist/Wishlist";
-import Checkout from "./Components/Pages/Checkout/Checkout";
-import Payment from "./Components/Pages/Payment/Payment";
-import Feedback from "./Components/Pages/Feedback/Feedback";
-import Complaint from "./Components/Pages/Complaint/Complaint";
-import UserProfile from "./Components/Common/Profile/Profile";
-
-/* Home Pages */
-import HeroHome from "./Components/Home/HeroHome/HeroHome";
-import ProductList from "./Components/Home/Products/ProductList";
-import ProductDetails from "./Components/Home/Products/ProductDetails";
-import CategoryProduct from "./Components/Home/Products/CategoryProduct";
-import Offer from "./Components/Home/Offers/Offers";
-import Aboutus from "./Components/Home/Aboutus/Aboutus";
-
-/* Admin Pages */
-import AdminLayout from "./Components/Pages/Admin/AdminLayout";
-import Dashboard from "./Components/Pages/Admin/Dashboard";
-import Balance from "./Components/Pages/Admin/Balance";
-import Invoice from "./Components/Pages/Admin/Invoice";
-import Cards from "./Components/Pages/Admin/Cards";
-import Transaction from "./Components/Pages/Admin/Transaction";
-import AdminProfile from "./Components/Pages/Admin/Profile";
-import Settings from "./Components/Pages/Admin/Settings";
-import AddProduct from "./Components/Pages/Admin/Products/AddProduct";
-import UpdateProduct from "./Components/Pages/Admin/Products/UpdateProduct";
+import HeroHome from './Components/Home/HeroHome/HeroHome';
+// import HeroSection from './Components/Home/HeroHome/HeroSection';
+import ProductList from './Components/Home/Products/ProductList';
+import ProductDetails from './Components/Home/Products/ProductDetails';
+import CategoryProduct from './Components/Home/Products/CategoryProduct';
+import Aboutus from './Components/Home/Aboutus/Aboutus';
+import AdminLayout from './Components/Pages/Admin/AdminLayout';
+import Dashboard from './Components/Pages/Admin/Dashboard';
+import Balance from './Components/Pages/Admin/Balance';
+import Invoice from './Components/Pages/Admin/Invoice';
+import Cards from './Components/Pages/Admin/Cards';
+import Transaction from './Components/Pages/Admin/Transaction';
+import Profile from './Components/Pages/Admin/Profile';
+import Settings from './Components/Pages/Admin/Settings';
+// import Chat from './Components/Pages/Admin/Chat';
+// import Authentication from './Components/Pages/Admin/Authentication';
+import AddProduct from './Components/Pages/Admin/Products/AddProduct';
+import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
+import Registration from './Components/Pages/Auth/Registration';
+import Login from './Components/Pages/Auth/Login';
+import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
 
 function App() {
   return (
     <Router>
-      <Header />
-
       <Routes>
-        {/* ---------- User Side ---------- */}
-        <Route
-          path="/"
-          element={
-            <>
-              <HeroHome />
-              <CategoryProduct />
-              <ProductList />
-            </>
-          }
-        />
+        {/* User Side */}
+        <Route path='/' element={
+          <>
+            <HeroHome />
+            {/* <HeroSection /> */}
+            <CategoryProduct />
+            <ProductList />
+          </>
+        } />
 
-        <Route path="/shop" element={<CategoryProduct />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/offers" element={<Offer />} />
-        <Route path="/about" element={<Aboutus />} />
+        <Route path='/shop' element={<CategoryProduct />} />
+        <Route path='/product/:id' element={<ProductDetails />} />
+        <Route path='/about' element={<Aboutus />} />
+        <Route path='/register' element={<Registration />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
 
-        {/* ---------- Auth ---------- */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-
-        {/* ---------- User Pages ---------- */}
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/complaint" element={<Complaint />} />
-
-        {/* ---------- Admin Panel ---------- */}
+        {/* Admin Panel with Sidebar Layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
           <Route path="invoice" element={<Invoice />} />
           <Route path="cards" element={<Cards />} />
           <Route path="transaction" element={<Transaction />} />
-          <Route path="profile" element={<AdminProfile />} />
+          {/* <Route path="chat" element={<Chat />} /> */}
+          <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+          {/* <Route path="authentication" element={<Authentication />} /> */}
           <Route path="add-product" element={<AddProduct />} />
           <Route path="update-product" element={<UpdateProduct />} />
         </Route>
 
-        {/* ---------- 404 ---------- */}
         <Route path="*" element={<div>Page Not Found</div>} />
-      </Routes>
 
-      <Footer />
+      </Routes>
     </Router>
   );
 }
