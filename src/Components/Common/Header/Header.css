@@ -1,0 +1,37 @@
+.header {
+  height: 70px;
+  background-color: #2d6a4f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.logo a {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 8px 16px;
+  background: white;
+  color: #2d6a4f;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: #e9f5db;
+}
+
+.logout {
+  background: #ffb703;
+}

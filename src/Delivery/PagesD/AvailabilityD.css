@@ -1,0 +1,118 @@
+.available-orders {
+  width: 90%;
+  margin: 30px auto;
+}
+
+/* Heading */
+.available-orders h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1b4332;
+}
+
+/* Summary Cards */
+.avail-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.avail-card {
+  width: 200px;
+  padding: 20px;
+  background: #e9f5db;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.avail-card.new {
+  background: #dbeafe;
+}
+
+.avail-card.nearby {
+  background: #fff3b0;
+}
+
+.avail-card.highpay {
+  background: #caffbf;
+}
+
+.avail-card h3 {
+  margin-bottom: 10px;
+}
+
+/* Available Orders Table */
+.available-list {
+  margin-bottom: 40px;
+}
+
+.available-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.available-list th,
+.available-list td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.available-list th {
+  background: #2d6a4f;
+  color: white;
+}
+
+/* Accept / Reject buttons */
+.available-list button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.available-list .accept {
+  background: #40916c;
+  color: white;
+}
+
+.available-list .accept:hover {
+  background: #2d6a4f;
+}
+
+.available-list .reject {
+  background: #ef233c;
+  color: white;
+}
+
+.available-list .reject:hover {
+  background: #d90429;
+}
+
+/* Quick Actions */
+.avail-actions {
+  text-align: center;
+}
+
+.avail-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.avail-buttons button {
+  padding: 12px 20px;
+  background: #40916c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.avail-buttons button:hover {
+  background: #2d6a4f;
+}
