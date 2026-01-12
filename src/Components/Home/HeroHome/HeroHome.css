@@ -136,42 +136,6 @@
   object-fit: cover;
 }
 
-/* Floating Elements */
-.floating-card-home {
-  position: absolute;
-  background: white;
-  padding: 15px 20px;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.pet-count {
-  bottom: 20px;
-  left: -20px;
-}
-
-.discount-tag {
-  top: 50px;
-  right: -10px;
-  font-weight: bold;
-  color: #f97316;
-}
-
-.card-num {
-  font-weight: 800;
-  margin: 0;
-  font-size: 18px;
-}
-
-.card-label {
-  font-size: 12px;
-  color: #636e72;
-  margin: 0;
-}
-
 /* Responsive */
 @media (max-width: 1024px) {
   .hero-home-container {

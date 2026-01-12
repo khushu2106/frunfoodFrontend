@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 const Registration = () => {
@@ -10,6 +10,7 @@ const Registration = () => {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,7 +27,14 @@ const Registration = () => {
     }
 
     console.log("Registration Data:", formData);
-    // TODO: Call Register API
+    fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    }).then(res => res.json()).then(data => {
+      console.log("Register data : ", data)
+    });
+
   };
 
   return (

@@ -46,19 +46,6 @@ const HeroHome = () => {
               className="floating-img"
             />
           </div>
-          {/* Floating Element 1 */}
-          <div className="floating-card-home pet-count">
-            <span className="icon">🐶</span>
-            <div>
-              <p className="card-num">2k+</p>
-              <p className="card-label">Pets Adopted</p>
-            </div>
-          </div>
-          {/* Floating Element 2 */}
-          <div className="floating-card-home discount-tag">
-            <span className="icon">🏷️</span>
-            <p>Flat 20% Off</p>
-          </div>
         </div>
       </div>
     </div>
