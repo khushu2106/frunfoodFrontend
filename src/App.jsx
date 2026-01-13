@@ -19,6 +19,7 @@ import AdminLogin from './Components/Pages/Admin/AdminLogin';
 // import Chat from './Components/Pages/Admin/Chat';
 // import Authentication from './Components/Pages/Admin/Authentication';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
+import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import Registration from './Components/Pages/Auth/Registration';
 import Login from './Components/Pages/Auth/Login';
@@ -46,21 +47,23 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
 
         {/* Admin Panel with Sidebar Layout */}
-        <Route path="/admin" element={<AdminLogin />}>
-          <Route path="adminlayout" element={<AdminLayout />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="balance" element={<Balance />} />
-          <Route path="invoice" element={<Invoice />} />
-          <Route path="cards" element={<Cards />} />
-          <Route path="transaction" element={<Transaction />} />
-          {/* <Route path="chat" element={<Chat />} /> */}
-          <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />} />
-          {/* <Route path="authentication" element={<Authentication />} /> */}
-          <Route path="products" element={<AddProduct />} />
-          <Route path="update-product" element={<UpdateProduct />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+            <Route path="adminlayout" element={<AdminLayout />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="balance" element={<Balance />} />
+            <Route path="invoice" element={<Invoice />} />
+            <Route path="cards" element={<Cards />} />
+            <Route path="transaction" element={<Transaction />} />
+            {/* <Route path="chat" element={<Chat />} /> */}
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<Settings />} />
+            {/* <Route path="authentication" element={<Authentication />} /> */}
+            <Route path="product" element={<AddProduct />} />
+            <Route path="category" element={<AddCategory />} />
+            <Route path="update-product" element={<UpdateProduct />} />
         </Route>
-
+        
         <Route path="*" element={<div>Page Not Found</div>} />
 
       </Routes>

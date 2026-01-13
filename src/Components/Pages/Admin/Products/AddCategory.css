@@ -1,0 +1,110 @@
+
+/* div[style*="padding: 20px"] {
+  max-width: 900px;
+  margin: 40px auto !important;
+  background: white;
+  padding: 40px !important;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+} */
+
+/* Heading Styling */
+h2 {
+  font-size: 28px;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+hr {
+  border: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #1a73e8, transparent);
+  margin-bottom: 40px;
+}
+
+/* Section (Card) Styling */
+section {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #1a73e8 !important;
+}
+
+section h3 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #444;
+  border-left: 4px solid #1a73e8;
+  padding-left: 12px;
+  margin-bottom: 20px;
+}
+
+/* Form Layout */
+form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Input & Select Styling */
+input[type="text"], select {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 15px !important;
+  border: 2px solid #edeff2;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  background: #fdfdfd;
+}
+
+input:focus, select:focus {
+  border-color: #1a73e8;
+  background: #fff;
+}
+
+/* Button Styling */
+button {
+  padding: 12px 25px !important;
+  background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #1557b0 0%, #0a2f6b 100%);
+  box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+  transform: scale(1.02);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form {
+    flex-direction: column;
+  }
+  input[type="text"], select, button {
+    width: 100%;
+  }
+}

@@ -1,78 +1,133 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AddProduct.css'; 
 
-const ProductDashboard = () => {
-  const [products, setProducts] = useState([]);
-  const [showForm, setShowForm] = useState(false); // Form toggle karne ke liye
-  const [formData, setFormData] = useState({
-    name: '', category: '', price: '', badge: '', description: ''
+const AddProduct = () => {
+  // Lists for Dropdowns
+  const [categories, setCategories] = useState([]);
+  const [allSubcategories, setAllSubcategories] = useState([]); // Database se aayi saari subcategories
+  const [filteredSubs, setFilteredSubs] = useState([]);        // Filtered (Based on category selection)
+  const [brands, setBrands] = useState([]);
+
+  // Form Data State
+  const [product, setProduct] = useState({
+    name: '',
+    price: '',
+    categoryId: '',
+    subcategoryId: '',
+    brandId: '',
+    description: '',
+    image: null // File ke liye
   });
-  const [file, setFile] = useState(null);
 
-  // 1. Products Load karna
+  // 1. Initial Load: Fetch Categories and Brands
   useEffect(() => {
-    fetchProducts();
+    // --- API CALL HERE (GET) ---
+    // Example: axios.get('/api/categories').then(res => setCategories(res.data))
+    // Example: axios.get('/api/brands').then(res => setBrands(res.data))
+    // Example: axios.get('/api/subcategories').then(res => setAllSubcategories(res.data))
+    console.log("Fetching Categories, Brands, and all Subcategories...");
   }, []);
 
-  const fetchProducts = async () => {
-    const res = await axios.get("http://localhost:5000/api/products");
-    setProducts(res.data);
+  // 2. Handle Category Change (Dependent Dropdown Logic)
+  const handleCategoryChange = (e) => {
+    const catId = e.target.value;
+    setProduct({ ...product, categoryId: catId, subcategoryId: '' }); // Reset subcategory when category changes
+
+    // Filter subcategories that belong to the selected Category ID
+    const filtered = allSubcategories.filter(sub => sub.category_id === parseInt(catId));
+    setFilteredSubs(filtered);
   };
 
-  const handleSubmit = async (e) => {
+  // 3. Handle Form Submission
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("category", formData.category);
-    data.append("price", formData.price);
-    data.append("image", file); // File upload
-    data.append("badge", formData.badge);
+    
+    // Image upload ke liye humein FormData use karna padta hai
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('price', product.price);
+    formData.append('categoryId', product.categoryId);
+    formData.append('subcategoryId', product.subcategoryId);
+    formData.append('brandId', product.brandId);
+    formData.append('description', product.description);
+    formData.append('image', product.image);
 
-    try {
-      await axios.post("http://localhost:5000/api/products", data);
-      alert("Product Add ho gaya!");
-      setShowForm(false); 
-      fetchProducts(); 
-    } catch (err) {
-      console.error(err);
-    }
+    // --- API CALL HERE (POST) ---
+    /* axios.post('/api/add-product', formData, {
+         headers: { 'Content-Type': 'multipart/form-data' }
+       })
+    */
+    console.log("Final Data to Backend:", product);
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h2>My Products</h2>
-        <button className="add-icon-btn" onClick={() => setShowForm(!showForm)}>
-          {showForm ? "✖ Close" : "➕ Add New Product"}
+    <div style={{ maxWidth: '600px', margin: '20px auto', padding: '20px', border: '1px solid #ccc' }}>
+      <h2>Add New Product</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        
+        {/* Product Name */}
+        <input 
+          type="text" placeholder="Product Name" 
+          onChange={(e) => setProduct({...product, name: e.target.value})} 
+          required 
+        />
+
+        {/* Price */}
+        <input 
+          type="number" placeholder="Price" 
+          onChange={(e) => setProduct({...product, price: e.target.value})} 
+          required 
+        />
+
+        {/* Category Dropdown */}
+        <select value={product.categoryId} onChange={handleCategoryChange} required>
+          <option value="">Select Category</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
+          ))}
+        </select>
+
+        {/* Subcategory Dropdown (Depends on Category) */}
+        <select 
+          value={product.subcategoryId} 
+          onChange={(e) => setProduct({...product, subcategoryId: e.target.value})}
+          disabled={!product.categoryId} 
+          required
+        >
+          <option value="">Select Subcategory</option>
+          {filteredSubs.map(sub => (
+            <option key={sub.id} value={sub.id}>{sub.name}</option>
+          ))}
+        </select>
+
+        {/* Brand Dropdown */}
+        <select onChange={(e) => setProduct({...product, brandId: e.target.value})} required>
+          <option value="">Select Brand</option>
+          {brands.map(brand => (
+            <option key={brand.id} value={brand.id}>{brand.name}</option>
+          ))}
+        </select>
+
+        {/* Image Upload */}
+        <label>Product Image:</label>
+        <input 
+          type="file" 
+          accept="image/*"
+          onChange={(e) => setProduct({...product, image: e.target.files[0]})} 
+          required 
+        />
+
+        {/* Description */}
+        <textarea 
+          placeholder="Description" 
+          onChange={(e) => setProduct({...product, description: e.target.value})} 
+        />
+
+        <button type="submit" style={{ padding: '10px', background: '#28a745', color: '#fff', cursor: 'pointer' }}>
+          Publish Product
         </button>
-      </div>
-
-      {showForm && (
-        <div className="add-product-modal">
-          <form onSubmit={handleSubmit} className="add-form">
-            <h3>Add New Product</h3>
-            <input type="text" placeholder="Product Name" onChange={(e) => setFormData({...formData, name: e.target.value})} required />
-            <input type="text" placeholder="Category" onChange={(e) => setFormData({...formData, category: e.target.value})} />
-            <input type="number" placeholder="Price" onChange={(e) => setFormData({...formData, price: e.target.value})} />
-            <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
-            <input type="text" placeholder="Badge (e.g. New, Sale)" onChange={(e) => setFormData({...formData, badge: e.target.value})} />
-            <button type="submit" className="submit-btn">Save Product</button>
-          </form>
-        </div>
-      )}
-
-      <div className="product-grid">
-        {products.map((item) => (
-          <div key={item.product_id} className="product-card">
-            <img src={`http://localhost:5000${item.image}`} alt={item.name} />
-            <h4>{item.name}</h4>
-            <p>${item.price}</p>
-          </div>
-        ))}
-      </div>
+      </form>
     </div>
   );
 };
 
-export default ProductDashboard;
+export default AddProduct;

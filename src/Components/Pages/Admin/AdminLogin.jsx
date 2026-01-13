@@ -36,7 +36,7 @@ const Login = () => {
 
         console.log("Login successful! ");
 
-        navigate("/adminlayout");
+        navigate("/admin-panel/dashboard");
       }
       else {
         setError(data.error || "Invalid login credentials");
