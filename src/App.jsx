@@ -15,6 +15,7 @@ import Cards from './Components/Pages/Admin/Cards';
 import Transaction from './Components/Pages/Admin/Transaction';
 import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
+import AdminLogin from './Components/Pages/Admin/AdminLogin';
 // import Chat from './Components/Pages/Admin/Chat';
 // import Authentication from './Components/Pages/Admin/Authentication';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
@@ -45,7 +46,8 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
 
         {/* Admin Panel with Sidebar Layout */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLogin />}>
+          <Route path="adminlayout" element={<AdminLayout />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
           <Route path="invoice" element={<Invoice />} />
@@ -55,7 +57,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           {/* <Route path="authentication" element={<Authentication />} /> */}
-          <Route path="add-product" element={<AddProduct />} />
+          <Route path="products" element={<AddProduct />} />
           <Route path="update-product" element={<UpdateProduct />} />
         </Route>
 

@@ -5,7 +5,7 @@ import "./AdminSidebar.css";
 const AdminSidebar = () => {
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard" },
-    { name: "Add Product", path: "/admin/add-product" },
+    { name: "Products", path: "/admin/products" },
     { name: "Balance", path: "/admin/balance" },
     { name: "Invoice", path: "/admin/invoice" },
     { name: "Cards", path: "/admin/cards" },

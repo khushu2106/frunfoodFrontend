@@ -1,56 +1,78 @@
-import React, { useState } from "react";
-import "./AddProduct.css";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './AddProduct.css'; 
 
-const AddProduct = () => {
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    category: "",
-    description: "",
-    image: ""
+const ProductDashboard = () => {
+  const [products, setProducts] = useState([]);
+  const [showForm, setShowForm] = useState(false); // Form toggle karne ke liye
+  const [formData, setFormData] = useState({
+    name: '', category: '', price: '', badge: '', description: ''
   });
+  const [file, setFile] = useState(null);
 
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+  // 1. Products Load karna
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const res = await axios.get("http://localhost:5000/api/products");
+    setProducts(res.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/api/products", product);
-      alert(response.data.message);
-      setProduct({ name: "", category: "", price: "", image: "", badge: "" });
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("category", formData.category);
+    data.append("price", formData.price);
+    data.append("image", file); // File upload
+    data.append("badge", formData.badge);
 
-    } catch (error) {
-      console.error(error);
-      alert("Error adding product");
+    try {
+      await axios.post("http://localhost:5000/api/products", data);
+      alert("Product Add ho gaya!");
+      setShowForm(false); 
+      fetchProducts(); 
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <div className="add-product-container">
-      <h2>Add New Product</h2>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h2>My Products</h2>
+        <button className="add-icon-btn" onClick={() => setShowForm(!showForm)}>
+          {showForm ? "✖ Close" : "➕ Add New Product"}
+        </button>
+      </div>
 
-      <form className="add-product-form" onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Product Name" onChange={handleChange} required />
-        <input type="number" name="price" placeholder="Price" onChange={handleChange} required />
+      {showForm && (
+        <div className="add-product-modal">
+          <form onSubmit={handleSubmit} className="add-form">
+            <h3>Add New Product</h3>
+            <input type="text" placeholder="Product Name" onChange={(e) => setFormData({...formData, name: e.target.value})} required />
+            <input type="text" placeholder="Category" onChange={(e) => setFormData({...formData, category: e.target.value})} />
+            <input type="number" placeholder="Price" onChange={(e) => setFormData({...formData, price: e.target.value})} />
+            <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
+            <input type="text" placeholder="Badge (e.g. New, Sale)" onChange={(e) => setFormData({...formData, badge: e.target.value})} />
+            <button type="submit" className="submit-btn">Save Product</button>
+          </form>
+        </div>
+      )}
 
-        <select name="category" onChange={handleChange} required>
-          <option value="">Select Category</option>
-          <option value="Dog Food">Dog Food</option>
-          <option value="Cat Food">Cat Food</option>
-          <option value="Accessories">Accessories</option>
-        </select>
-
-        <textarea name="description" placeholder="Product Description" onChange={handleChange}></textarea>
-
-        <input type="file" name="image" />
-
-        <button type="submit">Add Product</button>
-      </form>
+      <div className="product-grid">
+        {products.map((item) => (
+          <div key={item.product_id} className="product-card">
+            <img src={`http://localhost:5000${item.image}`} alt={item.name} />
+            <h4>{item.name}</h4>
+            <p>${item.price}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default AddProduct;
+export default ProductDashboard;
