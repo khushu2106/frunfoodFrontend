@@ -1,110 +1,120 @@
+.admin-container {
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
 
-/* div[style*="padding: 20px"] {
-  max-width: 900px;
-  margin: 40px auto !important;
-  background: white;
-  padding: 40px !important;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-} */
-
-/* Heading Styling */
-h2 {
-  font-size: 28px;
-  color: #1a73e8;
-  margin-bottom: 10px;
+.admin-header {
   text-align: center;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 30px;
 }
 
-hr {
-  border: 0;
-  height: 2px;
-  background: linear-gradient(to right, transparent, #1a73e8, transparent);
-  margin-bottom: 40px;
+.admin-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
 }
 
-/* Section (Card) Styling */
-section {
-  background: #ffffff !important;
-  border: 1px solid #e0e0e0 !important;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+.admin-header p {
+  color: #666;
+  margin-top: 5px;
 }
 
-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  border-color: #1a73e8 !important;
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-section h3 {
-  margin-top: 0;
-  font-size: 18px;
-  color: #444;
-  border-left: 4px solid #1a73e8;
-  padding-left: 12px;
-  margin-bottom: 20px;
+.admin-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Form Layout */
-form {
+.admin-card h3 {
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.admin-card form {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Input & Select Styling */
-input[type="text"], select {
-  flex: 1;
-  min-width: 200px;
-  padding: 12px 15px !important;
-  border: 2px solid #edeff2;
-  border-radius: 10px;
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  background: #fdfdfd;
+.admin-card input,
+.admin-card select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-input:focus, select:focus {
-  border-color: #1a73e8;
-  background: #fff;
-}
-
-/* Button Styling */
-button {
-  padding: 12px 25px !important;
-  background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-  color: white;
+.admin-card button {
+  padding: 8px;
   border: none;
-  border-radius: 10px;
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+  color: #fff;
+  font-size: 14px;
 }
 
-button:hover {
-  background: linear-gradient(135deg, #1557b0 0%, #0a2f6b 100%);
-  box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
-  transform: scale(1.02);
+/* Button colors */
+.btn-primary {
+  background-color: #007bff;
 }
 
-button:active {
-  transform: scale(0.98);
+.btn-secondary {
+  background-color: #28a745;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  form {
-    flex-direction: column;
+.btn-accent {
+  background-color: #ff9800;
+}
+
+.admin-card button:hover {
+  opacity: 0.9;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 15px;
   }
-  input[type="text"], select, button {
-    width: 100%;
+
+  .admin-header h2 {
+    font-size: 22px;
+  }
+
+  .admin-header p {
+    font-size: 14px;
+  }
+
+  .admin-card {
+    padding: 15px;
+  }
+
+  .admin-card h3 {
+    font-size: 16px;
+  }
+
+  .admin-card input,
+  .admin-card select,
+  .admin-card button {
+    font-size: 13px;
+    padding: 7px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header h2 {
+    font-size: 20px;
   }
 }

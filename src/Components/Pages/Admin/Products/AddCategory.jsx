@@ -83,18 +83,6 @@ const AddCategory = () => {
         }
     };
 
-    // 5. Handle Brand
-    const handleAddBrand = async (e) =>{
-        e.preventDefault();
-        try{
-            await axios.post('http://localhost:5000/api/brand',{
-                name: brandName
-            });
-        }catch(err){
-            alert("Error adding brand")
-        }
-    };
-
     return (
         <div className="admin-container">
             <header className="admin-header">

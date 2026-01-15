@@ -29,7 +29,10 @@ const ProductList = () => {
             <div className="product-card">
               <div className="product-image-box">
                 {product.badge && <span className="product-badge">{product.badge}</span>}
-                <img src={product.image} alt={product.name} />
+                <img
+                  src={`http://localhost:5000/uploads/${product.image}`}
+                  width="150"
+                />
                 <div className="hover-action">
                   <button className="add-to-cart">Quick Add +</button>
                 </div>
