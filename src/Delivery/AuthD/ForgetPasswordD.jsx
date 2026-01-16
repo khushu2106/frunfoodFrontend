@@ -33,7 +33,7 @@ const ForgetPasswordD = () => {
         </form>
 
         <p className="forgetD-back">
-          <Link to="/logind">Back to Login</Link>
+          <Link to="/delivery/login">Back to Login</Link>
         </p>
       </div>
     </div>

@@ -14,9 +14,8 @@ function SideBarD({ children }) {
           <Link to="/delivery/history">Delivery History</Link>
           <Link to="/delivery/earning">Earnings</Link>
           <Link to="/delivery/notifications">Notifications</Link>
-          <Link to="/delivery/profile">Profile</Link>
-          <Link to="/delivery/logout">Logout</Link>
-          <Link to="/delivery/forgetpassword">FogotPassword</Link>
+          <Link to="/delivery/profile">Edit Profile</Link>
+        
         </nav>
       </aside>
 

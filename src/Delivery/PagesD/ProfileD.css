@@ -1,68 +1,70 @@
-/* Page background */
-body {
-  background-color: #f4f6f8;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.profile-page {
+  max-width: 700px;
+  margin: auto;
 }
 
-/* Profile card */
-.profileD {
-  max-width: 420px;
-  margin: 80px auto;
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  text-align: center;
-  position: relative;
-}
-
-/* Profile avatar */
-.profileD::before {
-  content: "🚚";
-  font-size: 55px;
-  background: #ff7a00;
-  color: #fff;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Heading */
-.profileD h2 {
-  margin-top: 55px;
+.profile-page h2 {
   margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
 }
 
-/* Profile info */
-.profileD p {
-  background: #f9fafb;
-  padding: 12px 15px;
-  margin: 12px 0;
+.profile-card {
+  background: white;
+  padding: 25px;
   border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.profile-card label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.profile-card input,
+.profile-card textarea,
+.profile-card select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.profile-card textarea {
+  resize: none;
+  height: 80px;
+}
+
+.profile-card button {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background: #1b4332;
+  color: white;
+  border: none;
+  border-radius: 6px;
   font-size: 16px;
-  color: #444;
-  display: flex;
-  justify-content: space-between;
+  cursor: pointer;
 }
 
-/* Labels */
-.profileD strong {
-  color: #ff7a00;
+.profile-card button:hover {
+  background: #2d6a4f;
 }
 
-/* Hover effect */
-.profileD p:hover {
-  background: #fff3e8;
-  transform: scale(1.02);
-  transition: 0.3s ease;
+/* Image upload */
+.image-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-box img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1b4332;
+}
+
+.image-box input {
+  margin-top: 10px;
 }

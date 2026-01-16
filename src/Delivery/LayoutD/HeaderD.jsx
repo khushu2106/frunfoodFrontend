@@ -27,9 +27,11 @@ function HeaderD() {
         </Link>
 
         {/* Logout */}
-        <button className="logout-btn" onClick={handleLogout}>
+        <Link to="/delivery/logout" className="profile-link">
+        <button className="logout-btn" onClick={handleLogout} >
           Logout
         </button>
+        </Link>
       </div>
     </header>
   );

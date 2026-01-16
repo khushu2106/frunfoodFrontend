@@ -1,56 +1,33 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginD.css";
 
-const LoginD = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+function LoginD() {
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = () => {
+    // set login flag
+    localStorage.setItem("deliveryLogin", "true");
 
-    if (!username || !password) {
-      setError("Username and Password are required");
-      return;
-    }
-
-    setError("");
-    alert("Login Successful");
+    // go to dashboard
+    navigate("/delivery/dashboard");
   };
 
   return (
-    <div className="login-page">
+    <div className="login-container">
       <div className="login-card">
-        <h2>Delivery Boy Login</h2>
+        <h2>Delivery Login</h2>
 
-        {error && <p className="error">{error}</p>}
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+        <button onClick={handleLogin}>Login</button>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button type="submit">Login</button>
-        </form>
-
-        {/* ✅ Forget password link */}
-        <p className="forget-link">
-          <Link to="/delivery-forget-password">Forgot Password?</Link>
+        <p style={{ marginTop: "10px" }}>
+          <Link to="/delivery/forgot-password">Forgot Password?</Link>
         </p>
       </div>
     </div>
   );
-};
+}
 
 export default LoginD;

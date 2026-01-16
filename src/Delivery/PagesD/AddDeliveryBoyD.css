@@ -1,0 +1,62 @@
+.addDB-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 10px;
+}
+
+.addDB-card {
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.addDB-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #3f37c9;
+}
+
+.addDB-card input,
+.addDB-card textarea,
+.addDB-card select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.addDB-card textarea {
+  resize: none;
+}
+
+.select-group {
+  margin-bottom: 15px;
+}
+
+.select-group label {
+  font-size: 13px;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #3f37c9, #7209b7);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}

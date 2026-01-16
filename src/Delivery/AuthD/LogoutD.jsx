@@ -1,20 +1,26 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LogoutD.css"
+import "./LogoutD.css";
 
-function LogoutD() {
-  <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2>You have been logged out</h2>
-      <p>Thank you for delivering pet happiness 🐶🐱</p>
-    </div>
+const DeliveryLogoutD = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem("deliveryLogin");
-    navigate("/");
+    localStorage.removeItem("deliveryToken");
+
+    setTimeout(() => {
+      navigate("/delivery/logout");
+    }, 2000);
   }, [navigate]);
 
-  return null;
-}
+  return (
+    <div className="logout-container">
+      <div className="logout-card">
+        <h2>You have been logged out</h2>
+        <p>Thank you for delivering pet happiness 🐶🐱</p>
+      </div>
+    </div>
+  );
+};
 
-export default LogoutD;
+export default DeliveryLogoutD;

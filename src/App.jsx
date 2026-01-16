@@ -10,38 +10,42 @@ import HeaderD from "./Delivery/LayoutD/HeaderD";
 import SideBarD from "./Delivery/LayoutD/SideBarD";
 
 /* ===== PAGES D ===== */
-import DashBoardD from "./Delivery/PagesD/DashBoardD.jsx";
-import AssignedOrdersD from "./Delivery/PagesD/AssignedOrdersD.jsx";
-import AvailabilityD from "./Delivery/PagesD/AvailabilityD.jsx";
-import DeliveryHistoryD from "./Delivery/PagesD/DeliveryHistoryD.jsx";
-import EarningD from "./Delivery/PagesD/EarningD.jsx";
-import NotificationsD from "./Delivery/PagesD/NotificationsD.jsx";
-import OrdersDetailsD from "./Delivery/PagesD/OrdersDetailsD.jsx";
-import ProfileD from "./Delivery/PagesD/ProfileD.jsx";
-import ForgetPasswordD from "./Delivery/AuthD/ForgetPasswordD.jsx";
+import DashBoardD from "./Delivery/PagesD/DashBoardD";
+import AssignedOrdersD from "./Delivery/PagesD/AssignedOrdersD";
+import AvailabilityD from "./Delivery/PagesD/AvailabilityD";
+import DeliveryHistoryD from "./Delivery/PagesD/DeliveryHistoryD";
+import EarningD from "./Delivery/PagesD/EarningD";
+import NotificationsD from "./Delivery/PagesD/NotificationsD";
+import OrdersDetailsD from "./Delivery/PagesD/OrdersDetailsD";
+import ProfileD from "./Delivery/PagesD/ProfileD";
+import AddDeliveryBoyD from "./Delivery/PagesD/AddDeliveryBoyD";
 
-/* ===== LAYOUT WRAPPER ===== */
+/* ===== DELIVERY LAYOUT ===== */
 const DeliveryLayout = ({ children }) => {
   return (
-    <>
+    <div className="delivery-layout">
       <HeaderD />
-      <SideBarD>{children}</SideBarD>
-    </>
+      <div style={{ display: "flex" }}>
+        <SideBarD />
+        <div style={{ flex: 1, padding: "20px" }}>
+          {children}
+        </div>
+      </div>
+    </div>
   );
 };
 
 function App() {
   return (
     <Routes>
-        <Route path="/" element={<HeaderD />} />
-      {/* ===== AUTH ROUTES ===== */}
-      <Route path="/" element={<LoginD />} />
-      <Route path="/otp" element={<OtpVerifyD />} />
-      <Route path="/delivery/profile" element={<ProfileD />} />
-        <Route path="/delivery/logout" element={<LogoutD />} />
-       <Route path="/forgetpassword" element={<ForgetPasswordD />} />
 
-      {/* ===== DELIVERY PANEL ROUTES ===== */}
+      {/* ===== AUTH ===== */}
+      <Route path="/" element={<LoginD />} />
+      <Route path="/delivery/login" element={<LoginD />} />
+      <Route path="/otp" element={<OtpVerifyD />} />
+      <Route path="/logout" element={<LogoutD />} />
+
+      {/* ===== DELIVERY DASHBOARD ===== */}
       <Route
         path="/delivery/dashboard"
         element={
@@ -105,6 +109,7 @@ function App() {
         }
       />
 
+      {/* ✅ EDIT PROFILE ROUTE */}
       <Route
         path="/delivery/profile"
         element={
@@ -113,7 +118,17 @@ function App() {
           </DeliveryLayout>
         }
       />
-       
+
+      {/* OPTIONAL */}
+      <Route
+        path="/delivery/add-delivery-boy"
+        element={
+          <DeliveryLayout>
+            <AddDeliveryBoyD />
+          </DeliveryLayout>
+        }
+      />
+
     </Routes>
   );
 }
