@@ -1,82 +1,104 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Offers.css";
 
 const Offers = () => {
-  // Dummy offer products (API se aayega)
-  const [offers] = useState([
-    {
-      id: 1,
-      name: "Premium Dog Food",
-      oldPrice: 1200,
-      newPrice: 899,
-      discount: 25,
-      image: "https://via.placeholder.com/200",
-    },
-    {
-      id: 2,
-      name: "Cat Scratching Toy",
-      oldPrice: 800,
-      newPrice: 560,
-      discount: 30,
-      image: "https://via.placeholder.com/200",
-    },
-    {
-      id: 3,
-      name: "Pet Shampoo",
-      oldPrice: 450,
-      newPrice: 349,
-      discount: 22,
-      image: "https://via.placeholder.com/200",
-    },
-  ]);
 
-  const addToCart = (product) => {
-    alert(`${product.name} added to cart`);
-    // TODO: Cart logic
-  };
+  // 🔹 Offers data state
+  // Future me yaha API se data aayega
+  const [offers, setOffers] = useState([]);
 
-  const addToWishlist = (product) => {
-    alert(`${product.name} added to wishlist ❤️`);
-    // TODO: Wishlist logic
-  };
+  // 🔹 Page load hone par API call
+  useEffect(() => {
+
+    // ===============================
+    // 🔥 API CALL HERE
+    // Example:
+    // fetch("https://api.yoursite.com/offers")
+    //   .then(res => res.json())
+    //   .then(data => setOffers(data));
+    // ===============================
+
+    // Abhi ke liye dummy data
+    setOffers([
+      {
+        id: 1,
+        title: "Clearance Sale",
+        discount: "Up to 90% OFF",
+        desc: "Stock up before you miss out!",
+        image: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
+        type: "big"
+      },
+      {
+        id: 2,
+        title: "Get 10% OFF",
+        desc: "To brighten a loved one's day.",
+        image: "https://cdn-icons-png.flaticon.com/512/616/616554.png",
+        type: "small"
+      },
+      {
+        id: 3,
+        title: "Black Friday",
+        desc: "Get 10% OFF",
+        image: "https://cdn-icons-png.flaticon.com/512/616/616430.png",
+        type: "small"
+      }
+    ]);
+  }, []);
 
   return (
-    <div className="offers-container">
-      <h2>🔥 Hot Deals & Offers</h2>
+    <div className="offers-page">
 
-      <div className="offers-grid">
-        {offers.map((item) => (
-          <div className="offer-card" key={item.id}>
-            <div className="discount-badge">
-              {item.discount}% OFF
+      <div className="offer-grid">
+
+        {/* ================= BIG OFFER CARD ================= */}
+        {offers
+          .filter(item => item.type === "big")
+          .map(item => (
+            <div key={item.id} className="offer-card big yellow">
+
+              {/* 🔹 Discount text (API se aayega) */}
+              <span className="badge">{item.discount}</span>
+
+              {/* 🔹 Offer title */}
+              <h2>{item.title}</h2>
+
+              {/* 🔹 Offer description */}
+              <p>{item.desc}</p>
+
+              {/* 🔹 Button click par product listing open hogi */}
+              {/* API se category ya offer id pass kar sakte ho */}
+              <button>Shop Now</button>
+
+              {/* 🔹 Offer image */}
+              <img src={item.image} alt="offer" className="offer-img left" />
             </div>
+          ))}
 
-            <img src={item.image} alt={item.name} />
+        {/* ================= RIGHT SIDE OFFERS ================= */}
+        <div className="right-offers">
 
-            <h4>{item.name}</h4>
+          {offers
+            .filter(item => item.type === "small")
+            .map(item => (
+              <div key={item.id} className="offer-card light">
 
-            <div className="price-section">
-              <span className="old-price">₹{item.oldPrice}</span>
-              <span className="new-price">₹{item.newPrice}</span>
-            </div>
+                <div>
+                  {/* 🔹 Title from API */}
+                  <h3>{item.title}</h3>
 
-            <div className="offer-actions">
-              <button
-                className="btn-cart"
-                onClick={() => addToCart(item)}
-              >
-                Add to Cart
-              </button>
+                  {/* 🔹 Description from API */}
+                  <p>{item.desc}</p>
 
-              <button
-                className="btn-wishlist"
-                onClick={() => addToWishlist(item)}
-              >
-                ❤
-              </button>
-            </div>
-          </div>
-        ))}
+                  {/* 🔹 OnClick -> redirect to offers/products */}
+                  <button className="dark-btn">Shop Now</button>
+                </div>
+
+                {/* 🔹 Image from API */}
+                <img src={item.image} alt="offer" />
+              </div>
+            ))}
+
+        </div>
       </div>
     </div>
   );

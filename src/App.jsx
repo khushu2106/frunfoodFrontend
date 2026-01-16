@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 /* Common Layout */
@@ -22,11 +22,14 @@ import UserProfile from "./Components/Common/Profile/Profile";
 
 /* Home Pages */
 import HeroHome from "./Components/Home/HeroHome/HeroHome";
+import ProductSearch from "./Components/Home/Products/ProductSearch";
 import ProductList from "./Components/Home/Products/ProductList";
 import ProductDetails from "./Components/Home/Products/ProductDetails";
-import CategoryProduct from "./Components/Home/Products/CategoryProduct";
+import Category from "./Components/Home/Products/Category";
 import Offer from "./Components/Home/Offers/Offers";
 import Aboutus from "./Components/Home/Aboutus/Aboutus";
+import Contact from "./Components/Home/Contact/Contact";
+
 
 /* Admin Pages */
 import AdminLayout from "./Components/Pages/Admin/AdminLayout";
@@ -40,62 +43,86 @@ import Settings from "./Components/Pages/Admin/Settings";
 import AddProduct from "./Components/Pages/Admin/Products/AddProduct";
 import UpdateProduct from "./Components/Pages/Admin/Products/UpdateProduct";
 
+/* Layout Wrapper */
+function Layout({ children }) {
+  const location = useLocation();
+
+  const noHeaderFooterRoutes = [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/logout",
+  ];
+
+  const hideLayout = noHeaderFooterRoutes.includes(location.pathname);
+
+  return (
+    <>
+      {!hideLayout && <Header />}
+      {children}
+      {!hideLayout && <Footer />}
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
-      <Header />
+      <Layout>
+        <Routes>
+          {/* ---------- Home ---------- */}
+          <Route
+            path="/"
+            element={
+              <>
+                <HeroHome />
+                <Category />
+                <ProductList />
+                <Offer />
+              </>
+            }
+          />
 
-      <Routes>
-        {/* ---------- User Side ---------- */}
-        <Route
-          path="/"
-          element={
-            <>
-              <HeroHome />
-              <CategoryProduct />
-              <ProductList />
-            </>
-          }
-        />
+          <Route path="/category" element={<Category />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/productSearch" element={<ProductSearch />} />
+          <Route path="/offers" element={<Offer />} />
+          <Route path="/about" element={<Aboutus />} />
+          <Route path="/contact" element={<Contact />} />
 
-        <Route path="/shop" element={<CategoryProduct />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/offers" element={<Offer />} />
-        <Route path="/about" element={<Aboutus />} />
+          {/* ---------- Auth ---------- */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* ---------- Auth ---------- */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* ---------- User ---------- */}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/complaint" element={<Complaint />} />
 
-        {/* ---------- User Pages ---------- */}
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/complaint" element={<Complaint />} />
+          {/* ---------- Admin ---------- */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="balance" element={<Balance />} />
+            <Route path="invoice" element={<Invoice />} />
+            <Route path="cards" element={<Cards />} />
+            <Route path="transaction" element={<Transaction />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="add-product" element={<AddProduct />} />
+            <Route path="update-product" element={<UpdateProduct />} />
+          </Route>
 
-        {/* ---------- Admin Panel ---------- */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="balance" element={<Balance />} />
-          <Route path="invoice" element={<Invoice />} />
-          <Route path="cards" element={<Cards />} />
-          <Route path="transaction" element={<Transaction />} />
-          <Route path="profile" element={<AdminProfile />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="add-product" element={<AddProduct />} />
-          <Route path="update-product" element={<UpdateProduct />} />
-        </Route>
-
-        {/* ---------- 404 ---------- */}
-        <Route path="*" element={<div>Page Not Found</div>} />
-      </Routes>
-
-      <Footer />
+          {/* ---------- 404 ---------- */}
+          <Route path="*" element={<div>Page Not Found</div>} />
+        </Routes>
+      </Layout>
     </Router>
   );
 }

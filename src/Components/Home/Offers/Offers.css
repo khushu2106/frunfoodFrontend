@@ -1,100 +1,89 @@
-.offers-container {
+.offers-page {
   padding: 30px;
-  min-height: 100vh;
-  background: #f5f7fa;
+  background: white;
 }
 
-.offers-container h2 {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-/* Grid */
-.offers-grid {
+/* Grid layout */
+.offer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: 2fr 1fr;
   gap: 20px;
 }
 
-/* Card */
+/* Common card */
 .offer-card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 14px;
+  border-radius: 20px;
+  padding: 30px;
   position: relative;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.offer-card img {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-  margin-bottom: 10px;
+/* Big offer */
+.offer-card.big {
+  height: 90%;
 }
 
-/* Discount Badge */
-.discount-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #ff3d00;
+.offer-card.yellow {
+  background: #ffd43b;
+}
+
+.badge {
+  background: #ff0055;
   color: #fff;
-  font-size: 12px;
-  padding: 5px 8px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
   font-weight: bold;
+  display: inline-block;
 }
 
-/* Prices */
-.price-section {
-  margin: 10px 0;
+.offer-card h2 {
+  font-size: 32px;
+  margin-top: 15px;
 }
 
-.old-price {
-  text-decoration: line-through;
-  color: #888;
-  margin-right: 8px;
+.offer-card p {
+  margin: 10px 0 20px;
 }
 
-.new-price {
-  color: #ff7a18;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* Actions */
-.offer-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.btn-cart {
-  background: #ff7a18;
+.offer-card button {
+  background: #ff0055;
+  color: #fff;
   border: none;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 10px 25px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 13px;
 }
 
-.btn-cart:hover {
-  background: #e96b0f;
+/* Images */
+.offer-img.left {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  width: 120px;
 }
 
-.btn-wishlist {
-  background: #fff;
-  border: 1px solid #ff7a18;
-  color: #ff7a18;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
+/* Right offers */
+.right-offers {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.btn-wishlist:hover {
-  background: #ff7a18;
+.offer-card.light {
+  background: #eef1ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.offer-card.light img {
+  width: 100px;
+}
+
+.dark-btn {
+  background: #333;
   color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
 }
