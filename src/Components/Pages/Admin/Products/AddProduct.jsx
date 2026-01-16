@@ -18,10 +18,15 @@ const AddProduct = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/categories").then(res => setCategories(res.data));
-    axios.get("http://localhost:5000/api/subcategories").then(res => setAllSubcategories(res.data));
-    axios.get("http://localhost:5000/api/brands").then(res => setBrands(res.data));
-  }, []);
+  axios.get("http://localhost:5000/api/categories")
+    .then(res => setCategories(res.data));
+
+  axios.get("http://localhost:5000/api/subcategories")
+    .then(res => setAllSubcategories(res.data));
+
+  axios.get("http://localhost:5000/api/brands")
+    .then(res => setBrands(res.data));
+}, []);
 
   const handleCategoryChange = (e) => {
     const catId = e.target.value;
@@ -37,10 +42,10 @@ const AddProduct = () => {
     setProduct({ ...product, brandId: e.target.value });
   };
 
-  //  console.log(product);
-  //  console.log(categories);
-  //  console.log(allSubcategories);
-  //  console.log(brands);
+   console.log(product);
+   console.log(categories);
+   console.log(allSubcategories);
+   console.log(brands);
 
 
   const handleSubmit = async (e) => {

@@ -12,6 +12,7 @@ const ProductList = () => {
       .catch(err => console.log(err));
   }, []);
 
+  console.log(products);
   return (
     <section className="product-section">
       <div className="product-header">
@@ -22,10 +23,11 @@ const ProductList = () => {
       <div className="product-grid">
         {products.map((product) => (
           <Link
-            key={product.pro_id}
-            to={`/product/${product.pro_id}`}
+            key={product.product_id}
+            to={`/product/${product.product_id}`}
             className="product-link"
           >
+
             <div className="product-card">
               <div className="product-image-box">
                 {product.badge && <span className="product-badge">{product.badge}</span>}
