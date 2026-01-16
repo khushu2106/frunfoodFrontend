@@ -5,7 +5,7 @@ import HeroHome from './Components/Home/HeroHome/HeroHome';
 // import HeroSection from './Components/Home/HeroHome/HeroSection';
 import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
-import CategoryProduct from './Components/Home/Products/CategoryProduct';
+// import CategoryProduct from './Components/Home/Products/CategoryProduct';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard';
@@ -24,11 +24,26 @@ import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import Registration from './Components/Pages/Auth/Registration';
 import Login from './Components/Pages/Auth/Login';
 import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
-
+import Category from './Components/Home/Products/Category';
+import Offers from './Components/Home/Offers/Offers';
+import ProductSearch from './Components/Home/Products/ProductSearch';
+import Contact from './Components/Home/Contact/Contact';
+import Logout from './Components/Pages/Auth/Logout';
+import Cart from './Components/Pages/Cart/Cart';
+import Wishlist from './Components/Pages/Wishlist/Wishlist';
+import Checkout from './Components/Pages/Checkout/Checkout';
+import Payment from './Components/Pages/Payment/Payment';
+import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
+import Feedback from "./Components/Pages/Feedback/Feedback"
+import Complaint from "./Components/Pages/Complaint/Complaint"
+import AdminProfile from "./Components/Pages/Admin/Profile"
+import Header from './Components/Common/Header/Header';
+import Footer from './Components/Common/Footer/Footer';
 function App() {
   return (
     <Router>
-      <Layout>
+      {/* <Layout> */}
+      <Header/>
         <Routes>
           {/* ---------- Home ---------- */}
           <Route
@@ -38,16 +53,16 @@ function App() {
                 <HeroHome />
                 <Category />
                 <ProductList />
-                <Offer />
+                <Offers />
               </>
             }
           />
 
-          <Route path="/category" element={<Category />} />
+          {/* <Route path="/category" element={<Category />} /> */}
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/productSearch" element={<ProductSearch />} />
-          <Route path="/offers" element={<Offer />} />
+          <Route path="/offers" element={<Offers />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/contact" element={<Contact />} />
 
@@ -62,7 +77,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/profile" element={<ProfileC />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/complaint" element={<Complaint />} />
 
@@ -82,7 +97,8 @@ function App() {
           {/* ---------- 404 ---------- */}
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
-      </Layout>
+        <Footer/>
+      {/* </Layout> */}
     </Router>
   );
 }
