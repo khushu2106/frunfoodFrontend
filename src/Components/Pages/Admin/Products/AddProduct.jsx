@@ -1,45 +1,143 @@
-import React, { useState } from "react";
-import "./AddProduct.css";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const AddProduct = () => {
+  const [categories, setCategories] = useState([]);
+  const [allSubcategories, setAllSubcategories] = useState([]);
+  const [filteredSubs, setFilteredSubs] = useState([]);
+  const [brands, setBrands] = useState([]);
+
   const [product, setProduct] = useState({
     name: "",
     price: "",
-    category: "",
+    categoryId: "",
+    subcategoryId: "",
+    brandId: "",
     description: "",
-    image: ""
+    image: null
   });
 
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+  useEffect(() => {
+  axios.get("http://localhost:5000/api/categories")
+    .then(res => setCategories(res.data));
+
+  axios.get("http://localhost:5000/api/subcategories")
+    .then(res => setAllSubcategories(res.data));
+
+  axios.get("http://localhost:5000/api/brands")
+    .then(res => setBrands(res.data));
+}, []);
+
+  const handleCategoryChange = (e) => {
+    const catId = e.target.value;
+    setProduct({ ...product, categoryId: catId, subcategoryId: "" });
+
+    const filtered = allSubcategories.filter(
+      sub => sub.category_id === parseInt(catId)
+    );
+    setFilteredSubs(filtered);
   };
 
-  const handleSubmit = (e) => {
+  const handleBrandChange = (e) => {
+    setProduct({ ...product, brandId: e.target.value });
+  };
+
+   console.log(product);
+   console.log(categories);
+   console.log(allSubcategories);
+   console.log(brands);
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(product); // API Call
-    alert("Product Added Successfully");
+
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("category", product.categoryId);
+    formData.append("price", product.price);
+    formData.append("badge", "New");
+    formData.append("image", product.image);
+    formData.append("subcategory", product.subcategoryId);
+    formData.append("brand", product.brandId);
+    formData.append("description", product.description);
+
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/products",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      alert(res.data.message);
+    } catch (error) {
+      console.error(error);
+      alert("Product add failed");
+    }
   };
 
   return (
-    <div className="add-product-container">
+    <div style={{ maxWidth: "600px", margin: "20px auto", padding: "20px", border: "1px solid #ccc" }}>
       <h2>Add New Product</h2>
 
-      <form className="add-product-form" onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Product Name" onChange={handleChange} required />
-        <input type="number" name="price" placeholder="Price" onChange={handleChange} required />
-        
-        <select name="category" onChange={handleChange} required>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+
+        <input
+          type="text"
+          placeholder="Product Name"
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="Price"
+          onChange={(e) => setProduct({ ...product, price: e.target.value })}
+          required
+        />
+
+        <select value={product.categoryId} onChange={handleCategoryChange} required>
           <option value="">Select Category</option>
-          <option value="Dog Food">Dog Food</option>
-          <option value="Cat Food">Cat Food</option>
-          <option value="Accessories">Accessories</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
+          ))}
         </select>
 
-        <textarea name="description" placeholder="Product Description" onChange={handleChange}></textarea>
+        <select
+          value={product.subcategoryId}
+          onChange={(e) => setProduct({ ...product, subcategoryId: e.target.value })}
+          disabled={!product.categoryId}
+          required
+        >
+          <option value="">Select Subcategory</option>
+          {filteredSubs.map(sub => (
+            <option key={sub.id} value={sub.id}>{sub.name}</option>
+          ))}
+        </select>
 
-        <input type="file" name="image" />
+        <select onChange={(e) => setProduct({ ...product, brandId: e.target.value })} required>
+          <option value="">Select Brand</option>
+          {brands.map(brand => (
+            <option key={brand.brand_id} value={brand.brand_id}>{brand.name}</option>
+          ))}
+        </select>
 
-        <button type="submit">Add Product</button>
+        <label>Product Image:</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setProduct({ ...product, image: e.target.files[0] })}
+          required
+        />
+
+        <textarea
+          placeholder="Description"
+          onChange={(e) => setProduct({ ...product, description: e.target.value })}
+        />
+
+        <button type="submit" style={{ padding: "10px", background: "#28a745", color: "#fff" }}>
+          Publish Product
+        </button>
+
       </form>
     </div>
   );

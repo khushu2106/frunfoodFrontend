@@ -17,3 +17,18 @@
   border: none;
   cursor: pointer;
 }
+
+.add-icon-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
