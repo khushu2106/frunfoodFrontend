@@ -1,143 +1,191 @@
-import axios from "axios";
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import "./AddProduct.css"
+
+// const AddProduct = () => {
+//   const [categories, setCategories] = useState([]);
+//   const [allSubcategories, setAllSubcategories] = useState([]);
+//   const [brands, setBrands] = useState([]);
+//   const [images, setImages] = useState([]);
+
+//   const [product, setProduct] = useState({
+//     name: "",
+//     description: "",
+//     price: "",
+//     stock: "",
+//     shipping_charges: "",
+//     weight: "",
+//     exp_date: "",
+//     sub_cat_id: ""
+//   });
+
+//   useEffect(() => {
+//     axios.get("http://localhost:5000/api/categories").then(res => setCategories(res.data));
+//     axios.get("http://localhost:5000/api/subcategories").then(res => setAllSubcategories(res.data));
+//     axios.get("http://localhost:5000/api/brands").then(res => setBrands(res.data));
+//   }, []);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const productData = {
+//       name: product.name,
+//       description: product.description,
+//       price: Number(product.price), 
+//       stock: Number(product.stock),
+//       shipping_charge: Number(product.shipping_charge),
+//       weight: Number(product.weight),
+//       exp_date: product.exp_date,
+//       sub_cat_id: Number(product.sub_cat_id)
+//     };
+
+//     e.target.reset();
+
+//     console.log("Frontend Sending Data:", productData);
+
+//     try {
+//       const res = await axios.post("http://localhost:5000/api/products", productData);
+      
+//       alert(res.data.message); // "Product added successfully"
+//     } catch (error) {
+//       console.error("Frontend Error:", error.response?.data);
+//       alert("Error: " + (error.response?.data?.sqlMessage || "Check Console"));
+//     }
+//   };
+
+//   return (
+//     <div style={{ maxWidth: "600px", margin: "20px auto", padding: "20px", border: "1px solid #ccc" }}>
+//       <h2>Add New Product</h2>
+//       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        
+//         <input type="text" placeholder="Name" onChange={(e) => setProduct({...product, name: e.target.value})} required />
+        
+//         <textarea placeholder="Description" onChange={(e) => setProduct({...product, description: e.target.value})} />
+        
+//         <input type="number" placeholder="Price" onChange={(e) => setProduct({...product, price: e.target.value})} required />
+        
+//         <input type="number" placeholder="Stock" onChange={(e) => setProduct({...product, stock: e.target.value})} required />
+        
+//         <input type="number" placeholder="Shipping Charge" onChange={(e) => setProduct({...product, shipping_charge: e.target.value})} />
+        
+//         <input type="number" placeholder="Weight" onChange={(e) => setProduct({...product, weight: e.target.value})} />
+        
+//         <input type="date" onChange={(e) => setProduct({...product, exp_date: e.target.value})} />
+
+//         <select onChange={(e) => setProduct({...product, sub_cat_id: e.target.value})} required value={product.sub_cat_id}>
+//           <option value="">Select Subcategory</option>
+//           {allSubcategories.map(sub => (
+//             <option key={sub.sub_cat_id} value={sub.sub_cat_id}>{sub.name}</option>
+//           ))}
+//         </select>
+
+//         <button type="submit" style={{ padding: "10px", backgroundColor: "green", color: "white" }}>
+//           Publish Product
+//         </button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default AddProduct;
+
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AddProduct.css";
 
 const AddProduct = () => {
-  const [categories, setCategories] = useState([]);
   const [allSubcategories, setAllSubcategories] = useState([]);
-  const [filteredSubs, setFilteredSubs] = useState([]);
-  const [brands, setBrands] = useState([]);
+  // const [brands, setBrands] = useState([]);
+  const [images, setImages] = useState([]); 
 
   const [product, setProduct] = useState({
     name: "",
-    price: "",
-    categoryId: "",
-    subcategoryId: "",
-    brandId: "",
     description: "",
-    image: null
+    price: "",
+    stock: "",
+    shipping_charges: "",
+    weight: "",
+    exp_date: "",
+    sub_cat_id: "",
   });
 
   useEffect(() => {
-  axios.get("http://localhost:5000/api/categories")
-    .then(res => setCategories(res.data));
+    axios.get("http://localhost:5000/api/subcategories").then(res => setAllSubcategories(res.data));
+    // axios.get("http://localhost:5000/api/brands").then(res => setBrands(res.data));
+  }, []);
 
-  axios.get("http://localhost:5000/api/subcategories")
-    .then(res => setAllSubcategories(res.data));
-
-  axios.get("http://localhost:5000/api/brands")
-    .then(res => setBrands(res.data));
-}, []);
-
-  const handleCategoryChange = (e) => {
-    const catId = e.target.value;
-    setProduct({ ...product, categoryId: catId, subcategoryId: "" });
-
-    const filtered = allSubcategories.filter(
-      sub => sub.category_id === parseInt(catId)
-    );
-    setFilteredSubs(filtered);
+  const handleFileChange = (e) => {
+    setImages(e.target.files); 
   };
-
-  const handleBrandChange = (e) => {
-    setProduct({ ...product, brandId: e.target.value });
-  };
-
-   console.log(product);
-   console.log(categories);
-   console.log(allSubcategories);
-   console.log(brands);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("name", product.name);
-    formData.append("category", product.categoryId);
-    formData.append("price", product.price);
-    formData.append("badge", "New");
-    formData.append("image", product.image);
-    formData.append("subcategory", product.subcategoryId);
-    formData.append("brand", product.brandId);
     formData.append("description", product.description);
+    formData.append("price", product.price);
+    formData.append("stock", product.stock);
+    formData.append("shipping_charges", product.shipping_charges);
+    formData.append("weight", product.weight);
+    formData.append("exp_date", product.exp_date);
+    formData.append("sub_cat_id", product.sub_cat_id);
 
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/products",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const res = await axios.post("http://localhost:5000/api/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       alert(res.data.message);
+      
+      setProduct({ name: "", description: "", price: "", stock: "", shipping_charges: "", weight: "", exp_date: "", sub_cat_id: ""});
+      setImages([]);
+      e.target.reset();
+
     } catch (error) {
-      console.error(error);
-      alert("Product add failed");
+      console.error("Frontend Error:", error.response?.data);
+      alert("Error: " + (error.response?.data?.message || "Check Console"));
     }
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "20px auto", padding: "20px", border: "1px solid #ccc" }}>
+    <div className="add-product-container" style={{ maxWidth: "600px", margin: "20px auto", padding: "20px", border: "1px solid #ccc" }}>
       <h2>Add New Product</h2>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        
+        <input type="text" placeholder="Name" value={product.name} onChange={(e) => setProduct({...product, name: e.target.value})} required />
+        
+        <textarea placeholder="Description" value={product.description} onChange={(e) => setProduct({...product, description: e.target.value})} />
+        
+        <div style={{ display: "flex", gap: "10px" }}>
+          <input type="number" placeholder="Price" value={product.price} onChange={(e) => setProduct({...product, price: e.target.value})} required style={{ flex: 1 }} />
+          <input type="number" placeholder="Stock" value={product.stock} onChange={(e) => setProduct({...product, stock: e.target.value})} required style={{ flex: 1 }} />
+        </div>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+        <input type="number" placeholder="Shipping Charge" value={product.shipping_charges} onChange={(e) => setProduct({...product, shipping_charges: e.target.value})} />
+        
+        <input type="number" placeholder="Weight (kg)" value={product.weight} onChange={(e) => setProduct({...product, weight: e.target.value})} />
+        
+        <label>Expiry Date:</label>
+        <input type="date" value={product.exp_date} onChange={(e) => setProduct({...product, exp_date: e.target.value})} />
 
-        <input
-          type="text"
-          placeholder="Product Name"
-          onChange={(e) => setProduct({ ...product, name: e.target.value })}
-          required
-        />
-
-        <input
-          type="number"
-          placeholder="Price"
-          onChange={(e) => setProduct({ ...product, price: e.target.value })}
-          required
-        />
-
-        <select value={product.categoryId} onChange={handleCategoryChange} required>
-          <option value="">Select Category</option>
-          {categories.map(cat => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
-          ))}
-        </select>
-
-        <select
-          value={product.subcategoryId}
-          onChange={(e) => setProduct({ ...product, subcategoryId: e.target.value })}
-          disabled={!product.categoryId}
-          required
-        >
+        <select onChange={(e) => setProduct({...product, sub_cat_id: e.target.value})} required value={product.sub_cat_id}>
           <option value="">Select Subcategory</option>
-          {filteredSubs.map(sub => (
-            <option key={sub.id} value={sub.id}>{sub.name}</option>
+          {allSubcategories.map(sub => (
+            <option key={sub.sub_cat_id} value={sub.sub_cat_id}>{sub.name}</option>
           ))}
         </select>
 
-        <select onChange={(e) => setProduct({ ...product, brandId: e.target.value })} required>
-          <option value="">Select Brand</option>
-          {brands.map(brand => (
-            <option key={brand.brand_id} value={brand.brand_id}>{brand.name}</option>
-          ))}
-        </select>
+        <label>Product Images (Max 5):</label>
+        <input type="file" multiple accept="image/*" onChange={handleFileChange} required />
 
-        <label>Product Image:</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setProduct({ ...product, image: e.target.files[0] })}
-          required
-        />
-
-        <textarea
-          placeholder="Description"
-          onChange={(e) => setProduct({ ...product, description: e.target.value })}
-        />
-
-        <button type="submit" style={{ padding: "10px", background: "#28a745", color: "#fff" }}>
+        <button type="submit" style={{ padding: "12px", backgroundColor: "green", color: "white", border: "none", cursor: "pointer", fontSize: "16px" }}>
           Publish Product
         </button>
-
       </form>
     </div>
   );

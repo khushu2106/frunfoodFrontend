@@ -4,14 +4,16 @@ import axios from 'axios';
 import './ProductDetails.css';
 import ProductList from './ProductList';
 import Offers from '../Offers/Offers';
-// import Header from './Components/Common/Header/Header'
-// import Footer from './Footer';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]); 
+  const [mainImage, setMainImage] = useState(""); 
+  
+  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     axios.get(`http://localhost:5000/api/products/${id}`)
@@ -24,6 +26,22 @@ const ProductDetails = () => {
         setLoading(false);
       });
   }, [id]);
+  
+  // useEffect(() => {
+  //   axios.get(`${BASE_URL}/api/products/${id}`)
+  //     .then(res => {
+  //       setProduct(res.data.product);
+  //       setImages(res.data.images);
+  //       if (res.data.images.length > 0) {
+  //         setMainImage(res.data.images[0].image_path);
+  //       }
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       console.error("Error loading data", err);
+  //       setLoading(false);
+  //     });
+  // }, [id]);
 
   if (loading) return <h2>Loading Product...</h2>;
   if (!product) return <h2>Product Not Found!</h2>;
@@ -69,3 +87,32 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+
+
+
+//       <div className="product-details-page">
+//         <div className="pd-container">
+          
+//           {/* Image Section */}
+//           <div className="pd-image-section">
+//             <div className="main-image">
+//               {/* बड़ी इमेज */}
+//               <img src={`${BASE_URL}${mainImage}`} alt={product.name} />
+//             </div>
+            
+//             {/* छोटी इमेजेज (Thumbnails) */}
+//             <div className="thumbnail-gallery" style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+//               {images.map((img, index) => (
+//                 <img 
+//                   key={index} 
+//                   src={`${BASE_URL}${img.image_path}`} 
+//                   alt="thumbnail"
+//                   onClick={() => setMainImage(img.image_path)} // क्लिक करने पर बड़ी इमेज बदल जाएगी
+//                   style={{ 
+//                     width: '60px', height: '60px', cursor: 'pointer', 
+//                     border: mainImage === img.image_path ? '2px solid green' : '1px solid #ccc' 
+//                   }}
+//                 />
+//               ))}
+//             </div>
+//           </div>
