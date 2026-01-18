@@ -6,7 +6,7 @@ import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
-import Dashboard from './Components/Pages/Admin/Dashboard';
+import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
 import Balance from './Components/Pages/Admin/Balance';
 import Invoice from './Components/Pages/Admin/Invoice';
 import Users from './Components/Pages/Admin/Users';
@@ -73,6 +73,7 @@ function LayoutWrapper() {
 
         {/* Admin */}
         <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} /> 
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
           <Route path="invoice" element={<Invoice />} />

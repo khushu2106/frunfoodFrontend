@@ -1,46 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ProductList from "../../Home/Products/ProductList";
+import Offers from "../../Home/Offers/Offers";
 import "./Cart.css";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Premium Dog Food",
-      price: 250,
-      quantity: 1,
-      image: "https://via.placeholder.com/80"
-    },
-    {
-      id: 2,
-      name: "Healthy Cat Food",
-      price: 180,
-      quantity: 2,
-      image: "https://via.placeholder.com/80"
-    }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    // ✅ Get cart items from localStorage
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(storedCart);
+  }, []);
+
+  const updateCart = (newCart) => {
+    setCartItems(newCart);
+    localStorage.setItem("cart", JSON.stringify(newCart));
+  };
 
   const increaseQty = (id) => {
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+    const newCart = cartItems.map(item =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
+    updateCart(newCart);
   };
 
   const decreaseQty = (id) => {
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+    const newCart = cartItems.map(item =>
+      item.id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
     );
+    updateCart(newCart);
   };
 
   const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    const newCart = cartItems.filter(item => item.id !== id);
+    updateCart(newCart);
   };
 
   const totalPrice = cartItems.reduce(
@@ -49,6 +44,7 @@ const Cart = () => {
   );
 
   return (
+    <>
     <div className="cart-page">
       <h2>🛒 Your Cart</h2>
 
@@ -90,6 +86,9 @@ const Cart = () => {
         </div>
       )}
     </div>
+    <ProductList />
+      <Offers />
+    </>
   );
 };
 

@@ -78,7 +78,7 @@ const AddCategory = () => {
                                     categories.map((cat, index) => (
                                         <tr key={cat.pro_cat_id || index}>
                                             <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{cat.pro_cat_id}</td>
-                                            <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{cat.name}</td>
+                                            <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{cat.category_name}</td>
                                         </tr>
                                     ))
                                 ) : (

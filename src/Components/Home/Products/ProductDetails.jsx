@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductDetails.css';
 import ProductList from './ProductList';
@@ -7,55 +7,94 @@ import Offers from '../Offers/Offers';
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [images, setImages] = useState([]); 
-  const [mainImage, setMainImage] = useState(""); 
-  
+  const [images, setImages] = useState([]);
+  const [mainImage, setMainImage] = useState("");
+
   const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/products/${id}`)
+    // ✅ API call to get product details
+    axios.get(`${BASE_URL}/api/products/${id}`)
       .then(res => {
-        setProduct(res.data);
+        const data = res.data;
+        setProduct(data);
+
+        if (data.image_url) {
+          setImages([data.image_url]);    // single image ko array me convert
+          setMainImage(data.image_url);   // main image set
+        }
+
         setLoading(false);
       })
       .catch(err => {
-        console.error("There are some error to load to data", err);
+        console.error("API Error:", err);
         setLoading(false);
       });
   }, [id]);
-  
-  // useEffect(() => {
-  //   axios.get(`${BASE_URL}/api/products/${id}`)
-  //     .then(res => {
-  //       setProduct(res.data.product);
-  //       setImages(res.data.images);
-  //       if (res.data.images.length > 0) {
-  //         setMainImage(res.data.images[0].image_path);
-  //       }
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       console.error("Error loading data", err);
-  //       setLoading(false);
-  //     });
-  // }, [id]);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    // Get cart from localStorage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Check if product already exists in cart
+    const existing = cart.find(item => item.id === product.product_id);
+    if (existing) {
+      cart = cart.map(item =>
+        item.id === product.product_id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+    } else {
+      cart.push({
+        id: product.product_id,
+        name: product.name,
+        price: product.price,
+        image: `${BASE_URL}/${product.image_url}`,
+        quantity
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    
+    navigate("/cart");
+  };
 
   if (loading) return <h2>Loading Product...</h2>;
   if (!product) return <h2>Product Not Found!</h2>;
 
   return (
     <>
-      {/* <Header /> */}
-      
       <div className="product-details-page">
         <div className="pd-container">
+
           {/* Image Section */}
           <div className="pd-image-section">
             <div className="main-image">
-              <img src={product.image} alt={product.name} />
+              {mainImage && (
+                <img
+                  src={`${BASE_URL}/${mainImage}`}
+                  alt={product.name}
+                />
+              )}
+            </div>
+
+            <div className="thumbnail-row">
+              {images.length > 1 && images.map((img, i) => (
+                <img
+                  key={i}
+                  src={`${BASE_URL}/${img}`}
+                  alt={`thumb-${i}`}
+                  onClick={() => setMainImage(img)}
+                  className="thumbnail-img"
+                />
+              ))}
             </div>
           </div>
 
@@ -63,8 +102,10 @@ const ProductDetails = () => {
           <div className="pd-info-section">
             <span className="pd-category">{product.category}</span>
             <h1 className="pd-title">{product.name}</h1>
-            <p className="pd-price">{product.price}</p>
-            <p className="pd-description">{product.description || "No description available"}</p>
+            <p className="pd-price">₹{product.price}</p>
+            <p className="pd-description">
+              {product.description || "No description available"}
+            </p>
 
             <div className="pd-options">
               <div className="quantity-control">
@@ -72,47 +113,22 @@ const ProductDetails = () => {
                 <span>{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </div>
-              <button className="add-to-cart-btn">Add to Cart 🛒</button>
+              <button
+                className="add-to-cart-btn"
+                onClick={handleAddToCart}
+              >
+                Add to Cart 🛒
+              </button>
             </div>
           </div>
+
         </div>
       </div>
 
       <ProductList />
       <Offers />
-      
-      {/* <Footer /> */}
     </>
   );
 };
 
 export default ProductDetails;
-
-
-
-//       <div className="product-details-page">
-//         <div className="pd-container">
-          
-//           {/* Image Section */}
-//           <div className="pd-image-section">
-//             <div className="main-image">
-//               {/* बड़ी इमेज */}
-//               <img src={`${BASE_URL}${mainImage}`} alt={product.name} />
-//             </div>
-            
-//             {/* छोटी इमेजेज (Thumbnails) */}
-//             <div className="thumbnail-gallery" style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-//               {images.map((img, index) => (
-//                 <img 
-//                   key={index} 
-//                   src={`${BASE_URL}${img.image_path}`} 
-//                   alt="thumbnail"
-//                   onClick={() => setMainImage(img.image_path)} // क्लिक करने पर बड़ी इमेज बदल जाएगी
-//                   style={{ 
-//                     width: '60px', height: '60px', cursor: 'pointer', 
-//                     border: mainImage === img.image_path ? '2px solid green' : '1px solid #ccc' 
-//                   }}
-//                 />
-//               ))}
-//             </div>
-//           </div>

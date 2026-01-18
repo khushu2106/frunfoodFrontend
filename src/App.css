@@ -1,4 +1,10 @@
-body{
+body {
     margin: 0px;
     padding: 0px;
+    background-color: #f7f8fa;
+    /* Soft light grey */
+    color: #333;
+    /* Default text color */
+    font-family: Arial, sans-serif;
+
 }
