@@ -33,6 +33,13 @@ const Registration = () => {
       body: JSON.stringify(formData)
     }).then(res => res.json()).then(data => {
       console.log("Register data : ", data)
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
+      alert("Registration successful!");
     });
 
   };

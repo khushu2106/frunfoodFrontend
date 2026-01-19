@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Category.css";
 
 const categories = [
@@ -47,10 +48,16 @@ const categories = [
 ];
 
 const Category = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="home-category-wrapper">
+   <div className="home-category-wrapper">
       {categories.map((cat) => (
-        <div className="home-category-item" key={cat.id}>
+        <div
+          className="home-category-item"
+          key={cat.id}
+          onClick={() => navigate(`/category/${cat.id}`)}
+        >
           <div
             className="home-category-icon"
             style={{ backgroundColor: cat.bg }}
@@ -59,10 +66,6 @@ const Category = () => {
           </div>
 
           <p className="home-category-name">{cat.name}</p>
-
-          {/* API call can be triggered here on click
-              Example:
-              onClick={() => fetchProductsByCategory(cat.name)} */}
         </div>
       ))}
     </div>

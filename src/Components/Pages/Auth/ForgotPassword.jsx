@@ -1,14 +1,37 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import axios from "axios"; 
 import "./Auth.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState(""); 
+  const [error, setError] = useState("");     
+  const [loading, setLoading] = useState(false); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Password reset link sent to: ${email}`);
-    // TODO: Call Forgot Password API
+    setLoading(true);
+    setMessage("");
+    setError("");
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+      
+      if (response.data.success) {
+        setMessage("✅ Password reset link has been sent to your email!");
+        navigate("/verify-otp",{state : {email : email}});
+        setEmail(""); 
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setError("❌ This email is not registered with us.");
+      } else {
+        setError("⚠️ Something went wrong. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -18,6 +41,9 @@ const ForgotPassword = () => {
         <p className="auth-subtitle">
           Enter your registered email to reset password
         </p>
+
+        {message && <p style={{ color: "green", fontWeight: "bold" }}>{message}</p>}
+        {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -31,8 +57,8 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <button type="submit" className="btn-primary">
-            Send Reset Link
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 

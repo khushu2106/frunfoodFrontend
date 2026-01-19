@@ -40,7 +40,7 @@ const AddSubcategory = () => {
                 <form onSubmit={handleAddSub} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <select value={selectedCatId} onChange={(e) => setSelectedCatId(e.target.value)} required style={{ padding: '10px' }}>
                         <option value="">Select Main Category</option>
-                        {categories.map(cat => <option key={cat.pro_cat_id} value={cat.pro_cat_id}>{cat.name}</option>)}
+                        {categories.map(cat => <option key={cat.pro_cat_id} value={cat.pro_cat_id}>{cat.category_name}</option>)}
                     </select>
                     <input type="text" placeholder="Subcategory Name" value={subName} onChange={(e) => setSubName(e.target.value)} required style={{ padding: '10px' }} />
                     <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none' }}>Save</button>

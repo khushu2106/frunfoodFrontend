@@ -17,15 +17,18 @@ const ProductDetails = () => {
   const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
-    // ✅ API call to get product details
     axios.get(`${BASE_URL}/api/products/${id}`)
       .then(res => {
         const data = res.data;
         setProduct(data);
 
-        if (data.image_url) {
-          setImages([data.image_url]);    // single image ko array me convert
-          setMainImage(data.image_url);   // main image set
+        if (data.images && data.images.length > 0) {
+          setImages(data.images);
+          setMainImage(data.images[0]);
+        } else if (data.image_url) {
+          
+          setImages([data.image_url]);
+          setMainImage(data.image_url);
         }
 
         setLoading(false);
@@ -62,7 +65,7 @@ const ProductDetails = () => {
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    
+
     navigate("/cart");
   };
 
@@ -86,13 +89,14 @@ const ProductDetails = () => {
             </div>
 
             <div className="thumbnail-row">
-              {images.length > 1 && images.map((img, i) => (
+              {images.map((img, i) => (
                 <img
                   key={i}
                   src={`${BASE_URL}/${img}`}
                   alt={`thumb-${i}`}
                   onClick={() => setMainImage(img)}
-                  className="thumbnail-img"
+                  className={`thumbnail-img ${mainImage === img ? 'active' : ''}`}
+                  style={{ width: '80px', height: '80px', marginRight: '10px', cursor: 'pointer', border: mainImage === img ? '2px solid orange' : '1px solid #ccc' }}
                 />
               ))}
             </div>

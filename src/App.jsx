@@ -22,6 +22,7 @@ import Registration from './Components/Pages/Auth/Registration';
 import Login from './Components/Pages/Auth/Login';
 import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
 import Category from './Components/Home/Products/Category';
+import CategoryProducts from './Components/Home/Products/CategoryProducts';
 import Offers from './Components/Home/Offers/Offers';
 import ProductSearch from './Components/Home/Products/ProductSearch';
 import Contact from './Components/Home/Contact/Contact';
@@ -41,10 +42,13 @@ import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
 function LayoutWrapper() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const authRoutes = ['/login', '/register', '/forgot-password', '/logout', '/verify-otp', '/reset-password'];
 
+  const isAuthRoute = authRoutes.includes(location.pathname);
+  const showHeaderFooter = !isAdminRoute && !isAuthRoute;
   return (
     <>
-      {!isAdminRoute && <Header />}
+      {showHeaderFooter && <Header />}
 
       <Routes>
         {/* Home */}
@@ -55,6 +59,7 @@ function LayoutWrapper() {
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/category/:id" element={<CategoryProducts />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -93,7 +98,7 @@ function LayoutWrapper() {
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
 
-      {!isAdminRoute && <Footer />}
+      {showHeaderFooter && <Footer />}
     </>
   );
 }
