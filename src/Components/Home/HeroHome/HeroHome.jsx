@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './HeroHome.css';
 
 const HeroHome = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = () =>{
+    if(searchTerm.trim() !== ""){
+      console.log("Searching for : ",searchTerm);
+      alert(`Searching for : ${searchTerm}`);
+    }
+  };
+
+  const handleKeyDown = (e) =>{
+    if (e.key === 'Enter'){
+      handleSearch();
+    }
+  }
   return (
     <div className="hero-home-wrapper">
       <div className="hero-home-container">
@@ -20,7 +34,13 @@ const HeroHome = () => {
           </p>
           
           <div className="search-bar-mini">
-            <input type="text" placeholder="Search for food, toys, or beds..." />
+            <input 
+              type="text" 
+              placeholder="Search for food, toys, or beds..." 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} 
+              onKeyDown={handleKeyDown}
+            />
             <button className="search-btn">Search</button>
           </div>
 

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ProductList from "../../Home/Products/ProductList";
-import Offers from "../../Home/Offers/Offers";
+import { motion, AnimatePresence } from "framer-motion";
+import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft } from "lucide-react";
+import { toast, Toaster } from "sonner";
 import "./Cart.css";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const user_id = 1;
 
   const fetchCart = async () => {
@@ -14,6 +18,9 @@ const Cart = () => {
       setCartItems(res.data);
     } catch (error) {
       console.error("Cart Fetch Error:", error);
+      toast.error("Failed to load cart");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -21,80 +28,109 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  const increaseQty = async (product_id, price) => {
-    await axios.post("http://localhost:5000/api/cart/add", {
-      user_id,
-      product_id,
-      qty: 1,
-      price
-    });
-    fetchCart();
-  };
-
-  const decreaseQty = async (product_id, price) => {
-    await axios.post("http://localhost:5000/api/cart/add", {
-      user_id,
-      product_id,
-      qty: -1,
-      price
-    });
-    fetchCart();
+  const updateQty = async (product_id, price, change) => {
+    try {
+      await axios.post("http://localhost:5000/api/cart/add", {
+        user_id, product_id, qty: change, price
+      });
+      fetchCart();
+    } catch (err) {
+      toast.error("Update failed");
+    }
   };
 
   const removeItem = async (product_id) => {
-    await axios.delete(`http://localhost:5000/api/cart/${user_id}/${product_id}`);
-    fetchCart();
+    try {
+      await axios.delete(`http://localhost:5000/api/cart/${user_id}/${product_id}`);
+      toast.success("Item removed");
+      fetchCart();
+    } catch (err) {
+      toast.error("Could not remove item");
+    }
   };
 
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.qty,
-    0
-  );
+  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.qty, 0);
+
+  if (loading) return <div className="loader">Loading your cart...</div>;
 
   return (
-    <>
-      <div className="cart-page">
-        <h2>Your Cart</h2>
-
-        {cartItems.length === 0 ? (
-          <p className="empty-cart">Your cart is empty</p>
-        ) : (
-          <div className="cart-container">
-            <div className="cart-items">
-              {cartItems.map(item => (
-                <div className="cart-item" key={item.cart_id}>
-                  <div className="item-details">
-                    <h4>{item.name}</h4>
-                    <p>₹{item.price}</p>
-                    <div className="quantity">
-                      <button onClick={() => decreaseQty(item.product_id, item.price)}>-</button>
-                      <span>{item.qty}</span>
-                      <button onClick={() => increaseQty(item.product_id, item.price)}>+</button>
-                    </div>
-                  </div>
-                  <button
-                    className="remove-btn"
-                    onClick={() => removeItem(item.product_id)}
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="cart-summary">
-              <h3>Order Summary</h3>
-              <p>Total Items: {cartItems.length}</p>
-              <p className="total">Total: ₹{totalPrice}</p>
-              <button className="checkout-btn">Proceed to Checkout</button>
-            </div>
-          </div>
-        )}
+    <div className="cart-page-wrapper">
+      <Toaster position="bottom-right" richColors />
+      <div className="cart-header">
+        <button onClick={() => navigate(-1)} className="back-btn">
+          <ArrowLeft size={20} /> Continue Shopping
+        </button>
+        <h2>Shopping Cart ({cartItems.length})</h2>
       </div>
 
-      <ProductList />
-      <Offers />
-    </>
+      {cartItems.length === 0 ? (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="empty-cart-state">
+          <ShoppingCart size={80} strokeWidth={1} />
+          <p>Your cart feels a bit light...</p>
+          <button onClick={() => navigate("/")}>Browse Products</button>
+        </motion.div>
+      ) : (
+        <div className="cart-layout">
+          <div className="cart-items-list">
+            <AnimatePresence>
+              {cartItems.map((item) => (
+                <motion.div
+                  layout
+                  key={item.cart_id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="cart-card"
+                >
+                  <div className="item-info">
+                    <div className="item-img-placeholder">🛍️</div>
+                    <div>
+                      <h4>{item.name}</h4>
+                      <p className="price-tag">₹{item.price}</p>
+                    </div>
+                  </div>
+
+                  <div className="item-actions">
+                    <div className="qty-control">
+                      <button onClick={() => updateQty(item.product_id, item.price, -1)} disabled={item.qty <= 1}>
+                        <Minus size={16} />
+                      </button>
+                      <span>{item.qty}</span>
+                      <button onClick={() => updateQty(item.product_id, item.price, 1)}>
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <button className="delete-icon" onClick={() => removeItem(item.product_id)}>
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          <div className="cart-summary-card">
+            <h3>Order Summary</h3>
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{totalPrice}</span>
+            </div>
+            <div className="summary-row">
+              <span>Delivery</span>
+              <span className="free">FREE</span>
+            </div>
+            <hr />
+            <div className="summary-row total">
+              <span>Grand Total</span>
+              <span>₹{totalPrice}</span>
+            </div>
+            <button className="checkout-now" onClick={() => navigate("/checkout")}>
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

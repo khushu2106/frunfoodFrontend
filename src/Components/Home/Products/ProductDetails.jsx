@@ -26,7 +26,7 @@ const ProductDetails = () => {
           setImages(data.images);
           setMainImage(data.images[0]);
         } else if (data.image_url) {
-          
+
           setImages([data.image_url]);
           setMainImage(data.image_url);
         }
@@ -39,35 +39,23 @@ const ProductDetails = () => {
       });
   }, [id]);
 
-  const handleAddToCart = () => {
-    if (!product) return;
+   const handleAddToCart = async () => {
+      if (!product) return;
+      const user_id = 1; 
+      try {
+        await axios.post("http://localhost:5000/api/cart/add", {
+          user_id: user_id,
+          product_id: product.product_id,
+          qty: quantity,
+          price: product.price
+        });
 
-    // Get cart from localStorage
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Check if product already exists in cart
-    const existing = cart.find(item => item.id === product.product_id);
-    if (existing) {
-      cart = cart.map(item =>
-        item.id === product.product_id
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      );
-    } else {
-      cart.push({
-        id: product.product_id,
-        name: product.name,
-        price: product.price,
-        image: `${BASE_URL}/${product.image_url}`,
-        quantity
-      });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-
-    navigate("/cart");
-  };
+        alert("Product added to cart successfully");
+        navigate("/cart");
+      } catch (error) {
+        console.error("Add to Cart Error:", error);
+      }
+    };
 
   if (loading) return <h2>Loading Product...</h2>;
   if (!product) return <h2>Product Not Found!</h2>;
@@ -89,6 +77,16 @@ const ProductDetails = () => {
             </div>
 
             <div className="thumbnail-row">
+              {images.map((img, i) => (
+                <img
+                  key={i}
+                  src={`${BASE_URL}/${img}`}
+                  alt={`thumb-${i}`}
+                  onClick={() => setMainImage(img)}
+                  className={`thumbnail-img ${mainImage === img ? 'active' : ''}`}
+                  style={{ width: '80px', height: '80px', marginRight: '10px', cursor: 'pointer', border: mainImage === img ? '2px solid orange' : '1px solid #ccc' }}
+                />
+              ))}
               {images.map((img, i) => (
                 <img
                   key={i}
