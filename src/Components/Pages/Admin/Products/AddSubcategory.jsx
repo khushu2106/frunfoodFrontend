@@ -29,7 +29,7 @@ const AddSubcategory = () => {
             });
             alert("Subcategory Added!");
             setSubName('');
-            fetchData(); 
+            fetchData();
         } catch (err) { alert("Error adding subcategory"); }
     };
 
@@ -59,7 +59,7 @@ const AddSubcategory = () => {
                     <tbody>
                         {subcategories.map(sub => (
                             <tr key={sub.sub_cat_id}>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{sub.name}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{sub.subcategory_name}</td>
                                 <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{sub.category_name || sub.pro_cat_id}</td>
                             </tr>
                         ))}

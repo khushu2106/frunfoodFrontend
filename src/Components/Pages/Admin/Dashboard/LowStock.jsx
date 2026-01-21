@@ -1,12 +1,16 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const products = [
-  { id: 1, name: "Dog Food", stock: 3 },
-  { id: 2, name: "Cat Toy", stock: 2 },
-  { id: 3, name: "Bird Cage", stock: 5 },
-];
 
 const LowStock = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() =>{
+    axios.get("http://localhost:5000/api/admin/low_stock")
+    .then(res => setProducts(res.data))
+    .catch(err => console.error("Low stock error ",err));
+  },[]);
+
   return (
     <div style={{ flex: 1, background: "#f5f5f5", padding: "20px", borderRadius: "8px" }}>
       <h3>Low Stock Products</h3>
@@ -21,7 +25,7 @@ const LowStock = () => {
         <tbody>
           {products.map(product => (
             <tr key={product.id}>
-              <td style={{ padding: "8px" }}>{product.id}</td>
+              <td style={{ padding: "8px" }}>{product.product_id}</td>
               <td style={{ padding: "8px" }}>{product.name}</td>
               <td style={{ padding: "8px" }}>{product.stock}</td>
             </tr>

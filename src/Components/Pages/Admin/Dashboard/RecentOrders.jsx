@@ -1,12 +1,14 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const orders = [
-  { id: 101, customer: "Rahul", amount: "₹1200", status: "Delivered" },
-  { id: 102, customer: "Anita", amount: "₹750", status: "Pending" },
-  { id: 103, customer: "Suresh", amount: "₹430", status: "Shipped" },
-];
 
 const RecentOrders = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(()=>{
+    axios.get("http://localhost:5000/api/admin/recent-orders").then(res=>setOrders(res.data))
+    .catch(err => console.error("Recent orders error ",err));
+  },[])
   return (
     <div style={{ flex: 1, background: "#f5f5f5", padding: "20px", borderRadius: "8px" }}>
       <h3>Recent Orders</h3>
@@ -22,9 +24,9 @@ const RecentOrders = () => {
         <tbody>
           {orders.map(order => (
             <tr key={order.id}>
-              <td style={{ padding: "8px" }}>{order.id}</td>
+              <td style={{ padding: "8px" }}>{order.sales_id}</td>
               <td style={{ padding: "8px" }}>{order.customer}</td>
-              <td style={{ padding: "8px" }}>{order.amount}</td>
+              <td style={{ padding: "8px" }}>{order.total_amount}</td>
               <td style={{ padding: "8px" }}>{order.status}</td>
             </tr>
           ))}

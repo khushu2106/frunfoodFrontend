@@ -1,127 +1,207 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Swal from 'sweetalert2';
-import "./AddProduct.css";
 
 const AddProduct = () => {
-  const [allSubcategories, setAllSubcategories] = useState([]);
-  // const [brands, setBrands] = useState([]);
+  const BASE_URL = "http://localhost:5000";
+
+  // Category
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+
+  // Subcategory
+  const [subcategories, setSubcategories] = useState([]);
+  const [subcategory, setSubcategory] = useState("");
+  const [newSubcategory, setNewSubcategory] = useState("");
+  const [showNewSubInput, setShowNewSubInput] = useState(false);
+
+  // Brand
+  const [brands, setBrands] = useState([]);
+  const [brand, setBrand] = useState("");
+  const [newBrand, setNewBrand] = useState("");
+  const [showNewBrandInput, setShowNewBrandInput] = useState(false);
+
+  // Product details
+  const [productName, setProductName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [shippingCharge, setShippingCharge] = useState("");
+  const [weight, setWeight] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [images, setImages] = useState([]);
+  const [message, setMessage] = useState("");
 
-  const [product, setProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-    stock: "",
-    shipping_charges: "",
-    weight: "",
-    exp_date: "",
-    sub_cat_id: "",
-  });
-
+  // Fetch categories
   useEffect(() => {
-    axios.get("http://localhost:5000/api/subcategories").then(res => setAllSubcategories(res.data));
-    // axios.get("http://localhost:5000/api/brands").then(res => setBrands(res.data));
+    const fetchCategories = async () => {
+      const res = await axios.get(`${BASE_URL}/api/categories`);
+      setCategories(res.data);
+    };
+    fetchCategories();
   }, []);
 
-  const handleFileChange = (e) => {
-    setImages(e.target.files);
+  // Fetch subcategories
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      const res = await axios.get(`${BASE_URL}/api/subcategories`);
+      setSubcategories(res.data);
+    };
+    fetchSubcategories();
+  }, []);
+
+  // Fetch brands
+  useEffect(() => {
+    const fetchBrands = async () => {
+      const res = await axios.get(`${BASE_URL}/api/brands`);
+      setBrands(res.data);
+    };
+    fetchBrands();
+  }, []);
+
+  // Handlers
+  const handleCategoryChange = (e) => {
+    if (e.target.value === "other") {
+      setShowNewCategoryInput(true);
+      setCategory("");
+    } else {
+      setCategory(e.target.value);
+      setShowNewCategoryInput(false);
+    }
+  };
+
+  const handleSubcategoryChange = (e) => {
+    if (e.target.value === "other") {
+      setShowNewSubInput(true);
+      setSubcategory("");
+    } else {
+      setSubcategory(e.target.value);
+      setShowNewSubInput(false);
+    }
+  };
+
+  const handleBrandChange = (e) => {
+    if (e.target.value === "other") {
+      setShowNewBrandInput(true);
+      setBrand("");
+    } else {
+      setBrand(e.target.value);
+      setShowNewBrandInput(false);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("description", product.description);
-    formData.append("price", product.price);
-    formData.append("stock", product.stock);
-    formData.append("shipping_charges", product.shipping_charges);
-    formData.append("weight", product.weight);
-    formData.append("exp_date", product.exp_date);
-    formData.append("sub_cat_id", product.sub_cat_id);
+
+    formData.append("category_name", showNewCategoryInput ? newCategory : category);
+    formData.append("subcategory_name", showNewSubInput ? newSubcategory : subcategory);
+    formData.append("brand_name", showNewBrandInput ? newBrand : brand);
+
+    formData.append("product_name", productName);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("stock", stock);
+    formData.append("shipping_charge", shippingCharge);
+    formData.append("weight", weight);
+    formData.append("discount_percentage", discount);
+    formData.append("start_date", startDate);
+    formData.append("end_date", endDate);
 
     for (let i = 0; i < images.length; i++) {
       formData.append("images", images[i]);
     }
 
-    // try {
-    //   const res = await axios.post("http://localhost:5000/api/products", formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   });
-
-    //   alert(res.data.message);
-
-    //   setProduct({ name: "", description: "", price: "", stock: "", shipping_charges: "", weight: "", exp_date: "", sub_cat_id: ""});
-    //   setImages([]);
-    //   e.target.reset();
-
-    // } catch (error) {
-    //   console.error("Frontend Error:", error.response?.data);
-    //   alert("Error: " + (error.response?.data?.message || "Check Console"));
-    // }
     try {
-      const res = await axios.post("http://localhost:5000/api/products", formData, {
+      const res = await axios.post(`${BASE_URL}/api/admin/full-product`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      setMessage(res.data.message);
 
-      Swal.fire({
-        title: 'Success!',
-        text: res.data.message || 'Product Added Successfully',
-        icon: 'success',
-        confirmButtonText: 'Cool'
-      });
+      // Reset form
+      setCategory(""); setNewCategory(""); setShowNewCategoryInput(false);
+      setSubcategory(""); setNewSubcategory(""); setShowNewSubInput(false);
+      setBrand(""); setNewBrand(""); setShowNewBrandInput(false);
+      setProductName(""); setDescription(""); setPrice(""); setStock("");
+      setShippingCharge(""); setWeight(""); setDiscount(""); setStartDate(""); setEndDate(""); setImages([]);
 
-      // Form Reset
-      setProduct({ name: "", description: "", price: "", stock: "", shipping_charges: "", weight: "", exp_date: "", sub_cat_id: "" });
-      setImages([]);
-      e.target.reset();
+      // Refresh dropdowns in case new values added
+      const [catRes, subRes, brandRes] = await Promise.all([
+        axios.get(`${BASE_URL}/api/categories`),
+        axios.get(`${BASE_URL}/api/subcategories`),
+        axios.get(`${BASE_URL}/api/brands`)
+      ]);
+      setCategories(catRes.data);
+      setSubcategories(subRes.data);
+      setBrands(brandRes.data);
 
-    } catch (error) {
-      // Error Alert
-      Swal.fire({
-        title: 'Error!',
-        text: error.response?.data?.message || 'Something went wrong',
-        icon: 'error',
-        confirmButtonText: 'Try Again'
-      });
+    } catch (err) {
+      console.log(err);
+      setMessage("Error uploading product");
     }
   };
 
   return (
-    <div className="add-product-container" style={{ maxWidth: "600px", margin: "20px auto", padding: "20px", border: "1px solid #ccc" }}>
-      <h2>Add New Product</h2>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+      <h2>Add Full Product</h2>
+      {message && <p>{message}</p>}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
 
-        <input type="text" placeholder="Name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} required />
-
-        <textarea placeholder="Description" value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} />
-
-        <div style={{ display: "flex", gap: "10px" }}>
-          <input type="number" placeholder="Price" value={product.price} onChange={(e) => setProduct({ ...product, price: e.target.value })} required style={{ flex: 1 }} />
-          <input type="number" placeholder="Stock" value={product.stock} onChange={(e) => setProduct({ ...product, stock: e.target.value })} required style={{ flex: 1 }} />
-        </div>
-
-        <input type="number" placeholder="Shipping Charge" value={product.shipping_charges} onChange={(e) => setProduct({ ...product, shipping_charges: e.target.value })} />
-
-        <input type="number" placeholder="Weight (kg)" value={product.weight} onChange={(e) => setProduct({ ...product, weight: e.target.value })} />
-
-        <label>Expiry Date:</label>
-        <input type="date" value={product.exp_date} onChange={(e) => setProduct({ ...product, exp_date: e.target.value })} />
-
-        <select onChange={(e) => setProduct({ ...product, sub_cat_id: e.target.value })} required value={product.sub_cat_id}>
-          <option value="">Select Subcategory</option>
-          {allSubcategories.map(sub => (
-            <option key={sub.sub_cat_id} value={sub.sub_cat_id}>{sub.name}</option>
+        {/* Category */}
+        <label>Category:</label>
+        <select value={category} onChange={handleCategoryChange} required>
+          <option value="">Select Category</option>
+          {categories.map(cat => (
+            <option key={cat.pro_cat_id} value={cat.pro_cat_id}>{cat.category_name}</option>
           ))}
+          <option value="other">Other</option>
         </select>
+        {showNewCategoryInput && (
+          <input type="text" placeholder="Enter New Category" value={newCategory} onChange={e => setNewCategory(e.target.value)} required />
+        )}
 
-        <label>Product Images (Max 5):</label>
-        {/* <input type="file" multiple accept="image/*" onChange={handleFileChange} required /> */}
+        {/* Subcategory */}
+        <label>Subcategory:</label>
+        <select value={subcategory} onChange={handleSubcategoryChange} required>
+          <option value="">Select Subcategory</option>
+          {subcategories.map(sub => (
+            <option key={sub.sub_cat_id} value={sub.sub_cat_id}>{sub.subcategory_name}</option>
+          ))}
+          <option value="other">Other</option>
+        </select>
+        {showNewSubInput && (
+          <input type="text" placeholder="Enter New Subcategory" value={newSubcategory} onChange={e => setNewSubcategory(e.target.value)} required />
+        )}
 
-        <button type="submit" style={{ padding: "12px", backgroundColor: "green", color: "white", border: "none", cursor: "pointer", fontSize: "16px" }}>
-          Publish Product
-        </button>
+        {/* Brand */}
+        <label>Brand:</label>
+        <select value={brand} onChange={handleBrandChange} required>
+          <option value="">Select Brand</option>
+          {brands.map(b => (
+            <option key={b.brand_id} value={b.brand_id}>{b.brand_name}</option>
+          ))}
+          <option value="other">Other</option>
+        </select>
+        {showNewBrandInput && (
+          <input type="text" placeholder="Enter New Brand" value={newBrand} onChange={e => setNewBrand(e.target.value)} required />
+        )}
+
+        {/* Product Details */}
+        <input placeholder="Product Name" value={productName} onChange={e => setProductName(e.target.value)} required />
+        <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} required />
+        <input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} required />
+        <input type="number" placeholder="Stock" value={stock} onChange={e => setStock(e.target.value)} required />
+        <input type="number" placeholder="Shipping Charge" value={shippingCharge} onChange={e => setShippingCharge(e.target.value)} required />
+        <input type="number" placeholder="Weight" value={weight} onChange={e => setWeight(e.target.value)} required />
+        <input type="number" placeholder="Discount %" value={discount} onChange={e => setDiscount(e.target.value)} required />
+        <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
+        <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required />
+        <input type="file" multiple onChange={e => setImages(e.target.files)} required />
+
+        <button type="submit">Add Product</button>
       </form>
     </div>
   );
