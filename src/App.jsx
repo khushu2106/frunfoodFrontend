@@ -10,6 +10,7 @@ import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
 import Balance from './Components/Pages/Admin/Balance';
 import Invoice from './Components/Pages/Admin/Invoice';
 import Users from './Components/Pages/Admin/Users';
+import Orders from './Components/Pages/Admin/Orders';
 import Cards from './Components/Pages/Admin/Cards';
 import Transaction from './Components/Pages/Admin/Transaction';
 import Profile from './Components/Pages/Admin/Profile';
@@ -81,7 +82,7 @@ function LayoutWrapper() {
         <Route index element={<Dashboard />} /> 
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
-          <Route path="invoice" element={<Invoice />} />
+          <Route path="invoice/:id" element={<Invoice />} />
           <Route path="cards" element={<Cards />} />
           <Route path="transaction" element={<Transaction />} />
           <Route path="profile" element={<Profile />} />
@@ -92,6 +93,7 @@ function LayoutWrapper() {
           <Route path="subcategory" element={<AddSubcategory />} />
           <Route path="brand" element={<AddBrand />} />
           <Route path="users" element={<Users />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="users/:id" element={<UserDetails />} />
         </Route>
 

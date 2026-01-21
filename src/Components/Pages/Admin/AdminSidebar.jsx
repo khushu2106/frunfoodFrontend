@@ -10,6 +10,7 @@ const AdminSidebar = () => {
     { name: "Dashboard", path: "/admin/dashboard" },
     { name: "Balance", path: "/admin/balance" },
     { name: "Users", path: "/admin/users" },
+    { name: "Orders", path: "/admin/orders" },
     { name: "Invoice", path: "/admin/invoice" },
     { name: "Cards", path: "/admin/cards" },
     { name: "Transaction", path: "/admin/transaction" },
