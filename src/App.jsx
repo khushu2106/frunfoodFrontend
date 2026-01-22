@@ -39,11 +39,12 @@ import Header from './Components/Common/Header/Header';
 import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
+import AdminLogin from './Components/Pages/Admin/AdminLogin';
 
 function LayoutWrapper() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const authRoutes = ['/login', '/register', '/forgot-password', '/logout', '/verify-otp', '/reset-password'];
+  const authRoutes = ['/login', '/register', '/forgot-password', '/logout', '/verify-otp', '/reset-password', '/checkout'];
 
   const isAuthRoute = authRoutes.includes(location.pathname);
   const showHeaderFooter = !isAdminRoute && !isAuthRoute;
@@ -67,6 +68,7 @@ function LayoutWrapper() {
         <Route path="/register" element={<Registration />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
 
         {/* User */}
         <Route path="/cart" element={<Cart />} />

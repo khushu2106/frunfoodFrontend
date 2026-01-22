@@ -9,7 +9,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [isLoading , setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -35,15 +35,18 @@ const Login = () => {
         localStorage.setItem('token', data.token);
 
         console.log("Login successful! ");
+        alert("Login successful!");
 
         navigate("/");
       }
       else {
         setError(data.error || "Invalid login credentials");
+        alert("Invalid email and password");
       }
     } catch (err) {
-      setError("Server error. Please try agin later. ")
-    } finally{
+      setError("Server error. Please try again later. ")
+      alert("Server error")
+    } finally {
       setIsLoading(false);
     }
   };
@@ -61,7 +64,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
-              value={formData.email} 
+              value={formData.email}
               onChange={handleChange}
               required
             />
@@ -73,7 +76,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              value={formData.password} 
+              value={formData.password}
               onChange={handleChange}
               required
             />
@@ -86,7 +89,7 @@ const Login = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={isLoading}>
-            {isLoading ? "Logging in...":"Login"}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 

@@ -39,23 +39,28 @@ const ProductDetails = () => {
       });
   }, [id]);
 
-   const handleAddToCart = async () => {
-      if (!product) return;
-      const user_id = 1; 
-      try {
-        await axios.post("http://localhost:5000/api/cart/add", {
-          user_id: user_id,
-          product_id: product.product_id,
-          qty: quantity,
-          price: product.price
-        });
+  const handleAddToCart = async () => {
+    if (!product) return;
+    const user_id = 1;
 
-        alert("Product added to cart successfully");
+    try {
+      const res = await axios.post("http://localhost:5000/api/cart/add", {
+        user_id: user_id,
+        product_id: product.product_id,
+        qty: quantity,
+        price: product.price
+      });
+
+      if (res.status === 200) {
         navigate("/cart");
-      } catch (error) {
-        console.error("Add to Cart Error:", error);
       }
-    };
+    } catch (error) {
+      console.error("Add to Cart Error:", error);
+    }
+  };
+
+
+  console.log("Product:", product);
 
   if (loading) return <h2>Loading Product...</h2>;
   if (!product) return <h2>Product Not Found!</h2>;

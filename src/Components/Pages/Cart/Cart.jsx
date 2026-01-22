@@ -124,7 +124,10 @@ const Cart = () => {
               <span>Grand Total</span>
               <span>₹{totalPrice}</span>
             </div>
-            <button className="checkout-now" onClick={() => navigate("/checkout")}>
+            <button
+              className="checkout-now"
+              onClick={() => navigate("/checkout", { state: { totalAmount: totalPrice } })}
+            >
               Proceed to Checkout
             </button>
           </div>

@@ -2,16 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion"; 
 import { ShoppingCart, Heart, Eye } from "lucide-react"; 
+import { useLocation } from 'react-router-dom';
 import './ProductList.css';
+import axios from 'axios';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const search = params.get("search");
 
   const limit = 8;
   const BASE_URL = "http://localhost:5000";
+
+  useEffect(() =>{
+    const fetchProducts = async () =>{
+      try{
+        if (search) {
+          url = `${BASE_URL}/api/search?q=${search}`;
+        }
+        const response = await axios.get(url);
+        setProducts(response.data);
+      }
+      catch (error){
+        console.error("Error fetching data : ",error);
+      }
+    };
+    fetchProducts();
+  },[search]);
+
+  console.log(search)
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/products`)

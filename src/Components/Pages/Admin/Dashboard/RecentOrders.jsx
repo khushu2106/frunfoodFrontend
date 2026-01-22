@@ -27,7 +27,7 @@ const RecentOrders = () => {
               <td style={{ padding: "8px" }}>{order.sales_id}</td>
               <td style={{ padding: "8px" }}>{order.customer}</td>
               <td style={{ padding: "8px" }}>{order.total_amount}</td>
-              <td style={{ padding: "8px" }}>{order.status}</td>
+              <td style={{ padding: "8px" }}>{order.payment_status}</td>
             </tr>
           ))}
         </tbody>

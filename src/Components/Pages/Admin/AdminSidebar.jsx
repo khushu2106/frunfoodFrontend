@@ -12,9 +12,9 @@ const AdminSidebar = () => {
     { name: "Users", path: "/admin/users" },
     { name: "Orders", path: "/admin/orders" },
     { name: "Invoice", path: "/admin/invoice" },
-    { name: "Cards", path: "/admin/cards" },
-    { name: "Transaction", path: "/admin/transaction" },
-    { name: "Chat", path: "/admin/chat" },
+    { name: "Feedback", path: "/admin/cards" },
+    { name: "Purchase", path: "/admin/transaction" },
+    { name: "FAQ", path: "/admin/chat" },
     { name: "Profile", path: "/admin/profile" },
     { name: "Settings", path: "/admin/settings" }
   ];

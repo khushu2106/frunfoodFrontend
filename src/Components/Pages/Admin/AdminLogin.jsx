@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 
-const Login = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -98,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
