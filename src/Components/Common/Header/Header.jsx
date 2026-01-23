@@ -5,77 +5,126 @@ import {
   FaShoppingCart,
   FaSearch,
   FaUser,
-  FaBars,
-  FaTimes
+  FaSignInAlt
 } from "react-icons/fa";
 import "./Header.css";
 
 const Header = () => {
   const [openProfile, setOpenProfile] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showProducts, setShowProducts] = useState(false);
 
-  // 🔐 Change true/false to test
-  const isLoggedIn = false; 
+  // 🔐 Auth status (later backend / localStorage se aayega)
+  const isLoggedIn = false; // false = visitor, true = logged user
+
+  // 📦 Product categories
+  const categories = [
+    { id: 1, name: "All", slug: "all" },
+    { id: 2, name: "Cat", slug: "cat" },
+    { id: 3, name: "Dog", slug: "dog" },
+    { id: 4, name: "Kitten", slug: "kitten" },
+    { id: 5, name: "Puppy", slug: "puppy" },
+    { id: 6, name: "Toys", slug: "toys" },
+    { id: 7, name: "Grooming & Accessories", slug: "grooming-accessories" }
+  ];
 
   return (
     <header className="header">
+
       {/* LOGO */}
       <div className="logo">
-        <Link to="/">🐶 Pet Food Shop</Link>
-      </div>
-
-      {/* MOBILE MENU ICON */}
-      <div className="menu-icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-        {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+        🐶 Pet Food Shop
       </div>
 
       {/* NAV LINKS */}
-      <nav className={`nav-links ${isMobileMenuOpen ? "active" : ""}`}>
-        <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-        <Link to="/products" onClick={() => setIsMobileMenuOpen(false)}>Products</Link>
-        <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
-        <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
-      </nav>
+      <nav className="nav-links">
+        <Link to="/">Home</Link>
 
-      {/* ICONS */}
-      <div className="header-icons">
-
-        <div className="icon-tooltip">
-          <Link to="/wishlist"><FaHeart /></Link>
-          <span className="tooltip-text">Wishlist</span>
-        </div>
-
-        <div className="icon-tooltip">
-          <Link to="/cart"><FaShoppingCart /></Link>
-          <span className="tooltip-text">Cart</span>
-        </div>
-
-        {/* PROFILE */}
-        <div className="profile-dropdown">
+        {/* PRODUCTS CLICK DROPDOWN */}
+        <div className="dropdown">
           <button
-            className="profile-btn"
-            onClick={() => setOpenProfile(!openProfile)}
+            className="dropdown-btn"
+            onClick={() => setShowProducts(!showProducts)}
           >
-            <FaUser />
+            Products ▾
           </button>
-          <span className="tooltip-text profile-tip">Profile</span>
 
-          {openProfile && (
-            <div className="dropdown-menu">
-              {!isLoggedIn ? (
-                <>
-                  <Link to="/register" onClick={() => setOpenProfile(false)}>Register</Link>
-                  <Link to="/login" onClick={() => setOpenProfile(false)}>Login</Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/profile" onClick={() => setOpenProfile(false)}>My Profile</Link>
-                  <Link to="/logout" onClick={() => setOpenProfile(false)}>Logout</Link>
-                </>
-              )}
+          {showProducts && (
+            <div className="products-dropdown-menu">
+              {categories.map(cat => (
+                <Link
+                  key={cat.id}
+                  to={`/products/${cat.slug}`}
+                  onClick={() => setShowProducts(false)}
+                >
+                  {cat.name}
+                </Link>
+              ))}
             </div>
           )}
         </div>
+
+        <Link to="/about">About Us</Link>
+        <Link to="/contact">Contact Us</Link>
+      </nav>
+
+      {/* RIGHT ICONS */}
+      <div className="header-icons">
+
+        {/* WISHLIST */}
+        <div className="icon-tooltip">
+          <Link to="/wishlist">
+            <FaHeart />
+          </Link>
+          <span className="tooltip-text">Wishlist</span>
+        </div>
+
+        {/* CART */}
+        <div className="icon-tooltip">
+          <Link to="/cart">
+            <FaShoppingCart />
+          </Link>
+          <span className="tooltip-text">Cart</span>
+        </div>
+
+        {/* SEARCH */}
+        <div className="icon-tooltip">
+          <Link to="/search">
+            <FaSearch />
+          </Link>
+          <span className="tooltip-text">Search</span>
+        </div>
+
+        {/* 🔐 LOGIN / PROFILE */}
+        {!isLoggedIn ? (
+          /* VISITOR */
+          <div className="icon-tooltip">
+            <Link to="/login">
+              <FaSignInAlt />
+            </Link>
+            <span className="tooltip-text">Login</span>
+          </div>
+        ) : (
+          /* LOGGED USER */
+          <div className="profile-dropdown">
+            <button
+              className="profile-btn"
+              onClick={() => setOpenProfile(!openProfile)}
+            >
+              <FaUser />
+            </button>
+
+            <span className="tooltip-text profile-tip">Profile</span>
+
+            {openProfile && (
+              <div className="profile-menu">
+                <Link to="/profile">My Profile</Link>
+                <Link to="/myorders">My Orders</Link>
+                <Link to="/logout">Logout</Link>
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
     </header>
   );

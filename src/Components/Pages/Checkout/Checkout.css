@@ -79,3 +79,93 @@
 .payment-option input[type="radio"] {
   margin: 0;
 }
+
+.payment-failed {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff3f3;
+}
+
+.failed-card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.failed-card h1 {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.retry {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.home {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.retry:hover {
+  background: #c82333;
+}
+
+.home:hover {
+  background: #5a6268;
+}
+
+.payment-success {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f6f8;
+}
+
+.success-card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.success-card h1 {
+  color: green;
+  margin-bottom: 10px;
+}
+
+.success-card button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border: none;
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.success-card button:hover {
+  background: #218838;
+}

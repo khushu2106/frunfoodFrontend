@@ -16,6 +16,7 @@ import Transaction from './Components/Pages/Admin/Transaction';
 import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
+import Chat from './Components/Pages/Admin/Chat';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
@@ -40,6 +41,7 @@ import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
 import AdminLogin from './Components/Pages/Admin/AdminLogin';
+import AddPurchase from './Components/Pages/Admin/AddPurchase';
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -96,6 +98,8 @@ function LayoutWrapper() {
           <Route path="brand" element={<AddBrand />} />
           <Route path="users" element={<Users />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="add-purchase" element={<AddPurchase />} />
+          <Route path="Chat" element={<Chat />} />
           <Route path="users/:id" element={<UserDetails />} />
         </Route>
 

@@ -54,3 +54,38 @@
 .complaint-form button:hover {
   background-color: #e55f00;
 }
+
+.thankyou-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.thankyou-container h1 {
+  color: #28a745;
+  font-size: 36px;
+}
+
+.thankyou-container p {
+  font-size: 18px;
+  margin: 15px 0 30px;
+}
+
+.thankyou-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 10px 22px;
+  background: #ff6f61;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid #ff6f61;
+  color: #ff6f61;
+}

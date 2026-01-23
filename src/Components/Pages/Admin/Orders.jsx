@@ -6,7 +6,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/orders");
+      const response = await axios.get("http://localhost:5000/api/sales");
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -45,7 +45,7 @@ const Orders = () => {
           {orders.map(order => (
             <tr key={order.sale_id}>
               <td>{order.sales_id}</td>
-              <td>{order.customer}</td>
+              <td>{order.fname}</td>
               <td>{new Date(order.s_date).toLocaleDateString()}</td>
               <td>₹{order.total_amount}</td>
               <td>{order.Order_status}</td>
