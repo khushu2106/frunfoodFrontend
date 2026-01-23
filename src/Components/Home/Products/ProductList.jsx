@@ -1,62 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion"; 
-import { ShoppingCart, Heart, Eye } from "lucide-react"; 
-import { useLocation } from 'react-router-dom';
-import './ProductList.css';
+import { motion } from "framer-motion";
+import { ShoppingCart, Heart, Eye } from "lucide-react";
 import axios from 'axios';
+import './ProductList.css';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);  // all products
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const search = params.get("search");
 
-  const limit = 8;
   const BASE_URL = "http://localhost:5000";
 
-  useEffect(() =>{
-    const fetchProducts = async () =>{
-      try{
-        if (search) {
-          url = `${BASE_URL}/api/search?q=${search}`;
-        }
-        const response = await axios.get(url);
-        setProducts(response.data);
-      }
-      catch (error){
-        console.error("Error fetching data : ",error);
+  // Pagination settings
+  const productsPerPage = 12; // ek page me 12 products (2 rows of 6)
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${BASE_URL}/api/products`);
+        setProducts(response.data || []); // full list of products
+      } catch (error) {
+        console.error("Error fetching products: ", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchProducts();
-  },[search]);
-
-  console.log(search)
-
-  useEffect(() => {
-    fetch(`${BASE_URL}/api/products`)
-      .then(res => res.json())
-      .then(data => {
-        setProducts(data.products);
-        setTotalPages(data.totalPages)
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [page]);
+  }, []);
 
   if (loading) return <div className="loading-text">Fetching amazing products...</div>;
+
+  // Pagination logic
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const startIndex = (page - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = products.slice(startIndex, endIndex);
 
   return (
     <section className="product-section">
       <div className="product-header">
-        <motion.h2 
-          initial={{ opacity: 0, y: -20 }} 
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="section-title"
         >
@@ -66,13 +54,17 @@ const ProductList = () => {
       </div>
 
       <div className="product-grid">
-        {products.map((product, index) => {
+        {currentProducts.length === 0 && (
+          <p className="no-products">No products found.</p>
+        )}
+
+        {currentProducts.map((product, index) => {
           const imageUrl = product.image
             ? product.image.startsWith("http") ? product.image : `${BASE_URL}/${product.image}`
             : "/no-image.png";
 
           return (
-            <motion.div 
+            <motion.div
               key={product.product_id}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -109,18 +101,18 @@ const ProductList = () => {
         })}
       </div>
 
-      {/* Pagination UI */}
+      {/* Pagination */}
       <div className="pagination">
-        <button 
-          disabled={page === 1} 
+        <button
+          disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
           Prev
         </button>
 
         {[...Array(totalPages)].map((_, i) => (
-          <button 
-            key={i} 
+          <button
+            key={i}
             className={page === i + 1 ? "active" : ""}
             onClick={() => setPage(i + 1)}
           >
@@ -128,8 +120,8 @@ const ProductList = () => {
           </button>
         ))}
 
-        <button 
-          disabled={page === totalPages} 
+        <button
+          disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
           Next
@@ -138,6 +130,5 @@ const ProductList = () => {
     </section>
   );
 };
-
 
 export default ProductList;

@@ -3,7 +3,7 @@ import React from "react";
 export const Transaction = () => {
     return (
         <>
-            <div>Admin Balance</div>
+            <div>Total Purchases</div>
         </>
     )
 }

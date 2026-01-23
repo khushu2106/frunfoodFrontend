@@ -34,10 +34,15 @@ const AddCategory = () => {
         }
     };
 
+    const handleEditClick = (cat) => {
+        setEditingId(cat.pro_cat_id);
+        setEditingName(cat.category_name);
+    };
+
     const handleUpdateCategory = async () => {
         try {
-            await axios.put('http://localhost:5000/api/categories/${editingID}', {
-                name: editingName
+            await axios.put(`http://localhost:5000/api/categories/${editingId}`, {
+                name: editingName 
             });
             alert("Category updated ! ");
             setEditingId(null)
@@ -58,8 +63,8 @@ const AddCategory = () => {
             fetchCategories()
         }
         catch (err) {
-            if(err.response?.data?.code === "ER_ROW_IS_REFERENCED_2")
-              alert("This category has subcategories. Please delete them first.")
+            if (err.response?.data?.code === "ER_ROW_IS_REFERENCED_2")
+                alert("This category has subcategories. Please delete them first.")
         }
     }
 

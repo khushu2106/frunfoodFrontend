@@ -15,6 +15,7 @@ const AddProduct = () => {
   const [subcategory, setSubcategory] = useState("");
   const [newSubcategory, setNewSubcategory] = useState("");
   const [showNewSubInput, setShowNewSubInput] = useState(false);
+  const [filteredSubcategories, setFilteredSubcategories] = useState([]);
 
   // Brand
   const [brands, setBrands] = useState([]);
@@ -63,14 +64,21 @@ const AddProduct = () => {
   }, []);
 
   // Handlers
-  const handleCategoryChange = (e) => {
-    if (e.target.value === "other") {
-      setShowNewCategoryInput(true);
-      setCategory("");
-    } else {
-      setCategory(e.target.value);
-      setShowNewCategoryInput(false);
-    }
+  const handleCategoryChange =async (e) => {
+      const value = e.target.value;
+
+      if(value === 'other'){
+        setShowNewCategoryInput(true);
+        setCategory("");
+        setFilteredSubcategories([]);
+      }
+      else{
+        setCategory(value);
+        setShowNewCategoryInput(false);
+      }
+
+      const res = await axios.get(`http://localhost:5000/api/subcategories/by-category/${value}`);
+      setFilteredSubcategories(res.data)
   };
 
   const handleSubcategoryChange = (e) => {
@@ -97,9 +105,27 @@ const AddProduct = () => {
     e.preventDefault();
     const formData = new FormData();
 
-    formData.append("category_name", showNewCategoryInput ? newCategory : category);
-    formData.append("subcategory_name", showNewSubInput ? newSubcategory : subcategory);
-    formData.append("brand_name", showNewBrandInput ? newBrand : brand);
+    // formData.append("category_name", showNewCategoryInput ? newCategory : category);
+    // formData.append("subcategory_name", showNewSubInput ? newSubcategory : subcategory);
+    if (showNewCategoryInput) {
+      formData.append("new_category_name", newCategory);
+    } else {
+      formData.append("category_id", category);
+    }
+
+    if (showNewSubInput) {
+      formData.append("new_subcategory_name", newSubcategory);
+    } else {
+      formData.append("subcategory_id", subcategory);
+    }
+
+    if (showNewBrandInput) {
+      formData.append("new_brand_name", newBrand);
+    } else {
+      formData.append("brand_id", brand);
+    }
+
+    // formData.append("brand_name", showNewBrandInput ? newBrand : brand);
 
     formData.append("product_name", productName);
     formData.append("description", description);
@@ -167,7 +193,7 @@ const AddProduct = () => {
         <label>Subcategory:</label>
         <select value={subcategory} onChange={handleSubcategoryChange} required>
           <option value="">Select Subcategory</option>
-          {subcategories.map(sub => (
+          {filteredSubcategories.map(sub => (
             <option key={sub.sub_cat_id} value={sub.sub_cat_id}>{sub.subcategory_name}</option>
           ))}
           <option value="other">Other</option>

@@ -2,72 +2,121 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AddSubcategory = () => {
-    const [subName, setSubName] = useState('');
-    const [selectedCatId, setSelectedCatId] = useState('');
-    const [categories, setCategories] = useState([]);
-    const [subcategories, setSubcategories] = useState([]);
+  const [subName, setSubName] = useState('');
+  const [selectedCatId, setSelectedCatId] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [editId, setEditId] = useState(null);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    const fetchData = async () => {
-        const [catRes, subRes] = await Promise.all([
-            axios.get('http://localhost:5000/api/categories'),
-            axios.get('http://localhost:5000/api/subcategories')
-        ]);
-        setCategories(catRes.data);
-        setSubcategories(subRes.data);
-    };
+  const fetchData = async () => {
+    const [catRes, subRes] = await Promise.all([
+      axios.get('http://localhost:5000/api/categories'),
+      axios.get('http://localhost:5000/api/subcategories')
+    ]);
+    setCategories(catRes.data);
+    setSubcategories(subRes.data);
+  };
 
-    const handleAddSub = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post('http://localhost:5000/api/subcategories', {
-                name: subName,
-                pro_cat_id: selectedCatId
-            });
-            alert("Subcategory Added!");
-            setSubName('');
-            fetchData();
-        } catch (err) { alert("Error adding subcategory"); }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editId) {
+        await axios.put(`http://localhost:5000/api/subcategories/${editId}`, {
+          name: subName,
+          category_id: selectedCatId
+        });
+        alert("Subcategory Updated!");
+      } else {
+        await axios.post('http://localhost:5000/api/subcategories', {
+          name: subName,
+          pro_cat_id: selectedCatId
+        });
+        alert("Subcategory Added!");
+      }
+      setSubName('');
+      setSelectedCatId('');
+      setEditId(null);
+      fetchData();
+    } catch (err) {
+      alert("Error saving subcategory");
+    }
+  };
 
-    return (
-        <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '20px' }}>
-            <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-                <h3>Add New Subcategory</h3>
-                <form onSubmit={handleAddSub} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <select value={selectedCatId} onChange={(e) => setSelectedCatId(e.target.value)} required style={{ padding: '10px' }}>
-                        <option value="">Select Main Category</option>
-                        {categories.map(cat => <option key={cat.pro_cat_id} value={cat.pro_cat_id}>{cat.category_name}</option>)}
-                    </select>
-                    <input type="text" placeholder="Subcategory Name" value={subName} onChange={(e) => setSubName(e.target.value)} required style={{ padding: '10px' }} />
-                    <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none' }}>Save</button>
-                </form>
-            </section>
+  const handleEdit = (sub) => {
+    setEditId(sub.sub_cat_id);
+    setSubName(sub.subcategory_name);
+    setSelectedCatId(sub.pro_cat_id);
+  };
 
-            <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-                <h3>Existing Subcategories</h3>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ background: '#f4f4f4' }}>
-                            <th style={{ padding: '10px' }}>Name</th>
-                            <th style={{ padding: '10px' }}>Main Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {subcategories.map(sub => (
-                            <tr key={sub.sub_cat_id}>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{sub.subcategory_name}</td>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{sub.category_name || sub.pro_cat_id}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    );
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this subcategory?")) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/subcategories/${id}`);
+      alert("Subcategory Deleted!");
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.message || "Delete failed");
+    }
+  };
+
+  return (
+    <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '20px' }}>
+      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
+        <h3>{editId ? "Edit Subcategory" : "Add New Subcategory"}</h3>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <select value={selectedCatId} onChange={(e) => setSelectedCatId(e.target.value)} required>
+            <option value="">Select Main Category</option>
+            {categories.map(cat => (
+              <option key={cat.pro_cat_id} value={cat.pro_cat_id}>
+                {cat.category_name}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            placeholder="Subcategory Name"
+            value={subName}
+            onChange={(e) => setSubName(e.target.value)}
+            required
+          />
+
+          <button type="submit" style={{ background: '#28a745', color: '#fff', padding: '8px', border: 'none' }}>
+            {editId ? "Update" : "Save"}
+          </button>
+        </form>
+      </section>
+
+      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
+        <h3>Existing Subcategories</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subcategories.map(sub => (
+              <tr key={sub.sub_cat_id}>
+                <td>{sub.subcategory_name}</td>
+                <td>{sub.category_name}</td>
+                <td>
+                  <button onClick={() => handleEdit(sub)} style={{ marginRight: '5px' }}>Edit</button>
+                  <button onClick={() => handleDelete(sub.sub_cat_id)} style={{ color: 'red' }}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    </div>
+  );
 };
 
 export default AddSubcategory;
