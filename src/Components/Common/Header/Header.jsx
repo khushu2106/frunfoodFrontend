@@ -38,9 +38,10 @@ const Header = () => {
       {/* NAV LINKS */}
       <nav className="nav-links">
         <Link to="/">Home</Link>
+        <Link to="/products">products</Link>
 
         {/* PRODUCTS CLICK DROPDOWN */}
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <button
             className="dropdown-btn"
             onClick={() => setShowProducts(!showProducts)}
@@ -61,7 +62,7 @@ const Header = () => {
               ))}
             </div>
           )}
-        </div>
+        </div> */}
 
         <Link to="/about">About Us</Link>
         <Link to="/contact">Contact Us</Link>
@@ -87,12 +88,12 @@ const Header = () => {
         </div>
 
         {/* SEARCH */}
-        <div className="icon-tooltip">
+        {/* <div className="icon-tooltip">
           <Link to="/search">
             <FaSearch />
           </Link>
           <span className="tooltip-text">Search</span>
-        </div>
+        </div> */}
 
         {/* 🔐 LOGIN / PROFILE */}
         {!isLoggedIn ? (

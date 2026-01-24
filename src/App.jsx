@@ -57,7 +57,7 @@ function LayoutWrapper() {
       <Routes>
         {/* Home */}
         <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /></>} />
-        <Route path="/products" element={<ProductList />} />
+        <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/productSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />

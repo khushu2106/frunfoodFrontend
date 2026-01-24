@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Offers.css";
 
 const Offers = () => {
-
-  // 🔹 Offers data state
-  // Future me yaha API se data aayega
   const [offers, setOffers] = useState([]);
+  const navigate = useNavigate();
 
-  // 🔹 Page load hone par API call
   useEffect(() => {
-
-    // ===============================
-    // 🔥 API CALL HERE
-    // Example:
-    // fetch("https://api.yoursite.com/offers")
-    //   .then(res => res.json())
-    //   .then(data => setOffers(data));
-    // ===============================
-
-    // Abhi ke liye dummy data
     setOffers([
       {
         id: 1,
@@ -45,60 +33,42 @@ const Offers = () => {
     ]);
   }, []);
 
+  const goToProducts = () => {
+    navigate("/products"); // ProductList.jsx ka route
+  };
+
   return (
     <div className="offers-page">
-
       <div className="offer-grid">
 
-        {/* ================= BIG OFFER CARD ================= */}
-        {offers
-          .filter(item => item.type === "big")
-          .map(item => (
-            <div key={item.id} className="offer-card big yellow">
+        {offers.filter(i => i.type === "big").map(item => (
+          <div key={item.id} className="offer-card big yellow">
+            <span className="badge">{item.discount}</span>
+            <h2>{item.title}</h2>
+            <p>{item.desc}</p>
 
-              {/* 🔹 Discount text (API se aayega) */}
-              <span className="badge">{item.discount}</span>
+            <button onClick={goToProducts}>Shop Now</button>
 
-              {/* 🔹 Offer title */}
-              <h2>{item.title}</h2>
+            <img src={item.image} alt="offer" className="offer-img left" />
+          </div>
+        ))}
 
-              {/* 🔹 Offer description */}
-              <p>{item.desc}</p>
+        <div className="right-offers">
+          {offers.filter(i => i.type === "small").map(item => (
+            <div key={item.id} className="offer-card light">
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
 
-              {/* 🔹 Button click par product listing open hogi */}
-              {/* API se category ya offer id pass kar sakte ho */}
-              <button>Shop Now</button>
-
-              {/* 🔹 Offer image */}
-              <img src={item.image} alt="offer" className="offer-img left" />
+                <button className="dark-btn" onClick={goToProducts}>
+                  Shop Now
+                </button>
+              </div>
+              <img src={item.image} alt="offer" />
             </div>
           ))}
-
-        {/* ================= RIGHT SIDE OFFERS ================= */}
-        <div className="right-offers">
-
-          {offers
-            .filter(item => item.type === "small")
-            .map(item => (
-              <div key={item.id} className="offer-card light">
-
-                <div>
-                  {/* 🔹 Title from API */}
-                  <h3>{item.title}</h3>
-
-                  {/* 🔹 Description from API */}
-                  <p>{item.desc}</p>
-
-                  {/* 🔹 OnClick -> redirect to offers/products */}
-                  <button className="dark-btn">Shop Now</button>
-                </div>
-
-                {/* 🔹 Image from API */}
-                <img src={item.image} alt="offer" />
-              </div>
-            ))}
-
         </div>
+
       </div>
     </div>
   );

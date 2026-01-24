@@ -18,7 +18,7 @@ const RecentOrders = () => {
             <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>Order ID</th>
             <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>Customer</th>
             <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>Amount</th>
-            <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>Status</th>
+            <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>Order Status</th>
           </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@ const RecentOrders = () => {
               <td style={{ padding: "8px" }}>{order.sales_id}</td>
               <td style={{ padding: "8px" }}>{order.customer}</td>
               <td style={{ padding: "8px" }}>{order.total_amount}</td>
-              <td style={{ padding: "8px" }}>{order.payment_status}</td>
+              <td style={{ padding: "8px" }}>{order.Order_status}</td>
             </tr>
           ))}
         </tbody>

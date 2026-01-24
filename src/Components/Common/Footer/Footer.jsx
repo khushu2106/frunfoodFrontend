@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
 
         {/* Categories */}
-        <div className="footer-section">
+        {/* <div className="footer-section">
           <h3>Pet Categories</h3>
           <ul>
             <li><a href="/dog-food">Dog Food</a></li>
@@ -37,7 +37,7 @@ const Footer = () => {
             <li><a href="/toys">Toys</a></li>
             <li><a href="/grooming-accessories">Grooming-Accessories</a></li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Contact Info */}
         <div className="footer-section">

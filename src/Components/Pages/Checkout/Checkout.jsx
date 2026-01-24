@@ -44,7 +44,8 @@ function Checkout() {
 
     try {
       const res = await axios.post("http://localhost:5000/api/sales", orderData);
-      alert("Order Placed! Order ID: " + res.data.sales_id);
+      console.log(res.data.sales_id)
+      alert("Order Placed Succesfull and email send ");
       navigate("/")
     } catch (err) {
       console.error(err);
