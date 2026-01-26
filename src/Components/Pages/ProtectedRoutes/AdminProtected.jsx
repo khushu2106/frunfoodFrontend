@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 const AdminProtected = ({ children }) => {
-  const adminToken = localStorage.getItem("adminToken"); // ya jo bhi aap token rakh rahe ho
+  const adminToken = localStorage.getItem("adminToken"); 
 
   if (!adminToken) {
     return <Navigate to="/adminlogin" replace />;

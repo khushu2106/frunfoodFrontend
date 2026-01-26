@@ -107,7 +107,8 @@ const ProductDetails = () => {
 
           {/* Info Section */}
           <div className="pd-info-section">
-            <span className="pd-category">{product.category}</span>
+            {/* <span className="pd-category">{product.category_name}</span>
+            <span className="pd-category">{product.subcategory_name}</span> */}
             <h1 className="pd-title">{product.name}</h1>
             <p className="pd-price">₹{product.price}</p>
             <p className="pd-description">

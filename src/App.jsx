@@ -12,7 +12,7 @@ import Invoice from './Components/Pages/Admin/Invoice';
 import Users from './Components/Pages/Admin/Users';
 import Orders from './Components/Pages/Admin/Orders';
 import Cards from './Components/Pages/Admin/Cards';
-import Transaction from './Components/Pages/Admin/Transaction';
+import Transaction from './Components/Pages/Admin/Transaction'
 import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
@@ -42,6 +42,9 @@ import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
 import AdminLogin from './Components/Pages/Admin/AdminLogin';
 import AddPurchase from './Components/Pages/Admin/AddPurchase';
+import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
+import EditProduct from './Components/Pages/Admin/Products/EditProduct';
+import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -82,8 +85,15 @@ function LayoutWrapper() {
         <Route path="/complaint" element={<Complaint />} />
 
         {/* Admin */}
-        <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} /> 
+        <Route
+          path="/admin"
+          element={
+            <AdminProtected>
+              <AdminLayout />
+            </AdminProtected>
+          }
+        >
+          <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
           <Route path="invoice/:id" element={<Invoice />} />
@@ -99,9 +109,12 @@ function LayoutWrapper() {
           <Route path="users" element={<Users />} />
           <Route path="orders" element={<Orders />} />
           <Route path="add-purchase" element={<AddPurchase />} />
-          <Route path="Chat" element={<Chat />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="manage-products" element={<AdminManageProducts />} />
+          <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="users/:id" element={<UserDetails />} />
         </Route>
+
 
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>

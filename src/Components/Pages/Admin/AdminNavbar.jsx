@@ -16,16 +16,15 @@ const AdminNavbar = () => {
       <div className="admin-profile" onClick={() => setOpen(!open)}>
         <span className="admin-name">Admin</span>
         <img 
-          src="https://i.pravatar.cc/40" 
+          src="" 
           alt="profile"
           className="admin-avatar"
         />
 
         {open && (
           <div className="auth-dropdown">
-            <Link to="/admin/login">Sign In</Link>
-            <Link to="/admin/register">Sign Up</Link>
-            <button className="logout-btn">Logout</button>
+            <Link to="/admin/profile">Profile</Link>
+            <Link to="/admin/Logout">Logout</Link>
           </div>
         )}
       </div>

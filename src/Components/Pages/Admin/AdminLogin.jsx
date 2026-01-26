@@ -9,7 +9,7 @@ const AdminLogin = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [isLoading , setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,30 +20,30 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true)
-    setError(" ");
+    setError("");
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
-
-        console.log("Login successful! ");
-
-        navigate("/admin-panel/dashboard");
+        localStorage.setItem('adminToken', data.token); 
+        alert("Admin Login ")
+        navigate("/admin/dashboard"); 
       }
+
       else {
         setError(data.error || "Invalid login credentials");
       }
     } catch (err) {
       setError("Server error. Please try agin later. ")
-    } finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -61,7 +61,7 @@ const AdminLogin = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
-              value={formData.email} 
+              value={formData.email}
               onChange={handleChange}
               required
             />
@@ -73,7 +73,7 @@ const AdminLogin = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              value={formData.password} 
+              value={formData.password}
               onChange={handleChange}
               required
             />
@@ -86,7 +86,7 @@ const AdminLogin = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={isLoading}>
-            {isLoading ? "Logging in...":"Login"}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 

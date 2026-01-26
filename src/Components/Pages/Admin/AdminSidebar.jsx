@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa"; 
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import "./AdminSidebar.css";
 
 const AdminSidebar = () => {
@@ -52,6 +52,9 @@ const AdminSidebar = () => {
               </li>
               <li>
                 <NavLink to="/admin/brand" className="sidebar-link sub-link">Manage Brand</NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/manage-products" className="sidebar-link sub-link">Manage Product</NavLink>
               </li>
               <li>
                 <NavLink to="/admin/add-product" className="sidebar-link sub-link">Add New Product</NavLink>
