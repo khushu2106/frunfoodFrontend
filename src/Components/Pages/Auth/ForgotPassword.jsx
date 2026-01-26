@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; 
 import "./Auth.css";
 
@@ -8,6 +8,8 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState(""); 
   const [error, setError] = useState("");     
   const [loading, setLoading] = useState(false); 
+
+  const navigate = useNavigate();   // ✅ yahan hona chahiye
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,15 +21,15 @@ const ForgotPassword = () => {
       const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
       
       if (response.data.success) {
-        setMessage("✅ Password reset link has been sent to your email!");
-        navigate("/verify-otp",{state : {email : email}});
+        alert("✅ Password reset link has been sent to your email!");
+        navigate("/verify-otp", { state: { email: email } }); 
         setEmail(""); 
       }
     } catch (err) {
       if (err.response && err.response.status === 404) {
-        setError("❌ This email is not registered with us.");
+        alert(" Please enter a register email ");
       } else {
-        setError("⚠️ Something went wrong. Please try again later.");
+        alert("⚠️ Something went wrong. Please try again later.");
       }
     } finally {
       setLoading(false);
@@ -58,7 +60,7 @@ const ForgotPassword = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? "Sending..." : "Send Reset Link"}
+            {loading ? "Sending..." : "Send Otp "}
           </button>
         </form>
 

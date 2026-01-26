@@ -1,0 +1,68 @@
+/* Page background */
+body {
+  background-color: #f4f6f8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main card */
+.earningsD {
+  max-width: 480px;
+  margin: 80px auto;
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  position: relative;
+}
+
+/* Earnings icon */
+.earningsD::before {
+  content: "₹";
+  font-size: 50px;
+  font-weight: bold;
+  background: #16a34a;
+  color: #ffffff;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+.earningsD h2 {
+  margin-top: 55px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Earnings details box */
+.earnings-box {
+  margin-top: 20px;
+}
+
+/* Each row */
+.earnings-box p {
+  background: #f0fdf4;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #065f46;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Hover effect */
+.earnings-box p:hover {
+  background: #dcfce7;
+  transform: scale(1.03);
+  transition: 0.3s ease;
+}

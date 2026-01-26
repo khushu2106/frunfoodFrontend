@@ -21,6 +21,8 @@ import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import Registration from './Components/Pages/Auth/Registration';
+import VerifyOTP from './Components/Pages/Auth/VerifyOTP';
+import ResetPassword from './Components/Pages/Auth/ResetPassword';
 import Login from './Components/Pages/Auth/Login';
 import ForgotPassword from './Components/Pages/Auth/ForgotPassword';
 import Category from './Components/Home/Products/Category';
@@ -46,13 +48,36 @@ import AdminManageProducts from './Components/Pages/Admin/Products/ManageProduct
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
 
+// --- Auth Components ---
+import LoginD from './Components/Pages/Delivery/AuthD/LoginD';
+import ForgetPasswordD from './Components/Pages/Delivery/AuthD/ForgetPasswordD';
+import LogoutD from './Components/Pages/Delivery/AuthD/LogoutD';
+import OtpVerifyD from './Components/Pages/Delivery/AuthD/OtpVerifyD';
+
+// import HeaderD from './Components/Pages/Delivery/LayoutD/HeaderD';
+import SideBarD from './Components/Pages/Delivery/LayoutD/SideBarD';
+
+// --- Pages Components ---
+import AddDeliveryBoyD from './Components/Pages/Delivery/PagesD/AddDeliveryBoyD';
+import AssignedOrdersD from './Components/Pages/Delivery/PagesD/AssignedOrdersD';
+import AvailabilityD from './Components/Pages/Delivery/PagesD/AvailabilityD';
+import DashBoardD from './Components/Pages/Delivery/PagesD/DashBoardD';
+import DeliveryHistoryD from './Components/Pages/Delivery/PagesD/DeliveryHistoryD';
+import EarningD from './Components/Pages/Delivery/PagesD/EarningD';
+import NotificationsD from './Components/Pages/Delivery/PagesD/NotificationsD';
+import ProfileD from './Components/Pages/Delivery/PagesD/ProfileD';
+import SettingsD from './Components/Pages/Delivery/PagesD/SettingsD';
+import OrderDetailsD from './Components/Pages/Delivery/PagesD/OrdersDetailsD';
+import MyOrders from './Components/Pages/Order/Myorder';
+
 function LayoutWrapper() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const authRoutes = ['/login', '/register', '/forgot-password', '/logout', '/verify-otp', '/reset-password', '/checkout'];
+  const isdeliveryRoute = location.pathname.startsWith('/delivery');
+  const authRoutes = ['/login', '/register', '/forgot-password', '/logout', '/verify-otp', '/reset-password', '/checkout', '/profile'];
 
   const isAuthRoute = authRoutes.includes(location.pathname);
-  const showHeaderFooter = !isAdminRoute && !isAuthRoute;
+  const showHeaderFooter = !isAdminRoute && !isAuthRoute && !isdeliveryRoute;
   return (
     <>
       {showHeaderFooter && <Header />}
@@ -74,11 +99,14 @@ function LayoutWrapper() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* User */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/myorders" element={<MyOrders />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />
         <Route path="/feedback" element={<Feedback />} />
@@ -113,10 +141,31 @@ function LayoutWrapper() {
           <Route path="manage-products" element={<AdminManageProducts />} />
           <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="users/:id" element={<UserDetails />} />
+          <Route path="invoice" element={<Invoice />} />
         </Route>
 
+        <Route
+          path="/delivery"
+          element={
+            <> <SideBarD /> <DashBoardD/></> } >
+              <Route path="dashboard" element={<DashBoardD />} />
+              <Route path="login" element={<LoginD />} />
+              <Route path="otpverify" element={<OtpVerifyD />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="logout" element={<LogoutD />} />
+              <Route path="profile" element={<ProfileD />} />
+              <Route path="settings" element={<SettingsD />} />
+              <Route path="add-delivery" element={<AddDeliveryBoyD />} />
+              <Route path="assigned-orders" element={<AssignedOrdersD />} />
+              <Route path="availability" element={<AvailabilityD />} />
+              <Route path="history" element={<DeliveryHistoryD/>} />
+              <Route path="earning" element={<EarningD />} />
+              <Route path="notifications" element={<NotificationsD />} />
+              <Route path="orderdetails" element={<OrderDetailsD />} />
+            </Route>
 
-        <Route path="*" element={<div>Page Not Found</div>} />
+
+          <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
 
       {showHeaderFooter && <Footer />}

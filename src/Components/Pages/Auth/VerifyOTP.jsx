@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import "./VerifyOtp.css";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import "./Auth.css";
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleVerify = (e) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email; 
+
+  const handleVerify = async (e) => {
     e.preventDefault();
 
     if (!otp) {
@@ -19,21 +25,21 @@ const VerifyOtp = () => {
       return;
     }
 
-    setError("");
-    setSuccess("OTP verified successfully");
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", {
+        email,
+        otp,
+      });
 
-    /*
-      🔗 API CALL HERE
-      ----------------------------------
-      POST /api/verify-otp
-      body: {
-        email: userEmail,  // from forgot password step
-        otp: otp
+      if (res.data.success) {
+        setSuccess("OTP verified successfully");
+
+        const otpId = res.data.otpId;
+        navigate("/reset-password", { state: { otpId } });
       }
-
-      On success:
-      👉 redirect to Reset Password page
-    */
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid OTP");
+    }
   };
 
   return (
@@ -58,7 +64,6 @@ const VerifyOtp = () => {
         <div className="resend">
           Didn’t receive OTP?
           <span> Resend</span>
-          {/* 🔗 API CALL: resend OTP */}
         </div>
       </form>
     </div>

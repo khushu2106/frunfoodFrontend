@@ -1,33 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaUser, FaSignInAlt } from "react-icons/fa";
 import axios from "axios";
 import "./Header.css";
+import { AuthContext } from "../../Pages/Auth/Authcontext";
 
 const Header = () => {
   const [openProfile, setOpenProfile] = useState(false);
-  const [showProducts, setShowProducts] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const token = localStorage.getItem("userToken");
-  const isLoggedIn = !!token;
-
-  // Product categories
-  const categories = [
-    { id: 1, name: "All", slug: "all" },
-    { id: 2, name: "Cat", slug: "cat" },
-    { id: 3, name: "Dog", slug: "dog" },
-    { id: 4, name: "Kitten", slug: "kitten" },
-    { id: 5, name: "Puppy", slug: "puppy" },
-    { id: 6, name: "Toys", slug: "toys" },
-    { id: 7, name: "Grooming & Accessories", slug: "grooming-accessories" }
-  ];
 
   // Fetch cart & wishlist counts
   useEffect(() => {
-    if (!token) return;
+    if (!isLoggedIn || !token) return;
 
     const fetchCounts = async () => {
       try {
@@ -46,55 +36,30 @@ const Header = () => {
     };
 
     fetchCounts();
-  }, [token]);
+  }, [isLoggedIn, token]);
 
-  // Logout
+  // Proper logout
   const handleLogout = () => {
-    localStorage.removeItem("userToken");
+    logout();              // AuthContext state update
     setCartCount(0);
     setWishlistCount(0);
     setOpenProfile(false);
-    navigate("/login");
-    window.location.reload(); // header update
+    navigate("/logout");    // redirect
   };
 
   return (
     <header className="header">
-      {/* LOGO */}
       <div className="logo">🐶 Pet Food Shop</div>
 
-      {/* NAV LINKS */}
       <nav className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
-
-        {/* Products dropdown */}
-        {/* <div className="dropdown">
-          <button className="dropdown-btn" onClick={() => setShowProducts(!showProducts)}>
-            Products ▾
-          </button>
-          {showProducts && (
-            <div className="products-dropdown-menu">
-              {categories.map(cat => (
-                <Link
-                  key={cat.id}
-                  to={`/products/${cat.slug}`}
-                  onClick={() => setShowProducts(false)}
-                >
-                  {cat.name}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div> */}
-
         <Link to="/about">About Us</Link>
         <Link to="/contact">Contact Us</Link>
       </nav>
 
-      {/* RIGHT ICONS */}
       <div className="header-icons">
-        {/* WISHLIST */}
+        {/* Wishlist */}
         <div className="icon-tooltip">
           <Link to="/wishlist">
             <FaHeart />
@@ -103,7 +68,7 @@ const Header = () => {
           <span className="tooltip-text">Wishlist</span>
         </div>
 
-        {/* CART */}
+        {/* Cart */}
         <div className="icon-tooltip">
           <Link to="/cart">
             <FaShoppingCart />
@@ -112,7 +77,7 @@ const Header = () => {
           <span className="tooltip-text">Cart</span>
         </div>
 
-        {/* LOGIN / PROFILE */}
+        {/* Login / Profile */}
         {!isLoggedIn ? (
           <div className="icon-tooltip">
             <Link to="/login">

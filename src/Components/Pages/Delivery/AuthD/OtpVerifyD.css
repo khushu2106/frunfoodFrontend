@@ -1,0 +1,10 @@
+.otp-d {
+  padding: 40px;
+  max-width: 300px;
+}
+
+.otp-d input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}

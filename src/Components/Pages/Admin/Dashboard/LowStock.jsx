@@ -5,11 +5,14 @@ import React, { useEffect, useState } from "react";
 const LowStock = () => {
   const [products, setProducts] = useState([]);
 
-  useEffect(() =>{
-    axios.get("http://localhost:5000/api/admin/low_stock")
-    .then(res => setProducts(res.data))
-    .catch(err => console.error("Low stock error ",err));
-  },[]);
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/admin/stats", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+
+      .then(res => setProducts(res.data))
+      .catch(err => console.error("Low stock error ", err));
+  }, []);
 
   return (
     <div style={{ flex: 1, background: "#f5f5f5", padding: "20px", borderRadius: "8px" }}>

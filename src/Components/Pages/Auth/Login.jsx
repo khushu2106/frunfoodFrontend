@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
+import { AuthContext } from "./Authcontext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { login } = useContext(AuthContext);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,33 +23,29 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
-    setError(" ");
+    setIsLoading(true);
+    setError("");
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
-
-        console.log("Login successful! ");
+        login(data.token);   // ✅ Context login
         alert("Login successful!");
-
         navigate("/");
-      }
-      else {
+      } else {
         setError(data.error || "Invalid login credentials");
         alert("Invalid email and password");
       }
     } catch (err) {
-      setError("Server error. Please try again later. ")
-      alert("Server error")
+      setError("Server error. Please try again later.");
+      alert("Server error");
     } finally {
       setIsLoading(false);
     }
