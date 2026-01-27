@@ -64,21 +64,21 @@ const AddProduct = () => {
   }, []);
 
   // Handlers
-  const handleCategoryChange =async (e) => {
-      const value = e.target.value;
+  const handleCategoryChange = async (e) => {
+    const value = e.target.value;
 
-      if(value === 'other'){
-        setShowNewCategoryInput(true);
-        setCategory("");
-        setFilteredSubcategories([]);
-      }
-      else{
-        setCategory(value);
-        setShowNewCategoryInput(false);
-      }
+    if (value === 'other') {
+      setShowNewCategoryInput(true);
+      setCategory("");
+      setFilteredSubcategories([]);
+    }
+    else {
+      setCategory(value);
+      setShowNewCategoryInput(false);
+    }
 
-      const res = await axios.get(`http://localhost:5000/api/subcategories/by-category/${value}`);
-      setFilteredSubcategories(res.data)
+    const res = await axios.get(`http://localhost:5000/api/subcategories/by-category/${value}`);
+    setFilteredSubcategories(res.data)
   };
 
   const handleSubcategoryChange = (e) => {
@@ -127,22 +127,22 @@ const AddProduct = () => {
 
     // formData.append("brand_name", showNewBrandInput ? newBrand : brand);
 
-    formData.append("product_name", productName);
+    formData.append("name", productName);
     formData.append("description", description);
     formData.append("price", price);
     formData.append("stock", stock);
     formData.append("shipping_charge", shippingCharge);
     formData.append("weight", weight);
-    formData.append("discount_percentage", discount);
-    formData.append("start_date", startDate);
-    formData.append("end_date", endDate);
+    formData.append("sub_cat_id", subcategory);
+
+
 
     for (let i = 0; i < images.length; i++) {
       formData.append("images", images[i]);
     }
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/admin/full-product`, formData, {
+      const res = await axios.post(`${BASE_URL}/api/products/full-product`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage(res.data.message);
@@ -166,7 +166,7 @@ const AddProduct = () => {
 
     } catch (err) {
       console.log(err);
-      setMessage("Error uploading product");
+      alert("Error uploading product");
     }
   };
 

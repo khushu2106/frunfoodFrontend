@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
+    setLoading(true);
     axios.get(`${BASE_URL}/api/products/${id}`)
       .then(res => {
         const data = res.data;
@@ -26,9 +27,11 @@ const ProductDetails = () => {
           setImages(data.images);
           setMainImage(data.images[0]);
         } else if (data.image_url) {
-
           setImages([data.image_url]);
           setMainImage(data.image_url);
+        } else {
+          setImages([]);
+          setMainImage("");
         }
 
         setLoading(false);
@@ -59,14 +62,11 @@ const ProductDetails = () => {
     }
   };
 
-
-  console.log("Product:", product);
-
   if (loading) return <h2>Loading Product...</h2>;
   if (!product) return <h2>Product Not Found!</h2>;
 
   return (
-    <>
+    <React.Fragment key={id}>
       <div className="product-details-page">
         <div className="pd-container">
 
@@ -89,17 +89,13 @@ const ProductDetails = () => {
                   alt={`thumb-${i}`}
                   onClick={() => setMainImage(img)}
                   className={`thumbnail-img ${mainImage === img ? 'active' : ''}`}
-                  style={{ width: '80px', height: '80px', marginRight: '10px', cursor: 'pointer', border: mainImage === img ? '2px solid orange' : '1px solid #ccc' }}
-                />
-              ))}
-              {images.map((img, i) => (
-                <img
-                  key={i}
-                  src={`${BASE_URL}/${img}`}
-                  alt={`thumb-${i}`}
-                  onClick={() => setMainImage(img)}
-                  className={`thumbnail-img ${mainImage === img ? 'active' : ''}`}
-                  style={{ width: '80px', height: '80px', marginRight: '10px', cursor: 'pointer', border: mainImage === img ? '2px solid orange' : '1px solid #ccc' }}
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    marginRight: '10px',
+                    cursor: 'pointer',
+                    border: mainImage === img ? '2px solid orange' : '1px solid #ccc'
+                  }}
                 />
               ))}
             </div>
@@ -107,8 +103,6 @@ const ProductDetails = () => {
 
           {/* Info Section */}
           <div className="pd-info-section">
-            {/* <span className="pd-category">{product.category_name}</span>
-            <span className="pd-category">{product.subcategory_name}</span> */}
             <h1 className="pd-title">{product.name}</h1>
             <p className="pd-price">₹{product.price}</p>
             <p className="pd-description">
@@ -133,9 +127,10 @@ const ProductDetails = () => {
         </div>
       </div>
 
+      {/* Related Sections */}
       <ProductList />
       <Offers />
-    </>
+    </React.Fragment>
   );
 };
 

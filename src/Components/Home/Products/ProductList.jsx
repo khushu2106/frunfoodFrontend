@@ -102,6 +102,7 @@ const ProductList = () => {
       </div>
 
       {/* Pagination */}
+      {totalPages > 1 && (
       <div className="pagination">
         <button
           disabled={page === 1}
@@ -127,6 +128,7 @@ const ProductList = () => {
           Next
         </button>
       </div>
+    )}
     </section>
   );
 };
