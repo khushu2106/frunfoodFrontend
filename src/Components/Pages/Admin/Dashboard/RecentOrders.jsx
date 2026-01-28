@@ -6,7 +6,7 @@ const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(()=>{
-    axios.get("http://localhost:5000/api/admin/recent-orders").then(res=>setOrders(res.data))
+    axios.get("http://localhost:5000/api/admin/dashboard/recent-orders").then(res=>setOrders(res.data))
     .catch(err => console.error("Recent orders error ",err));
   },[])
   return (
@@ -25,8 +25,8 @@ const RecentOrders = () => {
           {orders.map(order => (
             <tr key={order.id}>
               <td style={{ padding: "8px" }}>{order.sales_id}</td>
-              <td style={{ padding: "8px" }}>{order.customer}</td>
-              <td style={{ padding: "8px" }}>{order.total_amount}</td>
+              <td style={{ padding: "8px" }}>{order.fname}</td>
+              <td style={{ padding: "8px" }}>{order.grand_total}</td>
               <td style={{ padding: "8px" }}>{order.Order_status}</td>
             </tr>
           ))}

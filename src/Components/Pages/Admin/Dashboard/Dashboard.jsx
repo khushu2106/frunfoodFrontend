@@ -34,7 +34,7 @@ const Dashboard = () => {
         />
 
         <StatCard title="Total Orders" value={stats.Total_Orders} />
-        <StatCard title="Total Customers" value={stats.Total_Customer} />
+        <StatCard title="Total Customers" value={stats.Total_Customers} />
         <StatCard title="Total Products" value={stats.Total_Products || 0} />
       </div>
 

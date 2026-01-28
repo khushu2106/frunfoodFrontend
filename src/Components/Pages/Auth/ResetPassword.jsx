@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import "./Auth.css";
 
 const ResetPassword = () => {
@@ -6,11 +8,12 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const { token } = useParams();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!password || !confirmPassword) {
       setError("All fields are required");
       return;
@@ -26,25 +29,27 @@ const ResetPassword = () => {
       return;
     }
 
-    setError("");
-    setSuccess("Password reset successfully");
+    try {
+      const res = await axios.post("http://localhost:5000/api/reset-password", {
+        token,
+        password,
+      });
 
-    /*
-      🔗 API CALL HERE
-      ----------------------------------
-      POST /api/reset-password
-      body: {
-        token: resetToken,   // from URL
-        password: password
-      }
-    */
+      setSuccess(res.data.message || "Password reset successfully");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
     <div className="reset-container">
       <form className="reset-box" onSubmit={handleSubmit}>
         <h2>Reset Password</h2>
-        <p>Create a new password for your account</p>
 
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}

@@ -4,23 +4,28 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import axios from 'axios';
 import './ProductList.css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);  // all products
+  const [products, setProducts] = useState([]);  
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
   const BASE_URL = "http://localhost:5000";
 
   // Pagination settings
-  const productsPerPage = 12; // ek page me 12 products (2 rows of 6)
+  const productsPerPage = 12; 
   
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${BASE_URL}/api/products`);
-        setProducts(response.data || []); // full list of products
+        setProducts(response.data || []); 
       } catch (error) {
         console.error("Error fetching products: ", error);
         setProducts([]);
