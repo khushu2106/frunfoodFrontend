@@ -4,23 +4,25 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import axios from 'axios';
 import './ProductList.css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);  // all products
+  const [products, setProducts] = useState([]);  
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
   const BASE_URL = "http://localhost:5000";
+  const productsPerPage = 12; 
 
-  // Pagination settings
-  const productsPerPage = 12; // ek page me 12 products (2 rows of 6)
-  
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${BASE_URL}/api/products`);
-        setProducts(response.data || []); // full list of products
+        setProducts(response.data || []); 
       } catch (error) {
         console.error("Error fetching products: ", error);
         setProducts([]);
@@ -53,82 +55,80 @@ const ProductList = () => {
         <p className="section-subtitle">Handpicked quality products for your loving pets.</p>
       </div>
 
-      <div className="product-grid">
-        {currentProducts.length === 0 && (
-          <p className="no-products">No products found.</p>
-        )}
-
+      <Swiper
+        modules={[Navigation]}
+        navigation
+        spaceBetween={20}
+        slidesPerView={4}
+        breakpoints={{
+          0: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 4 }
+        }}
+        className="product-slider"
+      >
         {currentProducts.map((product, index) => {
           const imageUrl = product.image
             ? product.image.startsWith("http") ? product.image : `${BASE_URL}/${product.image}`
             : "/no-image.png";
 
           return (
-            <motion.div
-              key={product.product_id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="product-card-container"
-            >
-              <div className="product-card">
-                <div className="product-image-box">
-                  <Link to={`/product/${product.product_id}`}>
-                    <img src={imageUrl} alt={product.name} className="product-img" />
-                  </Link>
-
-                  <div className="hover-action">
-                    <button className="action-btn"><Heart size={18} /></button>
-                    <button className="add-to-cart-btn">
-                      <ShoppingCart size={18} /> Quick Add
-                    </button>
-                    <Link to={`/product/${product.product_id}`} className="action-btn">
-                      <Eye size={18} />
+            <SwiperSlide key={product.product_id}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="product-card-container"
+              >
+                <div className="product-card">
+                  <div className="product-image-box">
+                    <Link to={`/product/${product.product_id}`}>
+                      <img src={imageUrl} alt={product.name} className="product-img" />
                     </Link>
-                  </div>
-                </div>
 
-                <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
-                  <div className="product-footer">
-                    <span className="product-price">₹{product.price}</span>
+                    <div className="hover-action">
+                      <button className="action-btn"><Heart size={18} /></button>
+                      <button className="add-to-cart-btn">
+                        <ShoppingCart size={18} /> Quick Add
+                      </button>
+                      <Link to={`/product/${product.product_id}`} className="action-btn">
+                        <Eye size={18} />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="product-info">
+                    <h3 className="product-name">{product.name}</h3>
+                    <div className="product-footer">
+                      <span className="product-price">₹{product.price}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </SwiperSlide>
           );
         })}
-      </div>
+      </Swiper>
 
       {/* Pagination */}
       {totalPages > 1 && (
-      <div className="pagination">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-        >
-          Prev
-        </button>
+        <div className="pagination">
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>Prev</button>
 
-        {[...Array(totalPages)].map((_, i) => (
-          <button
-            key={i}
-            className={page === i + 1 ? "active" : ""}
-            onClick={() => setPage(i + 1)}
-          >
-            {i + 1}
-          </button>
-        ))}
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              className={page === i + 1 ? "active" : ""}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
 
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </button>
-      </div>
-    )}
+          <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>Next</button>
+        </div>
+      )}
     </section>
   );
 };

@@ -23,7 +23,9 @@ const AddBrand = () => {
             setBrandName('');
             fetchBrands();
         } catch (err) {
+            console.log(err);
             alert("Error adding brand");
+
         }
     };
 

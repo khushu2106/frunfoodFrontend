@@ -18,6 +18,7 @@ import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
+import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import Registration from './Components/Pages/Auth/Registration';
@@ -103,7 +104,8 @@ function LayoutWrapper() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
 
         {/* User */}
         <Route path="/cart" element={<Cart />} />
@@ -145,6 +147,7 @@ function LayoutWrapper() {
           <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="users/:id" element={<UserDetails />} />
           <Route path="invoice" element={<Invoice />} />
+          <Route path="view-purchases" element={<ViewPurchases />} />
         </Route>
 
         <Route

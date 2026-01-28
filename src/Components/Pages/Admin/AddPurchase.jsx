@@ -1,32 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddPurchase = () => {
-  const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(0);
+  const [suppliers, setSuppliers] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const [supplierId, setSupplierId] = useState("");
+  const [productId, setProductId] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
   const [date, setDate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
+
+  // Fetch suppliers and products
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [supRes, prodRes] = await Promise.all([
+          axios.get("http://localhost:5000/api/suppliers"),
+          axios.get("http://localhost:5000/api/products")
+        ]);
+        setSuppliers(supRes.data);
+        setProducts(prodRes.data);
+      } catch (err) {
+        console.error("Error fetching suppliers/products:", err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!supplierId || !productId || !quantity || !price || !date) {
+      setErrorMessage("All fields are required");
+      return;
+    }
+
     try {
       await axios.post("http://localhost:5000/api/purchases", {
-        product,
+        supplier_id: supplierId,
+        product_id: productId,
         quantity,
         price,
-        date,
+        p_date: date
       });
 
-      // Reset form fields
-      setProduct("");
-      setQuantity(1);
-      setPrice(0);
+      // Reset form
+      setSupplierId("");
+      setProductId("");
+      setQuantity("");
+      setPrice("");
       setDate("");
+      setErrorMessage("");
 
-      // Redirect to Transaction page with success message
       navigate("/admin/transaction", { state: { successMessage: "Purchase added successfully!" } });
     } catch (err) {
       console.error(err);
@@ -34,7 +63,7 @@ const AddPurchase = () => {
     }
   };
 
-  const handleBack = () => {
+  const handleViewAll = () => {
     navigate("/admin/transaction");
   };
 
@@ -49,14 +78,49 @@ const AddPurchase = () => {
     }}>
       <h3>Add Purchase</h3>
 
+      <button
+        type="button"
+        onClick={() => navigate("/admin/view-purchases")}
+        style={{
+          backgroundColor: "#6c757d",
+          color: "#fff",
+          padding: "10px 15px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginBottom: "15px"
+        }}
+      >
+        View All Purchases
+      </button>
+
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={product}
-          onChange={(e) => setProduct(e.target.value)}
+        <select
+          value={supplierId}
+          onChange={(e) => setSupplierId(e.target.value)}
           required
-        />
+        >
+          <option value="">Select Supplier</option>
+          {suppliers.map((s) => (
+            <option key={s.supplier_id} value={s.supplier_id}>
+              {s.fname} {s.lname}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+          required
+        >
+          <option value="">Select Product</option>
+          {products.map((p) => (
+            <option key={p.product_id} value={p.product_id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
+
         <input
           type="number"
           placeholder="Quantity"
@@ -86,27 +150,10 @@ const AddPurchase = () => {
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            marginTop: "10px",
-            marginRight: "10px"
-          }}
-        >
-          Add Purchase
-        </button>
-
-        <button
-          type="button"
-          onClick={handleBack}
-          style={{
-            backgroundColor: "#6c757d",
-            color: "#fff",
-            padding: "10px 15px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
             marginTop: "10px"
           }}
         >
-          Back
+          Add Purchase
         </button>
       </form>
 
