@@ -150,22 +150,27 @@ function LayoutWrapper() {
         <Route
           path="/delivery"
           element={
-            <> <SideBarD /> <DashBoardD /></>} >
-          <Route path="dashboard" element={<DashBoardD />} />
-          <Route path="login" element={<LoginD />} />
-          <Route path="otpverify" element={<OtpVerifyD />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="logout" element={<LogoutD />} />
-          <Route path="profile" element={<ProfileD />} />
-          <Route path="settings" element={<SettingsD />} />
-          <Route path="add-delivery" element={<AddDeliveryBoyD />} />
-          <Route path="assigned-orders" element={<AssignedOrdersD />} />
-          <Route path="availability" element={<AvailabilityD />} />
-          <Route path="history" element={<DeliveryHistoryD />} />
-          <Route path="earning" element={<EarningD />} />
-          <Route path="notifications" element={<NotificationsD />} />
-          <Route path="orderdetails" element={<OrderDetailsD />} />
-        </Route>
+            <> <SideBarD /> </>} >
+          <Route index element={<DashBoardD />} />
+
+  <Route path="dashboard" element={<DashBoardD />} />
+  <Route path="login" element={<LoginD />} />
+  <Route path="otpverify" element={<OtpVerifyD />} />
+  <Route path="forgot-password" element={<ForgotPassword />} />
+  <Route path="logout" element={<LogoutD />} />
+  <Route path="profile" element={<ProfileD />} />
+  <Route path="settings" element={<SettingsD />} />
+  <Route path="add-delivery" element={<AddDeliveryBoyD />} />
+  <Route path="assigned-orders" element={<AssignedOrdersD />} />
+  <Route path="availability" element={<AvailabilityD />} />
+  <Route path="history" element={<DeliveryHistoryD />} />
+  <Route path="earning" element={<EarningD />} />
+  <Route path="notifications" element={<NotificationsD />} />
+  <Route path="orderdetails" element={<OrderDetailsD />} />
+
+</Route>
+          
+       
 
 
         <Route path="*" element={<div>Page Not Found</div>} />
