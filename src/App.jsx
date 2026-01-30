@@ -30,6 +30,7 @@ import Category from './Components/Home/Products/Category';
 import CategoryProducts from './Components/Home/Products/CategoryProducts';
 import Offers from './Components/Home/Offers/Offers';
 import ProductSearch from './Components/Home/Products/ProductSearch';
+import ProductFilter from "./Components/Home/ProductFilter/ProductFilter";
 import Contact from './Components/Home/Contact/Contact';
 import Logout from './Components/Pages/Auth/Logout';
 import Cart from './Components/Pages/Cart/Cart';
@@ -71,6 +72,7 @@ import SettingsD from './Components/Pages/Delivery/PagesD/SettingsD';
 import OrderDetailsD from './Components/Pages/Delivery/PagesD/OrdersDetailsD';
 import MyOrders from './Components/Pages/Order/Myorder';
 
+
 function LayoutWrapper() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -92,6 +94,8 @@ function LayoutWrapper() {
           element={<ProductDetails key={window.location.pathname} />}
         />
         <Route path="/productSearch" element={<ProductSearch />} />
+         <Route path="/ProductFilter" element={<ProductFilter />} />
+         <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/contact" element={<Contact />} />
