@@ -36,10 +36,12 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.token);   // ✅ Context login
-        alert("Login successful!");
+        // console.log("API Token:", data.token);
+        login(data.token);
+        // console.log("LocalStorage Token:", localStorage.getItem("userToken"));
         navigate("/");
-      } else {
+      }
+      else {
         setError(data.error || "Invalid login credentials");
         alert("Invalid email and password");
       }

@@ -1,28 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Profile.css";
+import "../Auth/Profile/ProfileC.css"; // Wahi CSS use karein jo humne pehle banayi thi
 
 const Profile = () => {
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    role: ""
-  });
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: ""
-  });
-
+  const [profile, setProfile] = useState({ name: "", email: "", role: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [message, setMessage] = useState("");
 
-  // Fetch admin profile on load
+  const token = localStorage.getItem("adminToken"); // Uniform token name
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/admin/profile", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          headers: { Authorization: `Bearer ${token}` }
         });
         setProfile(res.data);
         setFormData({ name: res.data.name, email: res.data.email, password: "" });
@@ -30,78 +21,79 @@ const Profile = () => {
         console.error("Error fetching profile:", err.response || err);
       }
     };
-    fetchProfile();
-  }, []);
+    if (token) fetchProfile();
+  }, [token]);
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.put(
         "http://localhost:5000/api/admin/profile",
         formData,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage(res.data.message);
       setProfile({ ...profile, name: formData.name, email: formData.email });
-      setFormData({ ...formData, password: "" }); // clear password
-    } catch (err) {
-      console.error("Error updating profile:", err.response || err);
+      setFormData({ ...formData, password: "" });
+      
+      setTimeout(() => setMessage(""), 3000); 
+       } catch (err) {
       setMessage("Update failed!");
     }
   };
 
   return (
-    <div className="profile-container">
-      <h2>Admin Profile</h2>
+    <div className="account-layout">
+      {/* Sidebar (Consistency ke liye) */}
+      <aside className="sidebar">
+        <h3>Admin Panel</h3>
+        <ul>
+          <li className="active">Admin Profile</li>
+          <li>Manage Users</li>
+          <li>Site Settings</li>
+        </ul>
+      </aside>
 
-      <div className="profile-card">
-        <img
-          src="https://i.pravatar.cc/150"
-          alt="Admin"
-          className="profile-img"
-        />
-        <div className="profile-info">
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Role:</strong> {profile.role}</p>
+      <main className="profile-main-content">
+        <h2>Admin Details</h2>
+        
+        <div className="profile-card">
+          <div className="profile-header" style={{gridColumn: "span 2"}}>
+             <img src="https://i.pravatar.cc/150" alt="Admin" className="avatar" />
+             <div className="header-info">
+                <h4>{profile.name}</h4>
+                <p style={{color: "gray"}}>{profile.role}</p>
+             </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="form-grid" style={{gridColumn: "span 2", display: "grid", gap: "20px"}}>
+            <div className="profile-field">
+              <label>Full Name</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+            </div>
+
+            <div className="profile-field">
+              <label>Email Address</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            </div>
+
+            <div className="profile-field full-width">
+              <label>New Password (Optional)</label>
+              <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Leave blank to keep current" />
+            </div>
+
+            <div className="profile-actions">
+              <button type="submit" className="save-btn">Update Admin Profile</button>
+            </div>
+          </form>
+
+          {message && <p className="status-msg">{message}</p>}
         </div>
-      </div>
-
-      <h3>Edit Profile</h3>
-      <form className="profile-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Update Profile</button>
-      </form>
-
-      {message && <p style={{ marginTop: "10px", color: "green" }}>{message}</p>}
+      </main>
     </div>
   );
 };

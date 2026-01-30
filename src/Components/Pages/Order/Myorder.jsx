@@ -1,34 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Order.css";
+import axios from "axios";
 
 const MyOrders = () => {
   const navigate = useNavigate();
+  const [orders, setOrdesr] = useState();
+  
+  const token = localStorage.getItem("userToken");
+  let userId = null;
 
-  // 🔴 Abhi static orders (API later)
-  const orders = [
-    {
-      id: 1001,
-      date: "22 Jan 2026",
-      total: 998,
-      status: "Delivered",
-      payment: "Paid"
-    },
-    {
-      id: 1002,
-      date: "20 Jan 2026",
-      total: 450,
-      status: "Confirmed",
-      payment: "Paid"
-    },
-    {
-      id: 1003,
-      date: "18 Jan 2026",
-      total: 299,
-      status: "Cancelled",
-      payment: "Refunded"
-    }
-  ];
+  if(token){
+    const payload = JSON.parse(atob)
+  }
+  
 
   return (
     <div className="my-orders-page">
