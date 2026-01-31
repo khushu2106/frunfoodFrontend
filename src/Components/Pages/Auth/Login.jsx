@@ -30,14 +30,14 @@ const Login = () => {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({...formData, expectedRole: "customer"}),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         // console.log("API Token:", data.token);
-        login(data.token);
+        login(data.token,data.user);
         // console.log("LocalStorage Token:", localStorage.getItem("userToken"));
         navigate("/");
       }

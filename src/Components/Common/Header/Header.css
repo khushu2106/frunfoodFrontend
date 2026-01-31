@@ -160,6 +160,29 @@
   opacity: 1;
 }
 
+/* COUNT BADGE DESIGN */
+.count-badge {
+  position: absolute;
+  top: -6px;           
+  right: -8px;           
+  background-color: #f97316; 
+  color: white;
+  font-size: 10px;       
+  font-weight: bold;
+  height: 18px;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;   
+  border: 2px solid #6b2e1f; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.icon-tooltip:hover .count-badge {
+  transform: scale(1.1); 
+  transition: transform 0.2s ease-in-out;
+}
 
 
 /* ================= MEDIA QUERIES ================= */

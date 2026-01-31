@@ -150,7 +150,7 @@ function LayoutWrapper() {
           <Route path="view-purchases" element={<ViewPurchases />} />
         </Route>
 
-        <Route
+               <Route
           path="/delivery"
           element={
             <> <SideBarD /> </>} >
@@ -173,8 +173,6 @@ function LayoutWrapper() {
 
 </Route>
           
-       
-
 
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>

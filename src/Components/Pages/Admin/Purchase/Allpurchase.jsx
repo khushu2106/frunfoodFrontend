@@ -54,7 +54,7 @@ const ViewPurchases = () => {
             <tr>
               <th>Purchase ID</th>
               <th>Supplier ID</th>
-              <th>Product ID</th>
+              <th>Product name</th>
               <th>Quantity</th>
               <th>Price</th>
               <th>Date</th>
@@ -65,9 +65,9 @@ const ViewPurchases = () => {
               <tr key={p.purchase_id}>
                 <td>{p.purchase_id}</td>
                 <td>{p.supplier_id}</td>
-                <td>{p.product_id}</td>
-                <td>{p.quantity}</td>
-                <td>₹{p.price}</td>
+                <td>{p.name}</td>
+                <td>{p.qty}</td>
+                <td>₹{p.payment_amount}</td>
                 <td>{p.p_date}</td>
               </tr>
             ))}
