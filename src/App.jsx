@@ -5,6 +5,8 @@ import HeroHome from './Components/Home/HeroHome/HeroHome';
 import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
+import Faq from "./Components/Home/Faq/Faq";
+
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
 import Balance from './Components/Pages/Admin/Balance';
@@ -49,7 +51,7 @@ import AddPurchase from './Components/Pages/Admin/AddPurchase';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
-
+import Products from "./Components/Pages/Products";
 // --- Auth Components ---
 import LoginD from './Components/Pages/Delivery/AuthD/LoginD';
 import ForgetPasswordD from './Components/Pages/Delivery/AuthD/ForgetPasswordD';
@@ -94,10 +96,13 @@ function LayoutWrapper() {
           element={<ProductDetails key={window.location.pathname} />}
         />
         <Route path="/productSearch" element={<ProductSearch />} />
+                    <Route path="/products/category/:category" element={<CategoryProducts />} />
+
          <Route path="/ProductFilter" element={<ProductFilter />} />
          <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
+         <Route path="/faq" element={<Faq />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
 
