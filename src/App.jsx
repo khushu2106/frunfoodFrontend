@@ -17,7 +17,7 @@ import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
-import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
+// import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
@@ -154,7 +154,7 @@ function LayoutWrapper() {
           <Route path="users/:id" element={<UserDetails />} />
           <Route path="invoice" element={<Invoice />} />
           <Route path="view-purchases" element={<ViewPurchases />} />
-          <Route path="delivery" element={<AdminDelivery />} />
+          {/* <Route path="delivery" element={<AdminDelivery />} /> */}
           <Route path="pending" element={<PendingOrders />} />
           <Route path="delivery-list" element={<DeliveryList />} />
           <Route path="assignorder" element={<AssignDelivery />} />
