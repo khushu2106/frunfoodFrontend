@@ -6,6 +6,7 @@ const AdminLogin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    expectedRole: "admin"
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -25,20 +26,26 @@ const AdminLogin = () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ...formData,
+          expectedRole: "admin"
+        })
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('adminToken', data.token); 
-        alert("Admin Login ")
-        navigate("/admin/dashboard"); 
+        localStorage.setItem("adminToken", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user)); 
+        navigate("/admin/dashboard");
       }
 
+
       else {
+        alert("You can not access this ")
         setError(data.error || "Invalid login credentials");
       }
     } catch (err) {
