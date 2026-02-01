@@ -8,8 +8,9 @@ function Checkout() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Get data from Cart; fallback to 0 if state is missing
   const totalAmount = location.state?.totalAmount || 0;
-  const cartItems = location.state?.cartItems || []; 
+  const cartItems = location.state?.cartItems || []; // Assuming you pass items from cart
   
   const cgst = +(totalAmount * 0.09).toFixed(2);
   const sgst = +(totalAmount * 0.09).toFixed(2);

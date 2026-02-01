@@ -17,6 +17,7 @@ import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
+import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
@@ -48,6 +49,7 @@ import AddPurchase from './Components/Pages/Admin/AddPurchase';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
+import { CartProvider } from './Components/Pages/Cart/Cartcontext';
 
 // --- Auth Components ---
 import LoginD from './Components/Pages/Delivery/AuthD/LoginD';
@@ -70,6 +72,10 @@ import ProfileD from './Components/Pages/Delivery/PagesD/ProfileD';
 import SettingsD from './Components/Pages/Delivery/PagesD/SettingsD';
 import OrderDetailsD from './Components/Pages/Delivery/PagesD/OrdersDetailsD';
 import MyOrders from './Components/Pages/Order/Myorder';
+import PendingOrders from './Components/Pages/Admin/Delivery/PendingOrder';
+import AssignDelivery from './Components/Pages/Admin/Delivery/AssignDelivery';
+import DeliveryStatus from './Components/Pages/Admin/Delivery/DeliveryStatus';
+import DeliveryList from './Components/Pages/Admin/Delivery/DeliveryList';
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -148,6 +154,11 @@ function LayoutWrapper() {
           <Route path="users/:id" element={<UserDetails />} />
           <Route path="invoice" element={<Invoice />} />
           <Route path="view-purchases" element={<ViewPurchases />} />
+          <Route path="delivery" element={<AdminDelivery />} />
+          <Route path="pending" element={<PendingOrders />} />
+          <Route path="delivery-list" element={<DeliveryList />} />
+          <Route path="assignorder" element={<AssignDelivery />} />
+          <Route path="deliverystatus" element={<DeliveryStatus />} />
         </Route>
 
                <Route
@@ -184,9 +195,11 @@ function LayoutWrapper() {
 
 function App() {
   return (
-    <Router>
-      <LayoutWrapper />
-    </Router>
+    <CartProvider>
+      <Router>
+        <LayoutWrapper />
+      </Router>
+    </CartProvider>
   );
 }
 

@@ -20,16 +20,14 @@ const Header = () => {
     if (!isLoggedIn || !token) return;
 
     const fetchCounts = async () => {
+      const currentToken = localStorage.getItem("userToken");
+      if (!currentToken) return;
+
       try {
         const cartRes = await axios.get("http://localhost:5000/api/cart/count", {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${currentToken}` } 
         });
         setCartCount(cartRes.data.count || 0);
-
-        const wishlistRes = await axios.get("http://localhost:5000/api/wishlist/count", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setWishlistCount(wishlistRes.data.count || 0);
       } catch (err) {
         console.error("Error fetching counts:", err);
       }

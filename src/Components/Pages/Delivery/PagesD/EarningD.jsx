@@ -23,7 +23,7 @@ const EarningsD = () => {
 
       {/* Top Summary Cards */}
       <div className="earnings-grid">
-        <div className="earn-card total">
+        <div className="earn-card" id="total">
           <h4>Total Earnings</h4>
           <p>₹{earningsData?.summary?.totalEarnings || 0}</p>
         </div>

@@ -4,10 +4,37 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import "./AdminSidebar.css";
 
 const AdminSidebar = () => {
-  const [productDropdown, setProductDropdown] = useState(false);
+  // Use an object to track multiple open dropdowns independently
+  const [openMenus, setOpenMenus] = useState({});
 
-  const otherMenuItems = [
+  const toggleMenu = (menuName) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menuName]: !prev[menuName],
+    }));
+  };
+
+  const menuConfig = [
     { name: "Dashboard", path: "/admin/dashboard" },
+    {
+      name: "Product",
+      subItems: [
+        { name: "Manage Category", path: "/admin/add-category" },
+        { name: "Manage Subcategory", path: "/admin/subcategory" },
+        { name: "Manage Brand", path: "/admin/brand" },
+        { name: "Manage Product", path: "/admin/manage-products" },
+        { name: "Add New Product", path: "/admin/add-product" },
+      ],
+    },
+    {
+      name: "Delivery",
+      subItems: [
+        { name: "Pending orders", path: "/admin/pending" },
+        { name: "Delivery boy details", path: "/admin/delivery-list" },
+        { name: "Assign delivery", path: "/admin/assignorder" },
+        { name: "Delivery status", path: "/admin/deliverystatus" },
+      ],
+    },
     { name: "Balance", path: "/admin/balance" },
     { name: "Users", path: "/admin/users" },
     { name: "Orders", path: "/admin/orders" },
@@ -16,65 +43,56 @@ const AdminSidebar = () => {
     { name: "Purchase", path: "/admin/transaction" },
     { name: "FAQ", path: "/admin/chat" },
     { name: "Profile", path: "/admin/profile" },
-    { name: "Settings", path: "/admin/settings" }
+    { name: "Settings", path: "/admin/settings" },
   ];
 
   return (
     <div className="admin-sidebar">
       <h2 className="sidebar-title">Admin Panel</h2>
       <ul className="sidebar-menu">
+        {menuConfig.map((item) => {
+          const hasSubItems = !!item.subItems;
+          const isOpen = openMenus[item.name];
 
-        <li>
-          <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? "sidebar-link active" : "sidebar-link"}>
-            Dashboard
-          </NavLink>
-        </li>
+          return (
+            <li key={item.name}>
+              {hasSubItems ? (
+                // Render Dropdown Trigger
+                <>
+                  <div
+                    className={`sidebar-link dropdown-trigger ${isOpen ? "active-parent" : ""}`}
+                    onClick={() => toggleMenu(item.name)}
+                    style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
+                    <span>{item.name}</span>
+                    {isOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
+                  </div>
 
-        {/* Product Dropdown Section */}
-        <li>
-          <div
-            className="sidebar-link dropdown-trigger"
-            onClick={() => setProductDropdown(!productDropdown)}
-            style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-          >
-            <span>Product</span>
-            {productDropdown ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
-          </div>
-
-          {/* Sub-menu items */}
-          {productDropdown && (
-            <ul className="subcategory-menu" style={{ listStyle: 'none', paddingLeft: '20px' }}>
-              <li>
-                <NavLink to="/admin/add-category" className="sidebar-link sub-link">Manage Category</NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/subcategory" className="sidebar-link sub-link">Manage Subcategory</NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/brand" className="sidebar-link sub-link">Manage Brand</NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/manage-products" className="sidebar-link sub-link">Manage Product</NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/add-product" className="sidebar-link sub-link">Add New Product</NavLink>
-              </li>
-            </ul>
-          )}
-        </li>
-
-        {otherMenuItems.filter(item => item.name !== "Dashboard").map((item) => (
-          <li key={item.name}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) =>
-                isActive ? "sidebar-link active" : "sidebar-link"
-              }
-            >
-              {item.name}
-            </NavLink>
-          </li>
-        ))}
+                  {/* Render Sub-menu */}
+                  {isOpen && (
+                    <ul className="subcategory-menu" style={{ listStyle: "none", paddingLeft: "20px" }}>
+                      {item.subItems.map((sub) => (
+                        <li key={sub.path}>
+                          <NavLink to={sub.path} className="sidebar-link sub-link">
+                            {sub.name}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                // Render Standard Link
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
+                >
+                  {item.name}
+                </NavLink>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

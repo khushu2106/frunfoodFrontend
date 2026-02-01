@@ -13,7 +13,7 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+#total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 .today { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a5c37; }
 .orders { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #7a4a00; }
 
