@@ -109,6 +109,7 @@ const ProductList = () => {
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="section-title"
         >
           {searchQuery ? (
@@ -118,14 +119,17 @@ const ProductList = () => {
             </>
           ) : (
             <>
-              Shop Our <span className="highlight">Favorites</span>
+              <div className="text">
+                Shop Our <span className="highlight">Favorites</span>
+              </div>
+
+              {/* ✨ Extra Line */}
+              <div className="tagline">
+                Everything your pet loves, all in one place 🐾
+              </div>
             </>
           )}
         </motion.h2>
-
-        <p className="section-subtitle">
-          Handpicked quality products for your loving pets.
-        </p>
       </div>
 
       {/* PRODUCTS */}
@@ -243,7 +247,7 @@ const ProductList = () => {
               return (
                 <div className="suggest-card" key={product.product_id}>
                   <Link to={`/product/${product.product_id}`}>
-                    <img src={imageUrl} alt={product.name} />
+                    <img src={imageUrl} alt={product.name} className="product-img" />
                   </Link>
 
                   <div className="suggest-info">
