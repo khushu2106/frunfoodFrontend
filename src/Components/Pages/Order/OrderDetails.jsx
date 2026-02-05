@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./OrderDetails.css";
+import "./Orders.css";
 
 const OrderDetails = () => {
   const { orderId } = useParams();
