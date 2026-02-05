@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaUser, FaSignInAlt } from "react-icons/fa";
+import logo from "../../../assets/logo.png";
 import axios from "axios";
 import "./Header.css";
 import { AuthContext } from "../../Pages/Auth/Authcontext";
+
 
 const Header = () => {
   const [openProfile, setOpenProfile] = useState(false);
@@ -47,10 +49,15 @@ const Header = () => {
     navigate("/logout");    // redirect
   };
 
+
+
   return (
     <header className="header">
-      <div className="logo">🐶 Pet Food Shop</div>
-
+      <div>
+      <img src={logo} alt="Fur & Food" className="logo" />
+        <span className="brand-name">Fur & Food</span>
+</div>
+ 
       <nav className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
@@ -105,6 +112,7 @@ const Header = () => {
         )}
       </div>
     </header>
+    
   );
 };
 

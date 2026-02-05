@@ -1,0 +1,15 @@
+.category-sidebar {
+  width: 240px;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.category-item {
+  padding: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.category-item:hover {
+  background: #f7f7f7;
+}

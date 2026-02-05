@@ -1,14 +1,14 @@
 
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffebff, #f1c4ef);
+  background: #fbe3c3;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .auth-card {
-  background: #fff;
+  background: #f6f4f4;
   padding: 30px;
   width: 100%;
   max-width: 380px;
@@ -74,8 +74,8 @@
 }
 
 .btn-primary:hover {
-  background: #eeb2d6;
-  color: #000;
+  background: #8a3a2a;
+  color: #efecec;
 }
 
 .auth-footer {

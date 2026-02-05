@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 const AddPurchase = () => {
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);

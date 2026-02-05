@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Offers.css";
+import FAQ from "../FAQ/FAQ";
+
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
@@ -38,6 +40,7 @@ const Offers = () => {
   };
 
   return (
+    <>
     <div className="offers-page">
       <div className="offer-grid">
 
@@ -70,7 +73,11 @@ const Offers = () => {
         </div>
 
       </div>
+    
     </div>
+          <FAQ />
+
+    </>
   );
 };
 

@@ -4,19 +4,19 @@ import "./Category.css";
 
 const categories = [
   {
-    id: 1,
+    id: 11,
     name: "All",
     icon: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
     bg: "#efedff",
   },
   {
-    id: 2,
+    id: 12,
     name: "Cat",
     icon: "https://cdn-icons-png.flaticon.com/512/616/616430.png",
     bg: "#fff0cf",
   },
   {
-    id: 3,
+    id: 13,
     name: "Dog",
     icon: "https://cdn-icons-png.flaticon.com/512/194/194279.png",
     bg: "#e7f4dc",

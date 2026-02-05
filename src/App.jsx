@@ -39,6 +39,7 @@ import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
 import Feedback from "./Components/Pages/Feedback/Feedback"
 import Complaint from "./Components/Pages/Complaint/Complaint"
 import Header from './Components/Common/Header/Header';
+import FAQ from "./Components/Home/FAQ/FAQ";
 import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
@@ -95,7 +96,7 @@ function LayoutWrapper() {
         <Route path="/about" element={<Aboutus />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
-
+        <Route path="/faq" element={<FAQ />} />
         {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registration />} />
