@@ -197,19 +197,37 @@ const ProductDetails = () => {
   /* ================= ADD TO CART ================= */
   const handleAddToCart = async () => {
     if (!product) return;
+    const token = localStorage.getItem("userToken");
+    let user_id = null;
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        user_id = payload.user_id || payload.id; 
+      } catch (e) {
+        console.error("Token parsing error", e);
+      }
+    }
+    if (!user_id) {
+      alert("Please login to add items to cart!");
+      navigate("/login");
+      return;
+    }
 
     try {
-      await axios.post(`${BASE_URL}/api/cart/add`, {
-        user_id: 1,                 // JWT later
+      const res = await axios.post("http://localhost:5000/api/cart/add", {
+        user_id: user_id, 
         product_id: product.product_id,
         qty: quantity,
         price: product.price
       });
 
-      navigate("/cart");
+      if (res.status === 200 || res.status === 201) {
+        navigate("/cart");
+      }
     } catch (error) {
       console.error("Add to Cart Error:", error);
-      alert("Failed to add to cart");
+      alert("Failed to add product to cart.");
     }
   };
 

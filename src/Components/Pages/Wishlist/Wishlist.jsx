@@ -88,18 +88,22 @@
 // export default Wishlist;
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Wishlist.css";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
-  const BASE_URL = "http://localhost:5000";
-
-  // ⚠️ TEMPORARY (jab tak login nahi aata)
-  const user_id = 1;
+  const [loading, setLoading] = useState(true);
+  const user_id = localStorage.getItem("user_id");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchWishlist();
-  }, []);
+    if (user_id) {
+      fetchWishlist();
+    } else {
+      setLoading(false);
+    }
+  }, [user_id]);
 
   const fetchWishlist = async () => {
     try {
@@ -107,6 +111,8 @@ const Wishlist = () => {
       setWishlist(res.data);
     } catch (error) {
       console.error("Wishlist fetch error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,7 +126,7 @@ const Wishlist = () => {
         price: item.price
       });
 
-      alert("Added to cart 🛒");
+      alert("Product added to cart! 🛒");
     } catch (error) {
       console.error("Add to cart error:", error);
       alert("Failed to add product to cart");
@@ -143,38 +149,46 @@ const Wishlist = () => {
     }
   };
 
+  if (loading) return <div className="loader">Loading your favorites...</div>;
+
   return (
     <div className="wishlist-container">
-      <h2>My Wishlist ❤️</h2>
+      <div className="wishlist-header">
+        <h2>My Wishlist ❤️</h2>
+        <p>{wishlist.length} Items saved</p>
+      </div>
 
       {wishlist.length === 0 ? (
-        <p className="empty">Your wishlist is empty 😔</p>
+        <div className="empty-state">
+          <p className="empty">Your wishlist is empty 😔</p>
+          <button className="btn-shop" onClick={() => navigate("/products")}>
+            Shop Now
+          </button>
+        </div>
       ) : (
         <div className="wishlist-grid">
           {wishlist.map((item) => (
-            <div className="wishlist-card" key={item.wishlist_id}>
-              <img
-                src={`${BASE_URL}/${item.image_url}`}
-                alt={item.name}
-              />
+            <div className="wishlist-card" key={item.id}>
+              <div className="image-container">
+                <img 
+                  src={`http://localhost:5000/${item.image_url}`} 
+                  alt={item.name} 
+                  onClick={() => navigate(`/product/${item.product_id}`)}
+                />
+              </div>
+              
+              <div className="wishlist-info">
+                <h4>{item.name}</h4>
+                <p className="price">₹{item.price}</p>
 
-              <h4>{item.name}</h4>
-              <p className="price">₹{item.price}</p>
-
-              <div className="actions">
-                <button
-                  className="btn-cart"
-                  onClick={() => addToCart(item)}
-                >
-                  Add to Cart
-                </button>
-
-                <button
-                  className="btn-remove"
-                  onClick={() => removeFromWishlist(item.wishlist_id)}
-                >
-                  Remove
-                </button>
+                <div className="actions">
+                  <button className="btn-cart" onClick={() => addToCart(item)}>
+                    Add to Cart
+                  </button>
+                  <button className="btn-remove" onClick={() => removeFromWishlist(item.id)}>
+                    Remove
+                  </button>
+                </div>
               </div>
             </div>
           ))}

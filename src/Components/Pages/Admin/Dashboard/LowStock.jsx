@@ -6,7 +6,7 @@ const LowStock = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/admin/stats", {
+    axios.get("http://localhost:5000/api/admin/dashboard/low-stock", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
 

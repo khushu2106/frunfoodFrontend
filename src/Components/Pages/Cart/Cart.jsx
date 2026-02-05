@@ -10,9 +10,20 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const user_id = 1;
+  const token = localStorage.getItem("userToken");
+  let user_id = null;
+
+  if(token){
+    try{
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      user_id = payload.user_id || payload.id;
+    }catch(e){
+      console.error("Token error",e);
+    }
+  }
 
   const fetchCart = async () => {
+    if (!user_id) return;
     try {
       const res = await axios.get(`http://localhost:5000/api/cart/${user_id}`);
       setCartItems(res.data);
@@ -126,7 +137,7 @@ const Cart = () => {
             </div>
             <button
               className="checkout-now"
-              onClick={() => navigate("/checkout", { state: { totalAmount: totalPrice } })}
+              onClick={() => navigate("/checkout", { state: { totalAmount: totalPrice, cartItems: cartItems } })}
             >
               Proceed to Checkout
             </button>

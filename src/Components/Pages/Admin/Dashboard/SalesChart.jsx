@@ -7,7 +7,7 @@
 //   const [data, setDate] = useState([]);
 
 //   useEffect(() =>{
-//     axios.get(`http://localhost:5000/api/admin/sales-graph?type=${type}`).then(res =>{
+//     axios.get(`http://localhost:5000/api/admin/dashboard/sales-chart?type=${type}`).then(res =>{
 //       setDate(res.data);
 //     })
 //     .catch(err => console.error("Sales graph error ",err));

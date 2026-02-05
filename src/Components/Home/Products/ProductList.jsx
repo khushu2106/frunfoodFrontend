@@ -17,7 +17,7 @@ const ProductList = () => {
   const [page, setPage] = useState(1);
 
   const BASE_URL = "http://localhost:5000";
-  const user_id = 1; // TODO: JWT later
+  const user_id = 1; // TODO: replace with JWT user
   const productsPerPage = 12;
 
   /* 🔍 SEARCH QUERY */
@@ -29,7 +29,7 @@ const ProductList = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // main products (search / all)
+        // main products
         const productRes = await axios.get(
           searchQuery
             ? `${BASE_URL}/api/products?search=${searchQuery}`
@@ -40,7 +40,7 @@ const ProductList = () => {
         setProducts(mainProducts);
         setPage(1);
 
-        // suggestions only when search exists
+        // suggested products
         if (searchQuery) {
           const allRes = await axios.get(`${BASE_URL}/api/products`);
           const others = allRes.data.filter(
@@ -50,8 +50,8 @@ const ProductList = () => {
         } else {
           setSuggestedProducts([]);
         }
-      } catch (err) {
-        console.error("Error fetching products:", err);
+      } catch (error) {
+        console.error("Error fetching products:", error);
         setProducts([]);
         setSuggestedProducts([]);
       } finally {
@@ -72,8 +72,7 @@ const ProductList = () => {
         price: product.price,
       });
       alert("Added to cart 🛒");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
       alert("Failed to add to cart");
     }
   };
@@ -86,7 +85,7 @@ const ProductList = () => {
         product_id: product.product_id,
       });
       alert("Added to wishlist ❤️");
-    } catch (err) {
+    } catch {
       alert("Already in wishlist");
     }
   };
@@ -113,17 +112,23 @@ const ProductList = () => {
           className="section-title"
         >
           {searchQuery ? (
-            <>Search results for <span className="highlight">"{searchQuery}"</span></>
+            <>
+              Search results for{" "}
+              <span className="highlight">"{searchQuery}"</span>
+            </>
           ) : (
-            <>Shop Our <span className="highlight">Favorites</span></>
+            <>
+              Shop Our <span className="highlight">Favorites</span>
+            </>
           )}
         </motion.h2>
+
         <p className="section-subtitle">
           Handpicked quality products for your loving pets.
         </p>
       </div>
 
-      {/* PRODUCTS SLIDER */}
+      {/* PRODUCTS */}
       {currentProducts.length === 0 ? (
         <p className="no-products">No products found 😔</p>
       ) : (
@@ -221,24 +226,44 @@ const ProductList = () => {
         </div>
       )}
 
-      {/* 🔥 SUGGESTED PRODUCTS */}
+      {/* SUGGESTED PRODUCTS */}
+      {/* 🔥 YOU MAY ALSO LIKE */}
       {searchQuery && suggestedProducts.length > 0 && (
-        <>
+        <div className="suggested-section">
           <h3 className="suggest-title">You may also like</h3>
+
           <div className="suggest-grid">
-            {suggestedProducts.map(product => (
-              <div key={product.product_id} className="product-card">
-                <img
-                  src={`${BASE_URL}/${product.image}`}
-                  alt={product.name}
-                />
-                <h4>{product.name}</h4>
-                <p>₹{product.price}</p>
-              </div>
-            ))}
+            {suggestedProducts.map((product) => {
+              const imageUrl = product.image
+                ? product.image.startsWith("http")
+                  ? product.image
+                  : `${BASE_URL}/${product.image}`
+                : "/no-image.png";
+
+              return (
+                <div className="suggest-card" key={product.product_id}>
+                  <Link to={`/product/${product.product_id}`}>
+                    <img src={imageUrl} alt={product.name} />
+                  </Link>
+
+                  <div className="suggest-info">
+                    <h4>{product.name}</h4>
+                    <p className="price">₹{product.price}</p>
+
+                    <button
+                      className="btn-view"
+                      onClick={() => navigate(`/product/${product.product_id}`)}
+                    >
+                      View Product
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </>
+        </div>
       )}
+
     </section>
   );
 };

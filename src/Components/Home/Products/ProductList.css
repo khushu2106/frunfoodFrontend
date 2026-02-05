@@ -118,3 +118,75 @@
   justify-content: center;
   margin-top: 40px;
 }
+
+/* ================= YOU MAY ALSO LIKE ================= */
+
+.suggested-section {
+  margin-top: 60px;
+}
+
+.suggest-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.suggest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.suggest-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.suggest-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.suggest-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.suggest-info {
+  padding: 14px;
+  text-align: center;
+}
+
+.suggest-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.suggest-info .price {
+  font-size: 15px;
+  font-weight: 500;
+  color: #6b2e1f;
+  margin-bottom: 10px;
+}
+
+.btn-view {
+  background: #6b2e1f;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-view:hover {
+  background: #8b3e2c;
+}

@@ -48,14 +48,17 @@ const Login = () => {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          expectedRole: "customer",
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        login(data.token);
-        alert("Login successful!");
+        // save token + user in context
+        login(data.token, data.user);
         navigate("/");
       } else {
         setError(data.error || "Invalid email or password");

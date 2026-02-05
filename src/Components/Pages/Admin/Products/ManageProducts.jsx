@@ -45,12 +45,17 @@ const AdminManageProducts = () => {
           {products.map((p) => (
             <tr key={p.product_id}>
               <td>
-                <img
-                  src={`http://localhost:5000${p.image}`}
-                  alt={p.name}
-                  width="70"
-                />
+                {(() => {
+                  const imageUrl = p.image
+                    ? p.image.startsWith("http")
+                      ? p.image
+                      : `http://localhost:5000/${p.image}`
+                    : "/no-image.png";
+
+                  return <img src={imageUrl} alt={p.name} width="70" />;
+                })()}
               </td>
+
               <td>{p.name}</td>
               <td>₹ {p.price}</td>
               <td>
