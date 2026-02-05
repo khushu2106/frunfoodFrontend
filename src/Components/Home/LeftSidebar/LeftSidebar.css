@@ -1,0 +1,22 @@
+.left-sidebar {
+  width: 260px;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  background: #fff;
+}
+
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-section label {
+  display: block;
+  margin-bottom: 6px;
+  cursor: pointer;
+}

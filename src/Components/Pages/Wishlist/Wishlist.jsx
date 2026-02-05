@@ -61,23 +61,40 @@ const Wishlist = () => {
       ) : (
         <div className="wishlist-grid">
           {wishlist.map((item) => (
-            <div className="wishlist-card" key={item.id}>
-              <img src={`http://localhost:5000/${item.image_url}`} alt={item.name} />
-              <h4>{item.name}</h4>
-              <p className="price">₹{item.price}</p>
+  <div className="wishlist-card" key={item.id || item.wishlist_id}>
+    <img
+      src={`http://localhost:5000/${item.image_url || item.image}`}
+      alt={item.name || item.product_name}
+    />
 
-              <div className="actions">
-                <button className="btn-cart" onClick={() => addToCart(item)}>
-                  Add to Cart
-                </button>
+    <h4>{item.name || item.product_name}</h4>
 
+    <p className="price">
+      ₹{item.price || item.product_price}
+    </p>
 
-                <button className="btn-remove" onClick={() => removeFromWishlist(item.id)}>
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
+    <div className="actions">
+      <button
+        className="btn-cart"
+        onClick={() => addToCart(item)}
+      >
+        Add to Cart
+      </button>
+
+      <button
+        className="btn-remove"
+        onClick={() =>
+          removeFromWishlist(item.id || item.wishlist_id)
+        }
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+))}
+
+           
+          
 
         </div>
       )}

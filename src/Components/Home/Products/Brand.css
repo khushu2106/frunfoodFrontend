@@ -1,0 +1,143 @@
+/* Brand listing section */
+.home-brand-section {
+  padding: 40px 60px;
+  background: #fff;
+}
+
+.brand-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.home-brand-wrapper {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.home-brand-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.home-brand-item {
+  min-width: 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.home-brand-item:hover {
+  transform: translateY(-5px);
+}
+
+.home-brand-logo {
+  width: 90px;
+  height: 90px;
+  margin: auto;
+  border-radius: 50%;
+  background: #f7f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("");
+  background-size: cover;
+}
+
+.home-brand-logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.home-brand-name {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Brand Products Page */
+.brand-products-page {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.brand-products-title {
+  margin-bottom: 20px;
+}
+
+.brand-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.brand-product-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.brand-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.product-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+.product-price {
+  color: #b12704;
+  font-weight: bold;
+  margin-top: auto;
+}
+
+.spinner {
+  font-size: 20px;
+  text-align: center;
+  padding: 50px;
+}
+
+.no-products {
+  text-align: center;
+  padding: 50px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .home-brand-wrapper {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .brand-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+  }
+}

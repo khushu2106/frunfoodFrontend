@@ -30,7 +30,8 @@ const Login = () => {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({email: formData.email.trim().toLowerCase(),
+        password: formData.password}),
       });
 
       const data = await response.json();
@@ -40,8 +41,8 @@ const Login = () => {
         alert("Login successful!");
         navigate("/");
       } else {
-        setError(data.error || "Invalid login credentials");
-        alert("Invalid email and password");
+        setError(data.message || "Invalid login credentials");
+      alert(data.message || "Invalid email or password");
       }
     } catch (err) {
       setError("Server error. Please try again later.");

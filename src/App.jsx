@@ -51,7 +51,8 @@ import AddPurchase from './Components/Pages/Admin/AddPurchase';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
-import Products from "./Components/Pages/Products";
+import Brand from "./Components/Home/Products/Brand";
+import BrandProducts from './Components/Home/Products/BrandProducts';
 // --- Auth Components ---
 import LoginD from './Components/Pages/Delivery/AuthD/LoginD';
 import ForgetPasswordD from './Components/Pages/Delivery/AuthD/ForgetPasswordD';
@@ -89,8 +90,8 @@ function LayoutWrapper() {
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /></>} />
-        <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
+        <Route path="/" element={<><HeroHome/><Category/><Brand/><ProductList/><Offers/></>}
+        />
         <Route
           path="/product/:id"
           element={<ProductDetails key={window.location.pathname} />}
@@ -105,6 +106,7 @@ function LayoutWrapper() {
          <Route path="/faq" element={<Faq />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
+        <Route path="/brands/:id" element={<BrandProducts />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />

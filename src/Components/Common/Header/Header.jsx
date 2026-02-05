@@ -419,11 +419,11 @@ const Header = () => {
           {productOpen && (
             <div className="products-dropdown-menu">
               <Link to="/products" onClick={() => setMenuOpen(false)}>All</Link>
-              <Link to="/products/category/cat">Cat</Link>
-              <Link to="/products/category/dog">Dog</Link>
-              <Link to="/products/category/puppy">Puppy</Link>
-              <Link to="/products/category/accessories">Accessories</Link>
-              <Link to="/products/category/toys">Toys</Link>
+              <Link to="/products/category/2">Cat</Link>
+              <Link to="/products/category/1">Dog</Link>
+              <Link to="/products/category/3">Puppy</Link>
+              <Link to="/products/category/sub_categories/4">Accessories</Link>
+              <Link to="/products/category/sub_categories/3">Toys</Link>
             </div>
           )}
         </div>
