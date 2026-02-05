@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 const AddPurchase = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -41,12 +42,13 @@ const AddPurchase = () => {
 
     try {
       await axios.post("http://localhost:5000/api/purchases", {
-        supplier_id: supplierId,
-        product_id: productId,
-        quantity,
-        price,
+        supplier_id: Number(supplierId),
+        product_id: Number(productId),
+        quantity: Number(quantity),
+        price: Number(price),
         p_date: date
       });
+
 
       // Reset form
       setSupplierId("");
@@ -58,9 +60,10 @@ const AddPurchase = () => {
 
       navigate("/admin/transaction", { state: { successMessage: "Purchase added successfully!" } });
     } catch (err) {
-      console.error(err);
-      setErrorMessage("Error adding purchase");
+      console.error(err.response?.data || err.message);
+      setErrorMessage(err.response?.data?.error || "Error adding purchase");
     }
+
   };
 
   const handleViewAll = () => {

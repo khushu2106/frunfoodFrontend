@@ -14,59 +14,79 @@ const Offers = () => {
         discount: "Up to 90% OFF",
         desc: "Stock up before you miss out!",
         image: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
-        type: "big"
+        type: "clearance",   // 🔥 offer type
+        size: "big"
       },
       {
         id: 2,
-        title: "Get 10% OFF",
+        title: "Festival Offer",
         desc: "To brighten a loved one's day.",
         image: "https://cdn-icons-png.flaticon.com/512/616/616554.png",
-        type: "small"
+        type: "festival",
+        size: "small"
       },
       {
         id: 3,
         title: "Black Friday",
-        desc: "Get 10% OFF",
+        desc: "Get exciting discounts",
         image: "https://cdn-icons-png.flaticon.com/512/616/616430.png",
-        type: "small"
+        type: "black-friday",
+        size: "small"
       }
     ]);
   }, []);
 
-  const goToProducts = () => {
-    navigate("/products"); // ProductList.jsx ka route
+  // ✅ Redirect to OfferProducts page
+  const goToOfferProducts = (offerType) => {
+    navigate(`/offers/${offerType}`);
   };
 
   return (
     <div className="offers-page">
       <div className="offer-grid">
 
-        {offers.filter(i => i.type === "big").map(item => (
-          <div key={item.id} className="offer-card big yellow">
-            <span className="badge">{item.discount}</span>
-            <h2>{item.title}</h2>
-            <p>{item.desc}</p>
+        {/* 🔥 BIG OFFER */}
+        {offers
+          .filter(o => o.size === "big")
+          .map(item => (
+            <div key={item.id} className="offer-card big yellow">
+              <span className="badge">{item.discount}</span>
+              <h2>{item.title}</h2>
+              <p>{item.desc}</p>
 
-            <button onClick={goToProducts}>Shop Now</button>
+              <button onClick={() => goToOfferProducts(item.type)}>
+                Shop Now
+              </button>
 
-            <img src={item.image} alt="offer" className="offer-img left" />
-          </div>
-        ))}
-
-        <div className="right-offers">
-          {offers.filter(i => i.type === "small").map(item => (
-            <div key={item.id} className="offer-card light">
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-
-                <button className="dark-btn" onClick={goToProducts}>
-                  Shop Now
-                </button>
-              </div>
-              <img src={item.image} alt="offer" />
+              <img
+                src={item.image}
+                alt={item.title}
+                className="offer-img left"
+              />
             </div>
           ))}
+
+        {/* 🔹 SMALL OFFERS */}
+        <div className="right-offers">
+          {offers
+            .filter(o => o.size === "small")
+            .map(item => (
+              <div key={item.id} className="offer-card light">
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+
+                  <button
+                    className="dark-btn"
+                    onClick={() => goToOfferProducts(item.type)}
+                  >
+                    Shop Now
+                  </button>
+                </div>
+
+                <img src={item.image} alt={item.title} />
+              </div>
+            ))}
         </div>
 
       </div>

@@ -5,7 +5,7 @@ import HeroHome from './Components/Home/HeroHome/HeroHome';
 import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
-import Faq from "./Components/Home/Faq/Faq";
+// import Faq from "./Components/Home/Faq/Faq";
 
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
@@ -19,6 +19,7 @@ import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
+// import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
@@ -43,6 +44,7 @@ import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
 import Feedback from "./Components/Pages/Feedback/Feedback"
 import Complaint from "./Components/Pages/Complaint/Complaint"
 import Header from './Components/Common/Header/Header';
+// import FAQ from "./Components/Home/FAQ/FAQ";
 import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
@@ -53,6 +55,9 @@ import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
 import Brand from "./Components/Home/Products/Brand";
 import BrandProducts from './Components/Home/Products/BrandProducts';
+import Products from "./Components/Pages/Products";
+import { CartProvider } from './Components/Pages/Cart/Cartcontext';
+
 // --- Auth Components ---
 import LoginD from './Components/Pages/Delivery/AuthD/LoginD';
 import ForgetPasswordD from './Components/Pages/Delivery/AuthD/ForgetPasswordD';
@@ -74,6 +79,13 @@ import ProfileD from './Components/Pages/Delivery/PagesD/ProfileD';
 import SettingsD from './Components/Pages/Delivery/PagesD/SettingsD';
 import OrderDetailsD from './Components/Pages/Delivery/PagesD/OrdersDetailsD';
 import MyOrders from './Components/Pages/Order/Myorder';
+import PendingOrders from './Components/Pages/Admin/Delivery/PendingOrder';
+import AssignDelivery from './Components/Pages/Admin/Delivery/AssignDelivery';
+import DeliveryStatus from './Components/Pages/Admin/Delivery/DeliveryStatus';
+import DeliveryList from './Components/Pages/Admin/Delivery/DeliveryList';
+import ScrollToTop from './Components/Pages/ScrollToTop';
+import FAQ from './Components/Pages/Admin/Chat';
+import OfferProducts from './Components/Home/Offers/OfferProduct';
 
 
 function LayoutWrapper() {
@@ -86,12 +98,13 @@ function LayoutWrapper() {
   const showHeaderFooter = !isAdminRoute && !isAuthRoute && !isdeliveryRoute;
   return (
     <>
+    <ScrollToTop />
       {showHeaderFooter && <Header />}
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome/><Category/><Brand/><ProductList/><Offers/></>}
-        />
+        <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
+        <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
         <Route
           path="/product/:id"
           element={<ProductDetails key={window.location.pathname} />}
@@ -103,10 +116,12 @@ function LayoutWrapper() {
          <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
-         <Route path="/faq" element={<Faq />} />
+         {/* <Route path="/faq" element={<Faq />} /> */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
+
         <Route path="/brands/:id" element={<BrandProducts />} />
+        <Route path="/offers/:offerType" element={<OfferProducts />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -159,9 +174,14 @@ function LayoutWrapper() {
           <Route path="users/:id" element={<UserDetails />} />
           <Route path="invoice" element={<Invoice />} />
           <Route path="view-purchases" element={<ViewPurchases />} />
+          {/* <Route path="delivery" element={<AdminDelivery />} /> */}
+          <Route path="pending" element={<PendingOrders />} />
+          <Route path="delivery-list" element={<DeliveryList />} />
+          <Route path="assignorder" element={<AssignDelivery />} />
+          <Route path="deliverystatus" element={<DeliveryStatus />} />
         </Route>
 
-        <Route
+               <Route
           path="/delivery"
           element={
             <> <SideBarD /> </>} >
@@ -184,8 +204,6 @@ function LayoutWrapper() {
 
 </Route>
           
-       
-
 
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
@@ -197,9 +215,11 @@ function LayoutWrapper() {
 
 function App() {
   return (
-    <Router>
-      <LayoutWrapper />
-    </Router>
+    <CartProvider>
+      <Router>
+        <LayoutWrapper />
+      </Router>
+    </CartProvider>
   );
 }
 

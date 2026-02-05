@@ -4,7 +4,7 @@ import "./SideBarD.css";
 function SideBarD() {
   return (
     <div className="delivery-container">
-      <aside className="sidebar">
+      <aside className="sidebar" style={{ display: 'block' }}>
         <h2>Delivery Panel</h2>
 
         <nav>

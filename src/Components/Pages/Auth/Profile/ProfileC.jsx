@@ -1,77 +1,160 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProfileC.css";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-
   const [user, setUser] = useState({
-    name: "Khushbu Gupta",
-    email: "khushbu@gmail.com",
-    phone: "9876543210",
-    address: "Ahmedabad, Gujarat",
+    fname: "",
+    lname: "",
+    email: "",
+    mobile_no: "",
+    gender: "",
+    address1: "",
   });
+
+  const token = localStorage.getItem("userToken");
+
+  // Fetch Profile Data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/users/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+    if (token) fetchProfile();
+  }, [token]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Here you will call API to update profile
-    console.log("Updated Data:", user);
+  const handleSave = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/profile/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        setIsEditing(false);
+        alert("Profile Updated Successfully!");
+      } else {
+        alert("Update failed!");
+      }
+    } catch (error) {
+      console.error("Save Error:", error);
+    }
   };
 
   return (
-    <div className="profile-container">
-      <h2>My Profile</h2>
+    <div className="account-layout">
+      {/* Sidebar Navigation */}
+      <aside className="sidebar">
+        <h3>My account</h3>
+        <ul>
+          <li className="active">My details</li>
+          <li>My wishlist</li>
+          <li>My orders</li>
+          <li>My address book</li>
+        </ul>
+        <button className="logout-btn">Log out</button>
+      </aside>
 
-      <div className="profile-card">
-        <div className="profile-field">
-          <label>Name</label>
-          {isEditing ? (
-            <input name="name" value={user.name} onChange={handleChange} />
-          ) : (
-            <p>{user.name}</p>
-          )}
-        </div>
+      {/* Main Content Area */}
+      <main className="profile-main-content">
+        <h2>My details</h2>
 
-        <div className="profile-field">
-          <label>Email</label>
-          {isEditing ? (
-            <input name="email" value={user.email} onChange={handleChange} />
-          ) : (
-            <p>{user.email}</p>
-          )}
-        </div>
+        {/* Profile Card */}
+        <div className="profile-card">
+          {/* First Name */}
+          <div className="profile-field">
+            <label>First name</label>
+            {isEditing ? (
+              <input name="fname" value={user.fname || ""} onChange={handleChange} />
+            ) : (
+              <p>{user.fname || "Not set"}</p>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <label>Phone</label>
-          {isEditing ? (
-            <input name="phone" value={user.phone} onChange={handleChange} />
-          ) : (
-            <p>{user.phone}</p>
-          )}
-        </div>
+          {/* Last Name */}
+          <div className="profile-field">
+            <label>Last name</label>
+            {isEditing ? (
+              <input name="lname" value={user.lname || ""} onChange={handleChange} />
+            ) : (
+              <p>{user.lname || "Not set"}</p>
+            )}
+          </div>
 
-        <div className="profile-field">
-          <label>Address</label>
-          {isEditing ? (
-            <textarea name="address" value={user.address} onChange={handleChange} />
-          ) : (
-            <p>{user.address}</p>
-          )}
-        </div>
+          {/* Gender */}
+          <div className="profile-field">
+            <label>Gender</label>
+            {isEditing ? (
+              <select name="gender" value={user.gender || ""} onChange={handleChange} className="gender-select">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            ) : (
+              <p>{user.gender || "Not set"}</p>
+            )}
+          </div>
 
-        <div className="profile-actions">
-          {isEditing ? (
-            <button onClick={handleSave} className="save-btn">Save</button>
-          ) : (
-            <button onClick={() => setIsEditing(true)} className="edit-btn">
-              Edit Profile
-            </button>
-          )}
+          {/* Phone Number */}
+          <div className="profile-field">
+            <label>Phone number</label>
+            {isEditing ? (
+              <input name="mobile_no" value={user.mobile_no || ""} onChange={handleChange} />
+            ) : (
+              <p>{user.mobile_no || "Not set"}</p>
+            )}
+          </div>
+
+          {/* Email Address */}
+          <div className="profile-field full-width">
+            <label>Email address</label>
+            {isEditing ? (
+              <input name="email" value={user.email || ""} onChange={handleChange} />
+            ) : (
+              <p>{user.email}</p>
+            )}
+          </div>
+
+          {/* Address */}
+          <div className="profile-field full-width">
+            <label>Address</label>
+            {isEditing ? (
+              <textarea name="address1" value={user.address1 || ""} onChange={handleChange} />
+            ) : (
+              <p>{user.address1 || "No address provided"}</p>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="profile-actions">
+            {isEditing ? (
+              <button onClick={handleSave} className="save-btn">
+                Save my details
+              </button>
+            ) : (
+              <button onClick={() => setIsEditing(true)} className="edit-btn">
+                Edit Details
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

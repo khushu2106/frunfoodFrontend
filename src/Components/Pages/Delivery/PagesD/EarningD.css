@@ -1,68 +1,31 @@
-/* Page background */
-body {
-  background-color: #f4f6f8;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.earnings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-/* Main card */
-.earningsD {
-  max-width: 480px;
-  margin: 80px auto;
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+.earn-card {
+  padding: 20px;
+  border-radius: 12px;
   text-align: center;
-  position: relative;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Earnings icon */
-.earningsD::before {
-  content: "₹";
-  font-size: 50px;
+#total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.today { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a5c37; }
+.orders { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #7a4a00; }
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.amount-text {
+  color: #28a745;
   font-weight: bold;
-  background: #16a34a;
-  color: #ffffff;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Heading */
-.earningsD h2 {
-  margin-top: 55px;
-  font-size: 24px;
-  color: #333;
-}
-
-/* Earnings details box */
-.earnings-box {
-  margin-top: 20px;
-}
-
-/* Each row */
-.earnings-box p {
-  background: #f0fdf4;
-  padding: 14px;
-  margin: 12px 0;
-  border-radius: 10px;
-  font-size: 16px;
-  color: #065f46;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Hover effect */
-.earnings-box p:hover {
-  background: #dcfce7;
-  transform: scale(1.03);
-  transition: 0.3s ease;
 }

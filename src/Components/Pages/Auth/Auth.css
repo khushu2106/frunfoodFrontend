@@ -1,7 +1,8 @@
 
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ece8ec, #e9e2e9);
+  /* background: linear-gradient(135deg, #ece8ec, #e9e2e9); */
+  background-image: "../src/assets/login.png";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,4 +236,37 @@
   color: #f97316;
   cursor: pointer;
   font-weight: 600;
+}
+.error-text {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 45px; 
+  box-sizing: border-box;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+  user-select: none;
+}
+
+.eye-icon:hover {
+  color: #000;
 }

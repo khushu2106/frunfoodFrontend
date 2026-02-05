@@ -1,14 +1,31 @@
-
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffebff, #f1c4ef);
+  /* background: #fbe3c3; */
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.auth-container::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../src/assets/login.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter:blur(6px);
+  transform: scale(1.05);
+  opacity: 0.7;
+  z-index: 0;
 }
 
 .auth-card {
-  background: #fff;
+  background: #f6f4f4;
+  position: relative;
   padding: 30px;
   width: 100%;
   max-width: 380px;
@@ -74,8 +91,8 @@
 }
 
 .btn-primary:hover {
-  background: #eeb2d6;
-  color: #000;
+  background: #8a3a2a;
+  color: #efecec;
 }
 
 .auth-footer {
