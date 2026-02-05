@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
-import axios from 'axios';
-import './ProductList.css';
+import axios from "axios";
+import "./ProductList.css";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -12,41 +17,41 @@ const ProductList = () => {
   const [page, setPage] = useState(1);
 
   const BASE_URL = "http://localhost:5000";
-  const user_id = 1; // ⚠️ later JWT
+  const user_id = 1; // TODO: JWT later
   const productsPerPage = 12;
 
-  /* 🔍 SEARCH QUERY FROM URL */
+  /* 🔍 SEARCH QUERY */
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get("search");
 
-  /* ================= FETCH PRODUCTS (SEARCH + SUGGESTIONS) ================= */
+  /* ================= FETCH PRODUCTS ================= */
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const url = searchQuery
-          ? `${BASE_URL}/api/products?search=${searchQuery}`
-          : `${BASE_URL}/api/products`;
+        // main products (search / all)
+        const productRes = await axios.get(
+          searchQuery
+            ? `${BASE_URL}/api/products?search=${searchQuery}`
+            : `${BASE_URL}/api/products`
+        );
 
-        // 🔹 main products
-        const response = await axios.get(url);
-        const resultProducts = response.data || [];
-        setProducts(resultProducts);
+        const mainProducts = productRes.data || [];
+        setProducts(mainProducts);
         setPage(1);
 
-        // 🔹 suggestions (only when search applied)
+        // suggestions only when search exists
         if (searchQuery) {
           const allRes = await axios.get(`${BASE_URL}/api/products`);
           const others = allRes.data.filter(
-            p => !resultProducts.find(r => r.product_id === p.product_id)
+            p => !mainProducts.some(m => m.product_id === p.product_id)
           );
           setSuggestedProducts(others.slice(0, 6));
         } else {
           setSuggestedProducts([]);
         }
-
-      } catch (error) {
-        console.error("Error fetching products:", error);
+      } catch (err) {
+        console.error("Error fetching products:", err);
         setProducts([]);
         setSuggestedProducts([]);
       } finally {
@@ -57,33 +62,32 @@ const ProductList = () => {
     fetchProducts();
   }, [searchQuery]);
 
-  /* ================= QUICK ADD TO CART ================= */
+  /* ================= QUICK ADD ================= */
   const handleQuickAdd = async (product) => {
     try {
       await axios.post(`${BASE_URL}/api/cart/add`, {
         user_id,
         product_id: product.product_id,
         qty: 1,
-        price: product.price
+        price: product.price,
       });
       alert("Added to cart 🛒");
-    } catch (error) {
-      console.error("Quick Add Error:", error);
+    } catch (err) {
+      console.error(err);
       alert("Failed to add to cart");
     }
   };
 
-  /* ================= ADD TO WISHLIST ================= */
+  /* ================= WISHLIST ================= */
   const handleAddToWishlist = async (product) => {
     try {
       await axios.post(`${BASE_URL}/api/wishlist`, {
         user_id,
-        product_id: product.product_id
+        product_id: product.product_id,
       });
       alert("Added to wishlist ❤️");
-    } catch (error) {
-      console.error("Wishlist Error:", error);
-      alert("Already in wishlist or error occurred");
+    } catch (err) {
+      alert("Already in wishlist");
     }
   };
 
@@ -94,8 +98,10 @@ const ProductList = () => {
   /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(products.length / productsPerPage);
   const startIndex = (page - 1) * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
-  const currentProducts = products.slice(startIndex, endIndex);
+  const currentProducts = products.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
 
   return (
     <section className="product-section">
@@ -107,84 +113,87 @@ const ProductList = () => {
           className="section-title"
         >
           {searchQuery ? (
-            <>
-              Search results for <span className="highlight">"{searchQuery}"</span>
-            </>
+            <>Search results for <span className="highlight">"{searchQuery}"</span></>
           ) : (
-            <>
-              Shop Our <span className="highlight">Favorites</span>
-            </>
+            <>Shop Our <span className="highlight">Favorites</span></>
           )}
         </motion.h2>
-
         <p className="section-subtitle">
           Handpicked quality products for your loving pets.
         </p>
       </div>
 
-      {/* MAIN PRODUCTS */}
-      <div className="product-grid">
-        {currentProducts.length === 0 && (
-          <p className="no-products">No products found 😔</p>
-        )}
+      {/* PRODUCTS SLIDER */}
+      {currentProducts.length === 0 ? (
+        <p className="no-products">No products found 😔</p>
+      ) : (
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          spaceBetween={20}
+          slidesPerView={4}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 },
+          }}
+          className="product-slider"
+        >
+          {currentProducts.map((product, index) => {
+            const imageUrl = product.image
+              ? product.image.startsWith("http")
+                ? product.image
+                : `${BASE_URL}/${product.image}`
+              : "/no-image.png";
 
-        {currentProducts.map((product, index) => {
-          const imageUrl = product.image
-            ? product.image.startsWith("http")
-              ? product.image
-              : `${BASE_URL}/${product.image}`
-            : "/no-image.png";
-
-          return (
-            <motion.div
-              key={product.product_id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="product-card-container"
-            >
-              <div className="product-card">
-                <div className="product-image-box">
-                  <Link to={`/product/${product.product_id}`}>
-                    <img src={imageUrl} alt={product.name} className="product-img" />
-                  </Link>
-
-                  <div className="hover-action">
-                    <button
-                      className="action-btn"
-                      onClick={() => handleAddToWishlist(product)}
-                    >
-                      <Heart size={18} />
-                    </button>
-
-                    <button
-                      className="add-to-cart-btn"
-                      onClick={() => handleQuickAdd(product)}
-                    >
-                      <ShoppingCart size={18} /> Quick Add
-                    </button>
-
-                    <Link
-                      to={`/product/${product.product_id}`}
-                      className="action-btn"
-                    >
-                      <Eye size={18} />
+            return (
+              <SwiperSlide key={product.product_id}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className="product-card"
+                >
+                  <div className="product-image-box">
+                    <Link to={`/product/${product.product_id}`}>
+                      <img src={imageUrl} alt={product.name} />
                     </Link>
-                  </div>
-                </div>
 
-                <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
-                  <div className="product-footer">
+                    <div className="hover-action">
+                      <button
+                        className="action-btn"
+                        onClick={() => handleAddToWishlist(product)}
+                      >
+                        <Heart size={18} />
+                      </button>
+
+                      <button
+                        className="add-to-cart-btn"
+                        onClick={() => handleQuickAdd(product)}
+                      >
+                        <ShoppingCart size={18} /> Quick Add
+                      </button>
+
+                      <Link
+                        to={`/product/${product.product_id}`}
+                        className="action-btn"
+                      >
+                        <Eye size={18} />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
                     <span className="product-price">₹{product.price}</span>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+                </motion.div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
 
       {/* PAGINATION */}
       {totalPages > 1 && (
@@ -203,7 +212,10 @@ const ProductList = () => {
             </button>
           ))}
 
-          <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
             Next
           </button>
         </div>
@@ -213,21 +225,17 @@ const ProductList = () => {
       {searchQuery && suggestedProducts.length > 0 && (
         <>
           <h3 className="suggest-title">You may also like</h3>
-
-          <div className="product-grid">
-            {suggestedProducts.map(product => {
-              const imageUrl = product.image
-                ? `${BASE_URL}/${product.image}`
-                : "/no-image.png";
-
-              return (
-                <div key={product.product_id} className="product-card">
-                  <img src={imageUrl} alt={product.name} className="product-img" />
-                  <h4 className="product-name">{product.name}</h4>
-                  <p className="product-price">₹{product.price}</p>
-                </div>
-              );
-            })}
+          <div className="suggest-grid">
+            {suggestedProducts.map(product => (
+              <div key={product.product_id} className="product-card">
+                <img
+                  src={`${BASE_URL}/${product.image}`}
+                  alt={product.name}
+                />
+                <h4>{product.name}</h4>
+                <p>₹{product.price}</p>
+              </div>
+            ))}
           </div>
         </>
       )}
