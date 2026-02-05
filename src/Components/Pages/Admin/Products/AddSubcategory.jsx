@@ -104,11 +104,11 @@ const AddSubcategory = () => {
           <tbody>
             {subcategories.map(sub => (
               <tr key={sub.sub_cat_id}>
-                <td>{sub.subcategory_name}</td>
+                <td>{sub.name}</td>
                 <td>{sub.category_name}</td>
                 <td>
                   <button onClick={() => handleEdit(sub)} style={{ marginRight: '5px' }}>Edit</button>
-                  <button onClick={() => handleDelete(sub.sub_cat_id)} style={{ color: 'red' }}>Delete</button>
+                  <button onClick={() => handleDelete(sub.sub_cat_id)} style={{ color: 'white' }}>Delete</button>
                 </td>
               </tr>
             ))}

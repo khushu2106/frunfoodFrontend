@@ -3,11 +3,12 @@ import StatCard from "./StatCard";
 import SalesChart from "./SalesChart";
 import RecentOrders from "./RecentOrders";
 import LowStock from "./LowStock";
+import "./AdminFooter.css";
 import axios from "axios";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
-    Total_Sales: 0,
+    Total_sales: 0,
     Total_Orders: 0,
     Total_Customers: 0,
     Total_Products: 0
@@ -30,7 +31,7 @@ const Dashboard = () => {
       <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
         <StatCard
           title="Total Sales"
-          value={`₹${Number(stats.Total_Sales).toLocaleString("en-IN")}`}
+          value={`₹${stats.Total_sales}`}
         />
 
         <StatCard title="Total Orders" value={stats.Total_Orders} />
@@ -49,6 +50,30 @@ const Dashboard = () => {
         <RecentOrders />
         <LowStock />
       </div>
+      <footer className="admin-footer">
+        <div className="admin-footer-container">
+
+          {/* LEFT */}
+          <div className="admin-footer-left">
+            <h4>Fur & Food Admin Panel</h4>
+            <p>Manage products, categories, brands & orders easily.</p>
+          </div>
+
+          {/* CENTER */}
+          <div className="admin-footer-center">
+            <p>© {new Date().getFullYear()} Fur & Food</p>
+            <p>All rights reserved.</p>
+          </div>
+
+          {/* RIGHT */}
+          <div className="admin-footer-right">
+            <span>Admin Dashboard</span>
+            <span className="dot">•</span>
+            <span>v1.0</span>
+          </div>
+
+        </div>
+      </footer>
     </div>
   );
 };

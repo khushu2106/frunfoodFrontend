@@ -24,6 +24,7 @@ import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
+import OrderDetails from './Components/Pages/Order/OrderDetails';
 import Registration from './Components/Pages/Auth/Registration';
 import VerifyOTP from './Components/Pages/Auth/VerifyOTP';
 import ResetPassword from './Components/Pages/Auth/ResetPassword';
@@ -49,6 +50,7 @@ import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
 import AdminLogin from './Components/Pages/Admin/AdminLogin';
+import AdminLogout from './Components/Pages/Admin/AdminLogout';
 import AddPurchase from './Components/Pages/Admin/AddPurchase';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
@@ -105,17 +107,15 @@ function LayoutWrapper() {
         {/* Home */}
         <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
         <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
-        <Route
-          path="/product/:id"
-          element={<ProductDetails key={window.location.pathname} />}
-        />
+        <Route path="/product/:id" element={<ProductDetails />}/>
         <Route path="/productSearch" element={<ProductSearch />} />
-                    <Route path="/products/category/:category" element={<CategoryProducts />} />
+        <Route path="/products/category/:category" element={<CategoryProducts />} />
 
-         <Route path="/ProductFilter" element={<ProductFilter />} />
-         <Route path="/ProductSearch" element={<ProductSearch />} />
+        <Route path="/ProductFilter" element={<ProductFilter />} />
+        <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
+        <Route path="/faq" element={<Faq />} />
          {/* <Route path="/faq" element={<Faq />} /> */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
@@ -130,14 +130,14 @@ function LayoutWrapper() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* User */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/myorders" element={<MyOrders />} />
+        <Route path="/myorders/:id" element={<OrderDetails />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />
         <Route path="/feedback" element={<Feedback />} />
@@ -179,31 +179,34 @@ function LayoutWrapper() {
           <Route path="delivery-list" element={<DeliveryList />} />
           <Route path="assignorder" element={<AssignDelivery />} />
           <Route path="deliverystatus" element={<DeliveryStatus />} />
-        </Route>
 
-               <Route
+
+        </Route>
+        <Route path="/admin/logout" element={<AdminLogout />} />
+
+        <Route
           path="/delivery"
           element={
             <> <SideBarD /> </>} >
           <Route index element={<DashBoardD />} />
 
-  <Route path="dashboard" element={<DashBoardD />} />
-  <Route path="login" element={<LoginD />} />
-  <Route path="otpverify" element={<OtpVerifyD />} />
-  <Route path="forgot-password" element={<ForgotPassword />} />
-  <Route path="logout" element={<LogoutD />} />
-  <Route path="profile" element={<ProfileD />} />
-  <Route path="settings" element={<SettingsD />} />
-  <Route path="add-delivery" element={<AddDeliveryBoyD />} />
-  <Route path="assigned-orders" element={<AssignedOrdersD />} />
-  <Route path="availability" element={<AvailabilityD />} />
-  <Route path="history" element={<DeliveryHistoryD />} />
-  <Route path="earning" element={<EarningD />} />
-  <Route path="notifications" element={<NotificationsD />} />
-  <Route path="orderdetails" element={<OrderDetailsD />} />
+          <Route path="dashboard" element={<DashBoardD />} />
+          <Route path="login" element={<LoginD />} />
+          <Route path="otpverify" element={<OtpVerifyD />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="logout" element={<LogoutD />} />
+          <Route path="profile" element={<ProfileD />} />
+          <Route path="settings" element={<SettingsD />} />
+          <Route path="add-delivery" element={<AddDeliveryBoyD />} />
+          <Route path="assigned-orders" element={<AssignedOrdersD />} />
+          <Route path="availability" element={<AvailabilityD />} />
+          <Route path="history" element={<DeliveryHistoryD />} />
+          <Route path="earning" element={<EarningD />} />
+          <Route path="notifications" element={<NotificationsD />} />
+          <Route path="orderdetails" element={<OrderDetailsD />} />
 
-</Route>
-          
+        </Route>
+
 
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>

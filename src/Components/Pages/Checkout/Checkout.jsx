@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Checkout.css";
@@ -8,10 +8,9 @@ function Checkout() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get data from Cart; fallback to 0 if state is missing
   const totalAmount = location.state?.totalAmount || 0;
-  const cartItems = location.state?.cartItems || []; // Assuming you pass items from cart
-  
+  const cartItems = location.state?.cartItems || [];
+
   const cgst = +(totalAmount * 0.09).toFixed(2);
   const sgst = +(totalAmount * 0.09).toFixed(2);
   const grandTotal = +(totalAmount + cgst + sgst).toFixed(2);
@@ -23,11 +22,14 @@ function Checkout() {
   if (token) {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      userId = payload.id;
-      userEmail = payload.email || userEmail;
+      userId = payload.id || payload.userId;
+      if (payload.email) userEmail = payload.email;
     } catch (e) {
       console.error("Token parsing error", e);
+      navigate("/login");
     }
+  } else {
+    navigate("/login");
   }
 
   const [form, setForm] = useState({
@@ -44,15 +46,14 @@ function Checkout() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // --- FINAL ORDER SUBMISSION ---
-  const submitFinalOrder = async (transactionId = null) => {
+  const submitFinalOrder = async (transactionId = "") => {
     setIsSubmitting(true);
 
     const orderData = {
       user_id: userId,
       total_amount: totalAmount,
-      SGST: sgst,
       CGST: cgst,
+      SGST: sgst,
       shipping_charge: 0,
       S_date: new Date().toISOString().split("T")[0],
       delivery_add1: form.address,
@@ -62,8 +63,6 @@ function Checkout() {
       Payment_mode: form.payment,
       payment_status: form.payment === "COD" ? "pending" : "paid",
       transaction_id: transactionId,
-
-      // INVOICE DATA
       customer: {
         name: form.name,
         email: userEmail,
@@ -71,17 +70,17 @@ function Checkout() {
         address: `${form.address}, ${form.city} - ${form.pincode}`
       },
       items: cartItems.length > 0 ? cartItems : [{ name: "General Items", quantity: 1, price: totalAmount }],
-      tax: cgst + sgst,
+      tax: +(cgst + sgst).toFixed(2),
       total: grandTotal
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/api/sales", orderData);
-      alert("Order placed successfully!");
+      const res = await axios.post("http://localhost:5000/api/sales", orderData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-      if (res.data.invoice) {
-        window.open(`http://localhost:5000/api/sales/invoice/${res.data.invoice}`);
-      }
+      alert("Order placed successfully!");
+      if (res.data.invoice) window.open(`http://localhost:5000/api/sales/invoice/${res.data.invoice}`);
       navigate("/");
     } catch (err) {
       console.error("Order Error:", err.response?.data || err.message);
@@ -90,47 +89,40 @@ function Checkout() {
     }
   };
 
-  // --- HANDLER FOR FORM SUBMIT ---
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!userId) {
       alert("Please login first!");
       navigate("/login");
       return;
     }
 
-    if (form.payment === "UPI") {
-      handleRazorpayPayment();
-    } else {
-      submitFinalOrder(null);
-    }
+    if (form.payment === "UPI") handleRazorpayPayment();
+    else submitFinalOrder();
   };
 
-  // --- RAZORPAY LOGIC ---
   const handleRazorpayPayment = async () => {
-    try {
-      // 1. Create order on backend
-      const response = await fetch('http://localhost:5000/api/payment/add-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: grandTotal }) 
-      });
-      
-      const order = await response.json();
+    if (!window.Razorpay) {
+      alert("Razorpay SDK not loaded. Check your internet connection.");
+      return;
+    }
 
-      if (!window.Razorpay) {
-        alert("Razorpay SDK failed to load. Are you online?");
-        return;
-      }
+    try {
+      const orderResponse = await axios.post(
+        "http://localhost:5000/api/payment/add-payment",
+        { amount: Math.round(grandTotal) },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const order = orderResponse.data;
 
       const options = {
-        key: "rzp_test_S9ljGtWRbBKAdB", 
+        key: "rzp_test_S9ljGtWRbBKAdB",
         amount: order.amount,
         currency: "INR",
         name: "Pet Food Shop",
         description: "Order Payment",
-        order_id: order.id, 
+        order_id: order.id,
         handler: function (response) {
           submitFinalOrder(response.razorpay_payment_id);
         },
@@ -145,8 +137,8 @@ function Checkout() {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error("Payment Error:", err);
-      alert("Could not initiate payment.");
+      console.error("Payment Error:", err.response?.data || err.message);
+      alert("Payment failed. Try again.");
     }
   };
 
@@ -160,7 +152,6 @@ function Checkout() {
           <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
           <input type="text" name="mobile" placeholder="Mobile Number" required onChange={handleChange} />
           <textarea name="address" placeholder="Full Address" rows="3" required onChange={handleChange} />
-
           <div className="row">
             <input type="text" name="city" value={form.city} readOnly />
             <input type="text" name="pincode" value={form.pincode} readOnly />
@@ -173,7 +164,6 @@ function Checkout() {
             <input type="radio" name="payment" value="COD" checked={form.payment === "COD"} onChange={handleChange} />
             Cash on Delivery
           </label>
-
           <label>
             <input type="radio" name="payment" value="UPI" checked={form.payment === "UPI"} onChange={handleChange} />
             Online Payment (Razorpay)
@@ -189,11 +179,7 @@ function Checkout() {
           <h4>Grand Total: ₹{grandTotal}</h4>
         </div>
 
-        <button 
-          type="submit" 
-          className={`place-order-btn ${isSubmitting ? "disabled" : ""}`} 
-          disabled={isSubmitting}
-        >
+        <button type="submit" className={`place-order-btn ${isSubmitting ? "disabled" : ""}`} disabled={isSubmitting}>
           {isSubmitting ? "Processing..." : form.payment === "UPI" ? "Pay Now" : "Place Order"}
         </button>
       </form>

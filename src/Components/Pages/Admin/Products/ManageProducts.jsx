@@ -56,7 +56,7 @@ const AdminManageProducts = () => {
                 })()}
               </td>
 
-              <td>{p.name}</td>
+              <td>{p.product_name}</td>
               <td>₹ {p.price}</td>
               <td>
                 <button onClick={() => handleEdit(p.product_id)}>Edit</button>

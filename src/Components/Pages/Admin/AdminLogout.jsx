@@ -7,13 +7,13 @@ const AdminLogout = () => {
 
   useEffect(() => {
     // Clear auth data
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("userToken");
 
     // Redirect after 2 seconds
     setTimeout(() => {
-      navigate("/admin/login");
-    }, 2000);
+      navigate("/");
+    }, 1000);
   }, [navigate]);
 
   return (
@@ -23,7 +23,7 @@ const AdminLogout = () => {
         <p className="auth-subtitle">
           You have been logged out successfully.
         </p>
-        <p>Redirecting to login page...</p>
+        <p>Redirecting to home page...</p>
       </div>
     </div>
   );
