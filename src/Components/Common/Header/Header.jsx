@@ -43,8 +43,8 @@ const Header = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setWishlistCount(wishlistRes.data.count || 0);
-      } catch (err) {
-        console.error("Header count error:", err);
+      } catch (error) {
+        console.error("Header count error:", error);
       }
     };
 
@@ -130,8 +130,12 @@ const Header = () => {
             </button>
             {profileOpen && (
               <div className="profile-menu">
-                <Link to="/profile">My Profile</Link>
-                <Link to="/myorders">My Orders</Link>
+                <Link to="/profile" onClick={() => setProfileOpen(false)}>
+                  My Profile
+                </Link>
+                <Link to="/myorders" onClick={() => setProfileOpen(false)}>
+                  My Orders
+                </Link>
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}

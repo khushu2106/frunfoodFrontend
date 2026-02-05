@@ -5,7 +5,7 @@ import HeroHome from './Components/Home/HeroHome/HeroHome';
 import ProductList from './Components/Home/Products/ProductList';
 import ProductDetails from './Components/Home/Products/ProductDetails';
 import Aboutus from './Components/Home/Aboutus/Aboutus';
-import Faq from "./Components/Home/Faq/Faq";
+// import Faq from "./Components/Home/Faq/Faq";
 
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
@@ -45,6 +45,7 @@ import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
 import Feedback from "./Components/Pages/Feedback/Feedback"
 import Complaint from "./Components/Pages/Complaint/Complaint"
 import Header from './Components/Common/Header/Header';
+// import FAQ from "./Components/Home/FAQ/FAQ";
 import Footer from './Components/Common/Footer/Footer';
 import AddBrand from './Components/Pages/Admin/Products/AddBrand';
 import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
@@ -82,6 +83,9 @@ import PendingOrders from './Components/Pages/Admin/Delivery/PendingOrder';
 import AssignDelivery from './Components/Pages/Admin/Delivery/AssignDelivery';
 import DeliveryStatus from './Components/Pages/Admin/Delivery/DeliveryStatus';
 import DeliveryList from './Components/Pages/Admin/Delivery/DeliveryList';
+import ScrollToTop from './Components/Pages/ScrollToTop';
+import FAQ from './Components/Pages/Admin/Chat';
+import OfferProducts from './Components/Home/Offers/OfferProduct';
 
 
 function LayoutWrapper() {
@@ -94,11 +98,12 @@ function LayoutWrapper() {
   const showHeaderFooter = !isAdminRoute && !isAuthRoute && !isdeliveryRoute;
   return (
     <>
+    <ScrollToTop />
       {showHeaderFooter && <Header />}
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /></>} />
+        <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
         <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
         <Route path="/product/:id" element={<ProductDetails />}/>
         <Route path="/productSearch" element={<ProductSearch />} />
@@ -109,8 +114,10 @@ function LayoutWrapper() {
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/faq" element={<Faq />} />
+         {/* <Route path="/faq" element={<Faq />} /> */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
+        <Route path="/offers/:offerType" element={<OfferProducts />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />

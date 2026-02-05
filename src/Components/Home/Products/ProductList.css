@@ -118,3 +118,141 @@
   justify-content: center;
   margin-top: 40px;
 }
+
+.product-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.section-title .highlight {
+  color: #ff6b00;
+}
+
+.tagline {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  margin-top: 6px;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: #777;
+  margin-top: 8px;
+}
+
+.feature-badges {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.feature-badges span {
+  background: #fff4eb;
+  color: #ff6b00;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===============================
+   YOU MAY ALSO LIKE (FIXED)
+================================ */
+
+.suggested-section {
+  margin-top: 80px;
+}
+
+.suggest-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #1a1a1a;
+}
+
+.suggest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+/* SAME CARD DESIGN */
+.suggest-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.suggest-card:hover {
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+/* SAME IMAGE BOX */
+.suggest-card img {
+  width: 80%;
+  height: 200px;
+  object-fit: contain;
+  margin: 25px auto 0;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.suggest-card:hover img {
+  transform: scale(1.1);
+}
+
+/* SAME INFO STYLE */
+.suggest-info {
+  padding: 20px;
+  text-align: center;
+}
+
+.suggest-info h4 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.suggest-info .price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 12px;
+}
+
+/* SAME BUTTON FEEL */
+.btn-view {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-view:hover {
+  background: #1d4ed8;
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+  .suggest-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

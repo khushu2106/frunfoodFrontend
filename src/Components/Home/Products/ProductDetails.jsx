@@ -69,12 +69,11 @@
 //         price: product.price
 //       });
 
-//       if (res.status === 200 || res.status === 201) {
+//       if (res.status === 200) {
 //         navigate("/cart");
 //       }
 //     } catch (error) {
 //       console.error("Add to Cart Error:", error);
-//       alert("Failed to add product to cart.");
 //     }
 //   };
 
@@ -248,16 +247,21 @@ const ProductDetails = () => {
   };
 
   /* ================= WISHLIST (LOCAL STORAGE) ================= */
-  const handleAddToWishlist = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/wishlist/add", {
-        user_id,
-        product_id: product.product_id
-      });
-      toast.success("Added to wishlist ❤️");
-    } catch (err) {
-      toast.error("Already in wishlist");
+  const handleAddToWishlist = () => {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    const exists = wishlist.find(
+      (item) => item.product_id === product.product_id
+    );
+
+    if (exists) {
+      alert("Already in wishlist ❤️");
+      return;
     }
+
+    wishlist.push(product);
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    alert("Added to wishlist ❤️");
   };
 
   /* ================= STAR UI ================= */
@@ -295,8 +299,9 @@ const ProductDetails = () => {
                   key={i}
                   src={`${BASE_URL}/${img}`}
                   onClick={() => setMainImage(img)}
-                  className={`thumbnail-img ${mainImage === img ? "active" : ""
-                    }`}
+                  className={`thumbnail-img ${
+                    mainImage === img ? "active" : ""
+                  }`}
                   alt="thumb"
                 />
               ))}
