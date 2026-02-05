@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Wishlist.css";
+import "./wishlist.css";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user_id = localStorage.getItem("user_id");
+
+  const token = localStorage.getItem("userToken");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user_id) {
-      fetchWishlist();
-    } else {
-      setLoading(false);
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  }, [user_id]);
+    fetchWishlist();
+  }, []);
 
   const fetchWishlist = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/wishlist/${user_id}`);
+      const res = await axios.get(
+        "http://localhost:5000/api/wishlist",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setWishlist(res.data);
-    } catch (error) {
-      console.error("Wishlist fetch error", error);
+    } catch (err) {
+      console.error("Wishlist fetch error", err);
     } finally {
       setLoading(false);
     }
@@ -30,72 +38,67 @@ const Wishlist = () => {
 
   const addToCart = async (item) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/cart/add", {
-        user_id: user_id,
-        product_id: item.product_id,
-        qty: 1,
-        price: item.price
-      });
-
-      alert("Product added to cart! 🛒");
-    } catch (error) {
-      console.error("Add to cart error:", error);
-      alert("Failed to add product to cart");
+      await axios.post(
+        "http://localhost:5000/api/cart/add",
+        {
+          product_id: item.product_id,
+          qty: 1,
+          price: item.price,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Added to cart 🛒");
+    } catch {
+      alert("Add to cart failed");
     }
   };
 
   const removeFromWishlist = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/wishlist/${id}`);
-      setWishlist(wishlist.filter(item => item.id !== id));
-      window.location.reload(); 
-    } catch (error) {
-      console.error("Remove wishlist error:", error);
-      alert("Failed to remove from wishlist");
+      await axios.delete(
+        `http://localhost:5000/api/wishlist/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setWishlist(wishlist.filter(w => w.wishlist_id !== id));
+    } catch {
+      alert("Remove failed");
     }
   };
 
-  if (loading) return <div className="loader">Loading your favorites...</div>;
+  if (loading) return <p>Loading wishlist...</p>;
 
   return (
     <div className="wishlist-container">
-      <div className="wishlist-header">
-        <h2>My Wishlist ❤️</h2>
-        <p>{wishlist.length} Items saved</p>
-      </div>
+      <h2>❤️ My Wishlist</h2>
 
       {wishlist.length === 0 ? (
-        <div className="empty-state">
-          <p className="empty">Your wishlist is empty 😔</p>
-          <button className="btn-shop" onClick={() => navigate("/products")}>
-            Shop Now
-          </button>
-        </div>
+        <p>Your wishlist is empty</p>
       ) : (
         <div className="wishlist-grid">
-          {wishlist.map((item) => (
-            <div className="wishlist-card" key={item.id}>
-              <div className="image-container">
-                <img 
-                  src={`http://localhost:5000/${item.image_url}`} 
-                  alt={item.name} 
-                  onClick={() => navigate(`/product/${item.product_id}`)}
-                />
-              </div>
-              
-              <div className="wishlist-info">
-                <h4>{item.name}</h4>
-                <p className="price">₹{item.price}</p>
+          {wishlist.map(item => (
+            <div className="wishlist-card" key={item.wishlist_id}>
+              <img
+                src={`http://localhost:5000/${item.image_url}`}
+                alt={item.name}
+                onClick={() => navigate(`/product/${item.product_id}`)}
+              />
+              <h4>{item.name}</h4>
+              <p>₹{item.price}</p>
 
-                <div className="actions">
-                  <button className="btn-cart" onClick={() => addToCart(item)}>
-                    Add to Cart
-                  </button>
-                  <button className="btn-remove" onClick={() => removeFromWishlist(item.id)}>
-                    Remove
-                  </button>
-                </div>
-              </div>
+              <button onClick={() => addToCart(item)}>
+                Add to Cart
+              </button>
+              <button onClick={() => removeFromWishlist(item.wishlist_id)}>
+                Remove
+              </button>
             </div>
           ))}
         </div>

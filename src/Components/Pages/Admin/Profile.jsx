@@ -63,7 +63,7 @@ const Profile = () => {
         
         <div className="profile-card">
           <div className="profile-header" style={{gridColumn: "span 2"}}>
-             <img src="https://i.pravatar.cc/150" alt="Admin" className="avatar" />
+             {/* <img src="https://i.pravatar.cc/150" alt="Admin" className="avatar" /> */}
              <div className="header-info">
                 <h4>{profile.name}</h4>
                 <p style={{color: "gray"}}>{profile.role}</p>

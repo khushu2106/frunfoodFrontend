@@ -17,7 +17,7 @@ const DeliveryList = () => {
             });
             setDeliveryBoys(res.data);
         } catch (err) {
-            setError("There are some error to featch delivery boy list.");
+            setError("There are some error to fetch delivery boy list.");
             console.error(err);
         } finally {
             setLoading(false);
@@ -32,7 +32,7 @@ const DeliveryList = () => {
     const styles = {
         container: { padding: "20px", fontFamily: "Arial, sans-serif" },
         table: { width: "100%", borderCollapse: "collapse", marginTop: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" },
-        th: { backgroundColor: "#007bff", color: "white", padding: "12px", textAlign: "left" },
+        th: { backgroundColor: "#1f2937", color: "white", padding: "12px", textAlign: "left" },
         td: { padding: "12px", borderBottom: "1px solid #ddd" },
         statusActive: { color: "green", fontWeight: "bold" },
         statusInactive: { color: "red", fontWeight: "bold" }

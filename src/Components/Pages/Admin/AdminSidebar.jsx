@@ -35,7 +35,7 @@ const AdminSidebar = () => {
         { name: "Delivery status", path: "/admin/deliverystatus" },
       ],
     },
-    { name: "Balance", path: "/admin/balance" },
+    // { name: "Balance", path: "/admin/balance" },
     { name: "Users", path: "/admin/users" },
     { name: "Orders", path: "/admin/orders" },
     { name: "Invoice", path: "/admin/invoice" },

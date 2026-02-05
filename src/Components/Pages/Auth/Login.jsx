@@ -29,21 +29,23 @@ const Login = () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({...formData, expectedRole: "customer"}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email.trim(),
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // console.log("API Token:", data.token);
-        login(data.token,data.user);
-        // console.log("LocalStorage Token:", localStorage.getItem("userToken"));
+        login(data.token, data.user);
         navigate("/");
-      }
-      else {
+      } else {
         setError(data.error || "Invalid login credentials");
-        alert("Invalid email and password");
+        alert(data.error || "Invalid email or password");
       }
     } catch (err) {
       setError("Server error. Please try again later.");

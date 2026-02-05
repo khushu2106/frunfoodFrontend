@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaHeart,
@@ -10,10 +10,8 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import "./Header.css";
-import { AuthContext } from "../../Pages/Auth/Authcontext";
 
 const Header = () => {
-  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +28,7 @@ const Header = () => {
      CART & WISHLIST COUNT
   =============================== */
   useEffect(() => {
-    if (!isLoggedIn || !token) return;
+    if (!token) return;
 
     const fetchCounts = async () => {
       try {
@@ -51,17 +49,14 @@ const Header = () => {
     };
 
     fetchCounts();
-  }, [isLoggedIn, token]);
-
-  /* ===============================
-     LOGOUT
-  =============================== */
+  }, [token]);
+/* =============================== LOGOUT =============================== */
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem("userToken"); 
     setCartCount(0);
     setWishlistCount(0);
     setProfileOpen(false);
-    navigate("/login");
+    navigate("/logout");
   };
 
   return (
@@ -85,15 +80,15 @@ const Header = () => {
           onMouseLeave={() => setProductOpen(false)}
         >
           <button className="dropdown-btn">Products</button>
-
           {productOpen && (
             <div className="products-dropdown-menu">
               <Link to="/products" onClick={() => setMenuOpen(false)}>All</Link>
-              <Link to="/products/category/cat">Cat</Link>
-              <Link to="/products/category/dog">Dog</Link>
-              <Link to="/products/category/puppy">Puppy</Link>
-              <Link to="/products/category/accessories">Accessories</Link>
-              <Link to="/products/category/toys">Toys</Link>
+              <Link to="/category/1">Dog</Link>
+              <Link to="category/2">Cat</Link>
+              <Link to="category/3">Kitten</Link>
+              <Link to="category/4">Puppy</Link>
+              <Link to="category/5">Toys</Link>
+              <Link to="category/6">Groming & Accessories</Link>
             </div>
           )}
         </div>
@@ -105,7 +100,6 @@ const Header = () => {
           onMouseLeave={() => setAboutOpen(false)}
         >
           <button className="dropdown-btn">About Us</button>
-
           {aboutOpen && (
             <div className="products-dropdown-menu">
               <Link to="/about">About Us</Link>
@@ -114,37 +108,26 @@ const Header = () => {
           )}
         </div>
 
-        <Link to="/contact" onClick={() => setMenuOpen(false)}>
-          Contact
-        </Link>
+        <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
       </nav>
 
       {/* RIGHT ICONS */}
       <div className="header-icons">
         <Link to="/wishlist" className="icon-box">
           <FaHeart />
-          {wishlistCount > 0 && (
-            <span className="count-badge">{wishlistCount}</span>
-          )}
+          {wishlistCount > 0 && <span className="count-badge">{wishlistCount}</span>}
         </Link>
 
         <Link to="/cart" className="icon-box">
           <FaShoppingCart />
-          {cartCount > 0 && (
-            <span className="count-badge">{cartCount}</span>
-          )}
+          {cartCount > 0 && <span className="count-badge">{cartCount}</span>}
         </Link>
-
-        {!isLoggedIn ? (
-          <Link to="/login" className="icon-box">
-            <FaSignInAlt />
-          </Link>
-        ) : (
+        {/* Token check */}
+        {token ? (
           <div className="profile-dropdown">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <FaUser />
             </button>
-
             {profileOpen && (
               <div className="profile-menu">
                 <Link to="/profile">My Profile</Link>
@@ -153,6 +136,10 @@ const Header = () => {
               </div>
             )}
           </div>
+        ) : (
+          <Link to="/login" className="icon-box">
+            <FaSignInAlt />
+          </Link>
         )}
       </div>
     </header>

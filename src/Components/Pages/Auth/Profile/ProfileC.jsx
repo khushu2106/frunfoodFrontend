@@ -8,7 +8,6 @@ const Profile = () => {
     lname: "",
     email: "",
     mobile_no: "",
-    gender: "",
     address1: "",
   });
 
@@ -36,14 +35,17 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/profile/update", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(user),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/users/profile/update",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(user),
+        }
+      );
 
       if (response.ok) {
         setIsEditing(false);
@@ -96,24 +98,19 @@ const Profile = () => {
             )}
           </div>
 
-          {/* Gender */}
+          {/* Email */}
           <div className="profile-field">
-            <label>Gender</label>
+            <label>Email</label>
             {isEditing ? (
-              <select name="gender" value={user.gender || ""} onChange={handleChange} className="gender-select">
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
+              <input name="email" value={user.email || ""} onChange={handleChange} />
             ) : (
-              <p>{user.gender || "Not set"}</p>
+              <p>{user.email || "Not set"}</p>
             )}
           </div>
 
-          {/* Phone Number */}
+          {/* Mobile */}
           <div className="profile-field">
-            <label>Phone number</label>
+            <label>Mobile number</label>
             {isEditing ? (
               <input name="mobile_no" value={user.mobile_no || ""} onChange={handleChange} />
             ) : (
@@ -121,36 +118,22 @@ const Profile = () => {
             )}
           </div>
 
-          {/* Email Address */}
+          {/* Address1 */}
           <div className="profile-field full-width">
-            <label>Email address</label>
-            {isEditing ? (
-              <input name="email" value={user.email || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.email}</p>
-            )}
-          </div>
-
-          {/* Address */}
-          <div className="profile-field full-width">
-            <label>Address</label>
+            <label>Address 1</label>
             {isEditing ? (
               <textarea name="address1" value={user.address1 || ""} onChange={handleChange} />
             ) : (
-              <p>{user.address1 || "No address provided"}</p>
+              <p>{user.address1 || "Not set"}</p>
             )}
           </div>
 
           {/* Action Buttons */}
           <div className="profile-actions">
             {isEditing ? (
-              <button onClick={handleSave} className="save-btn">
-                Save my details
-              </button>
+              <button onClick={handleSave} className="save-btn">Save my details</button>
             ) : (
-              <button onClick={() => setIsEditing(true)} className="edit-btn">
-                Edit Details
-              </button>
+              <button onClick={() => setIsEditing(true)} className="edit-btn">Edit Details</button>
             )}
           </div>
         </div>

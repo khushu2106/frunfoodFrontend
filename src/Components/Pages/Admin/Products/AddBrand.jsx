@@ -18,7 +18,7 @@ const AddBrand = () => {
     const handleAddBrand = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/brands', { name: brandName });
+            await axios.post('http://localhost:5000/api/brands', {brand_name: brandName});
             alert("Brand Added!");
             setBrandName('');
             fetchBrands();
@@ -51,6 +51,7 @@ const AddBrand = () => {
             setEditName('');
             fetchBrands();
         } catch (err) {
+            console.log(err)
             alert("Error updating brand");
         }
     };
@@ -95,7 +96,7 @@ const AddBrand = () => {
                                             onChange={(e) => setEditName(e.target.value)}
                                         />
                                     ) : (
-                                        brand.brand_name
+                                        brand.name
                                     )}
                                 </td>
                                 <td>
