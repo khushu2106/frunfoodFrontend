@@ -7,6 +7,7 @@ const AddSubcategory = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -63,6 +64,10 @@ const AddSubcategory = () => {
     }
   };
 
+  // const filteredCategories = categories.filter(subcat =>
+  //   subcat.subcategory_name.toLowerCase().includes(searchTerm.toLowerCase())
+  // )
+
   return (
     <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '20px' }}>
       <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
@@ -91,7 +96,9 @@ const AddSubcategory = () => {
         </form>
       </section>
 
-      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
+      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px', 
+        overflowY: 'auto',flexGrow:1, maxHeight: "550px"
+      }}>
         <h3>Existing Subcategories</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>

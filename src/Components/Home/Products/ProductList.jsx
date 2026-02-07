@@ -194,7 +194,7 @@ const ProductList = () => {
                   </div>
 
                   <div className="product-info">
-                    <h3>{product.name}</h3>
+                    <h3>{product.product_name}</h3>
                     <span className="product-price">₹{product.price}</span>
                   </div>
                 </motion.div>

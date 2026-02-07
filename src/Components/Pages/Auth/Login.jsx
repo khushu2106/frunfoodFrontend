@@ -17,11 +17,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   /* 🔐 STRONG PASSWORD VALIDATION (FRONTEND ONLY) */
-  const isStrongPassword = (password) => {
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return strongPasswordRegex.test(password);
-  };
+  // const isStrongPassword = (password) => {
+  //   const strongPasswordRegex =
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  //   return strongPasswordRegex.test(password);
+  // };
 
   const handleChange = (e) => {
     setFormData({
@@ -36,13 +36,13 @@ const Login = () => {
     setError("");
 
     /* 🔐 FRONTEND PASSWORD CHECK */
-    if (!isStrongPassword(formData.password)) {
-      setIsLoading(false);
-      setError(
-        "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
-      );
-      return;
-    }
+    // if (!isStrongPassword(formData.password)) {
+    //   setIsLoading(false);
+    //   setError(
+    //     "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
+    //   );
+    //   return;
+    // }
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -128,6 +128,12 @@ const Login = () => {
           Don’t have an account? <Link to="/register">Register</Link>
         </p>
       </div>
+        {/* <div className="puppy-container">
+          <div className="puppy-main">
+            <span className="puppy-paw"></span>
+            <div className="puppy-face"></div>
+          </div>
+        </div> */}
     </div>
   );
 };

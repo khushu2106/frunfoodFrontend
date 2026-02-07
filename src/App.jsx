@@ -113,8 +113,7 @@ function LayoutWrapper() {
         <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
-        <Route path="/faq" element={<Faq />} />
-         {/* <Route path="/faq" element={<Faq />} /> */}
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
         <Route path="/offers/:offerType" element={<OfferProducts />} />
@@ -132,7 +131,7 @@ function LayoutWrapper() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/myorders" element={<MyOrders />} />
+        <Route path="/myorders" element={<><MyOrders /><ProductList/></>} />
         <Route path="/myorders/:id" element={<OrderDetails />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />

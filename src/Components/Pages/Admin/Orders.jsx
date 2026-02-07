@@ -37,8 +37,8 @@ const Orders = () => {
             <th>Customer</th>
             <th>Date</th>
             <th>Amount</th>
-            <th>Status</th>
-            <th>Action</th>
+            {/* <th>Status</th> */}
+            {/* <th>Action</th> */}
           </tr>
         </thead>
         <tbody>
@@ -48,9 +48,9 @@ const Orders = () => {
               <td>{order.fname}</td>
               <td>{new Date(order.s_date).toLocaleDateString()}</td>
               <td>₹{order.total_amount}</td>
-              <td>{order.Order_status}</td>
-              <td>
-                {/* <select
+              {/* <td>{order.Order_status}</td> */}
+              {/* <td>
+                <select
                   value={order.status}
                   onChange={(e) => handleStatusChange(order.sales_id, e.target.value)}
                 >
@@ -58,8 +58,8 @@ const Orders = () => {
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
                   <option value="cancelled">Cancelled</option>
-                </select> */}
-              </td>
+                </select>
+              </td> */}
             </tr>
           ))}
         </tbody>

@@ -219,8 +219,9 @@ const HeroHome = () => {
         <div className="hero-home-right">
           <div className="main-image-circle">
             <img
-              src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7"
-              alt="Pet owner"
+              src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=1000&auto=format&fit=crop"
+              alt="Pet owner with dog"
+              className="floating-img"
             />
           </div>
         </div>

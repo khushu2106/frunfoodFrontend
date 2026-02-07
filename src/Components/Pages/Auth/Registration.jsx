@@ -36,7 +36,7 @@ const Registration = () => {
 
     // 🔐 Password strength check
     if (!isStrongPassword(formData.password)) {
-      setError(
+      alert(
         "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
       );
       return;
@@ -44,7 +44,7 @@ const Registration = () => {
 
     // 🔁 Confirm password check
     if (formData.password !== formData.confirmPassword) {
-      setError("Password and Confirm Password do not match.");
+      alert("Password and Confirm Password do not match.");
       return;
     }
 

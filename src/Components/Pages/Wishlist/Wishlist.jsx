@@ -1,195 +1,106 @@
-import React, { useEffect, useState } from "react";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-// import "./Wishlist.css";
-
-// const Wishlist = () => {
-//   const [wishlist, setWishlist] = useState([]);
-//   const user_id = localStorage.getItem("user_id");
-
-//   useEffect(() => {
-//     fetchWishlist();
-//   }, []);
-
-//   const fetchWishlist = async () => {
-//     try {
-//       const res = await axios.get(`http://localhost:5000/api/wishlist/${user_id}`);
-//       setWishlist(res.data);
-//     } catch (error) {
-//       console.error("Wishlist fetch error", error);
-//     }
-//   };
-
-
-//   const addToCart = async (item) => {
-//     const user_id = localStorage.getItem("user_id");
-
-//     try {
-//       const res = await axios.post("http://localhost:5000/api/cart/add", {
-//         user_id: user_id,
-//         product_id: item.product_id,
-//         qty: 1,
-//         price: item.price
-//       });
-
-//       alert(res.data.message);
-//     } catch (error) {
-//       console.error("Add to cart error:", error);
-//       alert("Failed to add product to cart");
-//     }
-//   };
-
-//   const removeFromWishlist = async (id) => {
-//     console.log("Deleting wishlist id:", id);
-
-//     try {
-//       await axios.delete(`http://localhost:5000/api/wishlist/${id}`);
-//       setWishlist(wishlist.filter(item => item.id !== id));
-//       alert("Product removed from wishlist");
-//     } catch (error) {
-//       console.error("Remove wishlist error:", error.response?.data || error.message);
-//       alert("Failed to remove from wishlist");
-//     }
-//   };
-
-
-//   return (
-//     <div className="wishlist-container">
-//       <h2>My Wishlist ❤️</h2>
-
-//       {wishlist.length === 0 ? (
-//         <p className="empty">Your wishlist is empty 😔</p>
-//       ) : (
-//         <div className="wishlist-grid">
-//           {wishlist.map((item) => (
-//             <div className="wishlist-card" key={item.id}>
-//               <img src={`http://localhost:5000/${item.image_url}`} alt={item.name} />
-//               <h4>{item.name}</h4>
-//               <p className="price">₹{item.price}</p>
-
-//               <div className="actions">
-//                 <button className="btn-cart" onClick={() => addToCart(item)}>
-//                   Add to Cart
-//                 </button>
-
-
-//                 <button className="btn-remove" onClick={() => removeFromWishlist(item.id)}>
-//                   Remove
-//                 </button>
-//               </div>
-//             </div>
-//           ))}
-
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Wishlist;
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./wishlist.css";
+import { toast, Toaster } from "sonner"; 
+import "./Wishlist.css";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const token = localStorage.getItem("userToken");
   const navigate = useNavigate();
+  
+  const token = localStorage.getItem("userToken");
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-    fetchWishlist();
-  }, []);
 
   const fetchWishlist = async () => {
+    if (!token) return;
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/wishlist",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get("http://localhost:5000/api/wishlist", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setWishlist(res.data);
-    } catch (err) {
-      console.error("Wishlist fetch error", err);
+    } catch (error) {
+      console.error("Wishlist fetch error", error);
+      toast.error("Wishlist load nahi ho saki");
     } finally {
       setLoading(false);
     }
   };
 
-  /* 🛒 ADD TO CART */
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
   const addToCart = async (item) => {
     try {
-      await axios.post(
-        "http://localhost:5000/api/cart/add",
-        {
-          product_id: item.product_id,
-          qty: 1,
-          price: item.price,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      alert("Added to cart 🛒");
-    } catch {
-      alert("Add to cart failed");
+      const res = await axios.post("http://localhost:5000/api/cart/add", {
+        product_id: item.product_id,
+        qty: 1,
+        price: item.price
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success(res.data.message || "Cart mein add ho gaya!");
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      toast.error("Cart mein add nahi ho paya");
     }
   };
 
-  /* ❌ REMOVE FROM WISHLIST */
   const removeFromWishlist = async (wishlist_id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/wishlist/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setWishlist(wishlist.filter(w => w.wishlist_id !== id));
-    } catch {
-      alert("Remove failed");
+      await axios.delete(`http://localhost:5000/api/wishlist/${wishlist_id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setWishlist(wishlist.filter(item => item.id !== wishlist_id));
+      toast.success("Wishlist se remove kar diya gaya");
+    } catch (error) {
+      console.error("Remove wishlist error:", error);
+      toast.error("Remove karne mein error aayi");
     }
   };
 
-  if (loading) return <p>Loading wishlist...</p>;
+  if (loading) return <div className="loader">Loading Wishlist...</div>;
 
   return (
     <div className="wishlist-container">
-      <h2>❤️ My Wishlist</h2>
+      <Toaster position="top-center" richColors />
+      <h2>My Wishlist ❤️</h2>
 
       {wishlist.length === 0 ? (
-        <p>Your wishlist is empty</p>
+        <div className="empty-state">
+          <p className="empty">Your wishlist is empty 😔</p>
+          <button onClick={() => navigate("/")}>Shop Now</button>
+        </div>
       ) : (
         <div className="wishlist-grid">
-          {wishlist.map(item => (
-            <div className="wishlist-card" key={item.wishlist_id}>
-              <img
-                src={`http://localhost:5000/${item.image_url}`}
-                alt={item.name}
-                onClick={() => navigate(`/product/${item.product_id}`)}
-              />
-              <h4>{item.name}</h4>
-              <p>₹{item.price}</p>
+          {wishlist.map((item) => (
+            <div className="wishlist-card" key={item.id}>
+              <div 
+                className="img-container" 
+                onClick={() => navigate(`/product/${item.product_id}`)} 
+                style={{ cursor: "pointer" }}
+              >
+                 <img src={`http://localhost:5000/${item.image_url}`} alt={item.name} title="View Details" />
+              </div>
 
-              <button onClick={() => addToCart(item)}>
-                Add to Cart
-              </button>
-              <button onClick={() => removeFromWishlist(item.wishlist_id)}>
-                Remove
-              </button>
+              <h4 
+                onClick={() => navigate(`/product/${item.product_id}`)} 
+                style={{ cursor: "pointer" }}
+              >
+                {item.name}
+              </h4>
+
+              <p className="price">₹{item.price}</p>
+
+              <div className="actions">
+                <button className="btn-cart" onClick={() => addToCart(item)}>
+                  Add to Cart
+                </button>
+                <button className="btn-remove" onClick={() => removeFromWishlist(item.id)}>
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
         </div>
