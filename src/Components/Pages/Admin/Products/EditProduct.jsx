@@ -7,149 +7,95 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:5000";
 
-  // Product fields
   const [name, setName] = useState("");
   const [subCatId, setSubCatId] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [weight, setWeight] = useState("");
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [oldImage, setOldImage] = useState("");
 
-  // For subcategories dropdown
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/products/${id}`);
+        const p = res.data;
+        setName(p.name || p.product_name);
+        setSubCatId(p.sub_cat_id);
+        setDescription(p.description);
+        setPrice(p.price);
+        setStock(p.stock);
+        setWeight(p.weight);
+        setOldImage(p.image);
+      } catch (err) {
+        console.error("Fetch Error:", err);
+      }
+    };
     fetchProduct();
-    fetchSubcategories();
-  }, []);
 
-  const fetchProduct = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/api/products/${id}`);
-      const p = res.data;
-
-      setName(p.name);
-      setSubCatId(p.sub_cat_id);
-      setDescription(p.description);
-      setPrice(p.price);
-      setStock(p.stock);
-      setWeight(p.weight);
-      setOldImage(p.image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fetchSubcategories = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/api/subcategories`);
-      setSubcategories(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+    axios.get(`${BASE_URL}/api/subcategories`).then(res => setSubcategories(res.data));
+  }, [id]);
   const handleUpdate = async (e) => {
     e.preventDefault();
+    if (Number(price) < 0 || Number(stock) < 0 || Number(weight) < 0) {
+      alert("Price, Stock and Weight cannot be negative!");
+      return;
+    }
+    const formData = new FormData();
 
-    let imageName = oldImage;
+    // Text fields
+    formData.append("name", name);
+    formData.append("sub_cat_id", subCatId);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("stock", stock);
+    formData.append("weight", weight);
 
-    // If admin uploads new image
-    if (image) {
-      const formData = new FormData();
-      formData.append("image", image);
-
-      const uploadRes = await axios.post(`${BASE_URL}/api/upload`, formData);
-      imageName = uploadRes.data.filename;
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
 
-    // Prepare JSON body as per backend
-    const productData = {
-      name,
-      sub_cat_id: subCatId,
-      description,
-      price,
-      stock,
-      weight,
-      image: imageName,
-    };
-
     try {
-      await axios.put(`${BASE_URL}/api/products/${id}`, productData);
-      alert("Product Updated Successfully");
+      await axios.put(`${BASE_URL}/api/products/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("Updated successfully!");
       navigate("/admin/manage-products");
     } catch (err) {
-      console.log(err);
-      alert("Error updating product");
+      console.error(err);
     }
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "auto", padding: "20px" }}>
+    <div style={{ maxWidth: "500px", margin: "20px auto", padding: "20px", border: "1px solid #ddd" }}>
       <h2>Edit Product</h2>
+      <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 
-      <form onSubmit={handleUpdate}>
-        <input
-          placeholder="Product Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
 
-        <select
-          value={subCatId}
-          onChange={(e) => setSubCatId(e.target.value)}
-          required
-        >
-          <option value="">Select Subcategory</option>
-          {subcategories.map((sub) => (
-            <option key={sub.sub_cat_id} value={sub.sub_cat_id}>
-              {sub.subcategory_name}
-            </option>
-          ))}
+        <select value={subCatId} onChange={(e) => setSubCatId(e.target.value)} required>
+          <option value="">Subcategory</option>
+          {subcategories.map(s => <option key={s.sub_cat_id} value={s.sub_cat_id}>{s.name}</option>)}
         </select>
 
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
+        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <input type="number" placeholder="Price" value={price} min="0" onChange={(e) => setPrice(e.target.value)} required />
+        <input type="number" placeholder="Stock" value={stock} min="0" onChange={(e) => setStock(e.target.value)} required />
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
+        <input type="number" placeholder="Weight" value={weight} min="0" onChange={(e) => setWeight(e.target.value)} required />
 
-        <input
-          type="number"
-          placeholder="Stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          required
-        />
-
-        <input
-          type="number"
-          placeholder="Weight"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-          required
-        />
-
-        <div style={{ margin: "10px 0" }}>
+        <div>
           <p>Current Image:</p>
-          {oldImage && <img src={`${BASE_URL}/${oldImage}`} width="100" />}
+          <img src={`${BASE_URL}/${oldImage}`} width="100" alt="Old" style={{ marginBottom: "10px" }} />
+          <br />
+          <label>Upload New Image (Optional):</label>
+          <input type="file" onChange={(e) => setImageFile(e.target.files[0])} accept="image/*" />
         </div>
 
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-
-        <button type="submit" style={{ marginTop: "10px" }}>
+        <button type="submit" style={{ padding: "10px", background: "blue", color: "white", cursor: "pointer" }}>
           Update Product
         </button>
       </form>

@@ -1,9 +1,12 @@
 import React from "react";
 
-const StatCard = ({ title, value }) => {
+const StatCard = ({ title, value, onClick }) => {
   return (
-    <div style={{
+    <div 
+    onClick= {onClick} 
+    style={{
       background: "#f5f5f5",
+      cursor:"pointer",
       padding: "20px",
       borderRadius: "8px",
       flex: 1,

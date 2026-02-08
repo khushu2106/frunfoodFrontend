@@ -1,112 +1,115 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import axios from "axios";
-// import { div } from "framer-motion/client";
-
-// const Invoice = () => {
-//     const { id } = useParams();
-//     const [invoice, setInvoice] = useState(null);
-
-//     useEffect(() => {
-//         axios.get(`http://localhost:5000/api/admin/invoice/${id}`)
-//             .then(res => setInvoice(res.data))
-//             .catch(err => console.error(err));
-//     }, [id])
-
-//     if (!invoice) return <div>Loading Invoice ... </div>;
-
-//     const { order, items } = invoice;
-//     return (
-//         <div style={{ padding: "20px", background: "#fff" }}>
-//             <h2>Invoice #{order.sales_id}</h2>
-//             <p><b>Customer:</b> {order.name}</p>
-//             <p><b>Date:</b> {order.s_date}</p>
-
-//             <table width="100%" border="1" cellPadding="8">
-//                 <thead>
-//                     <tr>
-//                         <th>Product</th>
-//                         <th>Qty</th>
-//                         <th>Price</th>
-//                         <th>Total</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {items.map((item, i) => (
-//                         <tr key={i}>
-//                             <td>{item.name}</td>
-//                             <td>{item.qty}</td>
-//                             <td>₹{item.price}</td>
-//                             <td>₹{item.total_amount}</td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-// <hr></hr>
-//             <h3>Summary</h3>
-//             <p>Subtotal: ₹{order.total_amount}</p>
-//             <p>CGST: ₹{order.cgst}</p>
-//             <p>SGST: ₹{order.sgst}</p>
-//             <p>Shipping: ₹{order.shipping_charge}</p>
-//             <h2>Grand Total: ₹{order.grand_total || order.total_amount}</h2>
-
-//             <button onClick={() => window.print()}>Print / Download Invoice</button>
-//         </div>
-//     )
-// }
-
-// export default Invoice;
-
 import React, { useState } from "react";
+import axios from "axios";
 
-const Invoice = () => {
-  const [invoices] = useState([
-    { id: "INV001", orderId: 101, customer: "Riya Patel", amount: 1200, date: "2026-01-10", status: "Paid" },
-    { id: "INV002", orderId: 102, customer: "Amit Shah", amount: 850, date: "2026-01-12", status: "Pending" },
-    { id: "INV003", orderId: 103, customer: "Neha Joshi", amount: 2100, date: "2026-01-15", status: "Paid" }
-  ]);
+const InvoiceManager = () => {
+  const [type, setType] = useState("sales"); // sales or purchase
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+
+  const fetchInvoices = async () => {
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates");
+      return;
+    }
+
+    if (startDate > endDate) {
+      alert("Start date cannot be after End date");
+      return;
+    }
+
+    if (startDate > today || endDate > today) {
+      alert("Future dates are not allowed");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/admin/invoice/${type}?startDate=${startDate}&endDate=${endDate}`
+      );
+      setInvoices(res.data);
+    } catch (err) {
+      console.error("Invoice fetch error:", err);
+      alert("Failed to fetch invoices");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const viewInvoice = (id) => {
+    window.open(`/admin/invoice/${type}/${id}`, "_blank");
+  };
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Invoice Management</h2>
+      <h2>Invoice Manager</h2>
 
-      <div style={{ background: "#f5f5f5", padding: "15px", borderRadius: "8px", marginTop: "20px" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      {/* Filters */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="sales">Sales Invoice</option>
+          <option value="purchase">Purchase Invoice</option>
+        </select>
+
+        <input
+          type="date"
+          value={startDate}
+          max={today}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <input
+          type="date"
+          value={endDate}
+          max={today}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+
+        <button onClick={fetchInvoices}>Fetch Invoices</button>
+      </div>
+
+      {/* Invoice List */}
+      {loading ? (
+        <p>Loading invoices...</p>
+      ) : invoices.length === 0 ? (
+        <p>No invoices found for selected criteria</p>
+      ) : (
+        <table width="100%" border="1" cellPadding="8">
           <thead>
             <tr>
-              <th style={th}>Invoice No</th>
-              <th style={th}>Order ID</th>
-              <th style={th}>Customer</th>
-              <th style={th}>Amount</th>
-              <th style={th}>Date</th>
-              <th style={th}>Status</th>
-              <th style={th}>Action</th>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Customer / Supplier</th>
+              <th>Total Amount</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((inv) => (
-              <tr key={inv.id}>
-                <td style={td}>{inv.id}</td>
-                <td style={td}>{inv.orderId}</td>
-                <td style={td}>{inv.customer}</td>
-                <td style={td}>₹{inv.amount}</td>
-                <td style={td}>{inv.date}</td>
-                <td style={td}>{inv.status}</td>
-                <td style={td}>
-                  <button style={btn}>View</button>
-                  <button style={btn}>Download</button>
+              <tr key={inv.sales_id || inv.purchase_id}>
+                <td>{inv.sales_id || inv.purchase_id}</td>
+                <td>{inv.s_date || inv.p_date}</td>
+                <td>{inv.name || inv.supplier_name}</td>
+                <td>₹{inv.total_amount}</td>
+                <td>
+                  <button
+                    onClick={() =>
+                      viewInvoice(inv.sales_id || inv.purchase_id)
+                    }
+                  >
+                    View / Print
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
+      )}
     </div>
   );
 };
 
-const th = { borderBottom: "1px solid #ccc", padding: "8px", textAlign: "left" };
-const td = { padding: "8px" };
-const btn = { marginRight: "5px", padding: "5px 10px", cursor: "pointer" };
-
-export default Invoice;
+export default InvoiceManager;

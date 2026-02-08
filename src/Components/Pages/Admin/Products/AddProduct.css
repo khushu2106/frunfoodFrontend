@@ -1,34 +1,77 @@
 .add-product-container {
-  max-width: 500px;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.add-product-form input,
-.add-product-form select,
-.add-product-form textarea {
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-form select,
+.product-form input,
+.product-form textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
   width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
+  transition: border-color 0.2s;
 }
 
-.add-product-form button {
-  background: #16a34a;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
+.product-form select:focus,
+.product-form input:focus,
+.product-form textarea:focus {
+  outline: none;
+  border-color: #8884d8;
 }
 
-.add-icon-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 50px;
-  cursor: pointer;
+.product-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.error-text {
+  color: #e74c3c;
   font-weight: bold;
+  margin: 5px 0;
 }
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+
+.submit-btn {
+  background: #8884d8;
+  color: #fff;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background: #6b5dc5;
 }

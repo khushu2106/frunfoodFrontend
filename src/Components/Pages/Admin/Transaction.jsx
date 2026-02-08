@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import PurchaseChart from "./PurchaseChart";
+// import PurchaseChart from "./PurchaseChart";
 import './AdminNavbar.css';
 
 const Transaction = () => {
@@ -32,7 +32,7 @@ const Transaction = () => {
         </div>
       )}
 
-      <PurchaseChart />
+      {/* <PurchaseChart /> */}
     </div>
   );
 };

@@ -29,7 +29,7 @@ const UserList = () => {
     }
   };
 
-  // ✅ SEARCH FILTER (by user name)
+  // ✅ SEARCH FILTER 
   const filteredUsers = users.filter(user =>{
     const searchText = search.toLocaleLowerCase();
 
@@ -51,10 +51,10 @@ const UserList = () => {
       {/* 🔍 SEARCH BAR */}
       Search user by their name : <input
         type="text"
-        placeholder="Search by user name"
+        placeholder="Search by user name , email , mobile_no"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{ marginTop: "10px", padding: "5px", width: "250px" }}
+        style={{ marginTop: "10px", padding: "5px", width: "20vw", height: "5vh" }}
       />
 
       <table
@@ -78,7 +78,7 @@ const UserList = () => {
                 <td>{user.user_id}</td>
                 <td>{user.fname}</td>
                 <td>{user.email}</td>
-                <td>{user.mobile_no}</td>
+                <td>{user.mobile_no || "NOT REGISTER"}</td>
                 <td>
                   <button onClick={() => handleView(user)}>
                     View

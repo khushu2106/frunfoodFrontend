@@ -8,6 +8,7 @@ const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const BASE_URL = "http://localhost:5000";
   const token = localStorage.getItem("userToken");
 
   useEffect(() => {
@@ -16,67 +17,127 @@ const MyOrders = () => {
       return;
     }
 
-    const fetchOrders = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/api/sales/my",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setOrders(res.data || []);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-        setOrders([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
-  }, [token, navigate]);
+  }, []);
 
-  if (loading) return <p>Loading your orders...</p>;
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/sales/my`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setOrders(res.data || []);
+    } catch (err) {
+      console.error("Fetch orders error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelOrder = async (sales_id) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+
+    try {
+      await axios.put(
+        `${BASE_URL}/api/sales/cancel/${sales_id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert("Order cancelled successfully");
+      fetchOrders();
+    } catch (err) {
+      alert("Unable to cancel order");
+    }
+  };
+
+  const openProduct = (product_id) => {
+    navigate(`/product/${product_id}`);
+  };
+
+  const canCancel = (status) => {
+    return ["placed", "confirmed", "shipped"].includes(status);
+  };
+
+
+  if (loading) return <div className="loading">📦 Loading your orders...</div>;
 
   return (
     <div className="my-orders-page">
-      <h1>📦 My Orders</h1>
+      <div className="container">
+        <h1>🛍️ My Orders</h1>
 
-      {orders.length === 0 ? (
-        <p>No orders found</p>
-      ) : (
-        <div className="orders-list">
-          {orders.map(order => (
-            <div className="order-card" key={order.sales_id}>
+        {orders.map((order) => (
+          <div className="order-main-card" key={order.sales_id}>
+
+            <div className="order-header">
               <div>
-                <p><b>Order ID:</b> #{order.sales_id}</p>
-                <p>
-                  <b>Date:</b>{" "}
-                  {new Date(order.S_date).toLocaleDateString()}
-                </p>
-                <p>
-                  <b>Status:</b>{" "}
-                  <span className={`status ${order.order_status}`}>
-                    {order.order_status}
-                  </span>
-                </p>
+                <strong>
+                  {new Date(order.s_date).toLocaleDateString()}
+                </strong>
               </div>
-
-              <div className="order-right">
-                <h3>₹{order.total_amount}</h3>
-                <button
-                  onClick={() => navigate(`/myorders/${order.sales_id}`)}
-                >
-                  View Details
-                </button>
+              <div>
+                <strong>₹{order.total_amount}</strong>
+              </div>
+              <div className="order-id-label">
+                Order #{order.sales_id}
               </div>
             </div>
-          ))}
-        </div>
-      )}
+
+            <div className="order-content">
+              <div className="product-row">
+
+                <div
+                  className="product-img-box clickable"
+                  onClick={() => openProduct(order.product_id)}
+                >
+                  <img
+                    src={
+                      order.image_url
+                        ? `${BASE_URL}/${order.image_url}`
+                        : "/no-image.png"
+                    }
+                    alt={order.product_name}
+                  />
+                </div>
+
+                <div
+                  className="product-details clickable"
+                  onClick={() => openProduct(order.product_id)}
+                >
+                  <h3>{order.name}</h3>
+                  <p>
+                    Qty: {order.qty} |total_amout :  ₹{order.total_amount}
+                  </p>
+                  <span className={`status-badge ${order.order_status}`}>
+                    {order.order_status}
+                  </span>
+                </div>
+
+                <div className="order-actions">
+                  <button
+                    className="btn-view"
+                    onClick={() =>
+                      navigate(`/myorders/${order.sales_id}`)
+                    }
+                  >
+                    Track
+                  </button>
+
+                  {canCancel(order.order_status) && (
+                    <button
+                      className="btn-cancel"
+                      onClick={() => cancelOrder(order.sales_id)}
+                    >
+                      Cancel Order
+                    </button>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

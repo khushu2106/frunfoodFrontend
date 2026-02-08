@@ -8,7 +8,7 @@ const AdminLogout = () => {
   useEffect(() => {
     // Clear auth data
     localStorage.removeItem("adminToken");
-    localStorage.removeItem("userToken");
+    // localStorage.removeItem("userToken");
 
     // Redirect after 2 seconds
     setTimeout(() => {

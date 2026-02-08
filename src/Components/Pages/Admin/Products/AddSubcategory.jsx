@@ -7,6 +7,7 @@ const AddSubcategory = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -63,6 +64,10 @@ const AddSubcategory = () => {
     }
   };
 
+  const filteredSubcategories = subcategories.filter(sub =>
+    sub.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '20px' }}>
       <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
@@ -91,8 +96,21 @@ const AddSubcategory = () => {
         </form>
       </section>
 
-      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
+      <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px', 
+        overflowY: 'auto',flexGrow:1, maxHeight: "550px"
+      }}>
         <h3>Existing Subcategories</h3>
+        <input type="text" 
+         placeholder='Search Subcategory...'
+         value={searchTerm}
+         onChange={(e) => setSearchTerm(e.target.value)}
+         style={{
+          marginBottom:"10px",
+          padding:"6px",
+          width:"100%",
+          boxSizing:"border-box"
+         }}
+        />
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
@@ -102,16 +120,26 @@ const AddSubcategory = () => {
             </tr>
           </thead>
           <tbody>
-            {subcategories.map(sub => (
-              <tr key={sub.sub_cat_id}>
-                <td>{sub.name}</td>
-                <td>{sub.category_name}</td>
-                <td>
+            {filteredSubcategories.length > 0 ?(
+              filteredSubcategories.map((sub) =>(
+                <tr key={sub.sub_cat_id}>
+                  <td>{sub.name}</td>
+                  <td>{sub.category_name}</td>
+                  <td>
                   <button onClick={() => handleEdit(sub)} style={{ marginRight: '5px' }}>Edit</button>
                   <button onClick={() => handleDelete(sub.sub_cat_id)} style={{ color: 'white' }}>Delete</button>
+                  </td>
+                </tr>
+              ))
+            ):(
+              <tr>
+                <td colSpan="6" style={{textAlign:'center', color:"black"
+                  ,fontWeight:"bold"
+                }}>
+                  Subcategory not found 
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </section>

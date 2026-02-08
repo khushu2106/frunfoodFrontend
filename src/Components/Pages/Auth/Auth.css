@@ -1,8 +1,7 @@
 
 .auth-container {
   min-height: 100vh;
-  /* background: linear-gradient(135deg, #ece8ec, #e9e2e9); */
-  background-image: "../src/assets/login.png";
+  background: linear-gradient(135deg, #fffcf9 0%, #fff4e6 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,4 +268,18 @@
 
 .eye-icon:hover {
   color: #000;
+}
+
+.puppy-container{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10;
+  pointer-events: none;
+  background-color: #000;
+}
+
+.puppy-main{
+  width: 120px;
+  height: 120px;
 }
