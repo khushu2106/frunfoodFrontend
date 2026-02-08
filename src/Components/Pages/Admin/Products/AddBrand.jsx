@@ -7,6 +7,7 @@ const AddBrand = () => {
     const [brands, setBrands] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editName, setEditName] = useState('');
+    const [SearchTerm, setSearchTerm] = useState("");
 
     useEffect(() => { fetchBrands(); }, []);
 
@@ -17,17 +18,25 @@ const AddBrand = () => {
 
     const handleAddBrand = async (e) => {
         e.preventDefault();
+        const existing = brands.find(
+            b => b.name.toLowerCase() === brandName.toLowerCase()
+        );
+
+        if (existing) {
+            alert("Brand already exists!");
+            return;
+        }
         try {
-            await axios.post('http://localhost:5000/api/brands', {brand_name: brandName});
+            await axios.post('http://localhost:5000/api/brands', { name: brandName });
             alert("Brand Added!");
             setBrandName('');
             fetchBrands();
         } catch (err) {
             console.log(err);
-            alert("Error adding brand");
-
+            alert(err.response?.data?.message || "Error adding brand");
         }
     };
+
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this brand?")) return;
@@ -45,6 +54,12 @@ const AddBrand = () => {
     };
 
     const handleUpdate = async () => {
+
+        const existing = brands.find(b => b.name.toLowerCase() === editName.toLowerCase());
+        if (existing && existing.id !== editId) {
+            alert("Brand name already exists!")
+            return;
+        }
         try {
             await axios.put(`http://localhost:5000/api/brands/${editId}`, { name: editName });
             setEditId(null);
@@ -55,6 +70,10 @@ const AddBrand = () => {
             alert("Error updating brand");
         }
     };
+
+    const filterBrans = brands.filter(brd =>
+        brd.name.toLowerCase().includes(SearchTerm.toLowerCase())
+    );
 
     return (
         <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -77,6 +96,17 @@ const AddBrand = () => {
             {/* BRAND LIST */}
             <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
                 <h3>Existing Brands</h3>
+                <input type="text"
+                    placeholder='Search brand...'
+                    value={SearchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                        marginBottom: "10px",
+                        padding: "6px",
+                        width: "100%",
+                        boxSizing: "border-box"
+                    }}
+                />
                 <table width="100%">
                     <thead>
                         <tr>

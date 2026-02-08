@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./AddProduct.css";
 
 const AddProduct = () => {
   const BASE_URL = "http://localhost:5000";
@@ -163,6 +164,11 @@ const AddProduct = () => {
       return;
     }
 
+     if (Number(price) < 0 || Number(stock) < 0 || Number(weight) < 0) {
+      alert("Price, Stock and Weight cannot be negative!");
+      return;
+    }
+
     // VALIDATIONS
     if (new Date(expiryDate) <= new Date(mfgDate)) {
       alert("Expiry date must be after MFG date");
@@ -236,104 +242,84 @@ const AddProduct = () => {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Add Product</h2>
+    <div className="add-product-container">
+      <h2 className="title">Add Product</h2>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-
+      <form className="product-form" onSubmit={handleSubmit}>
+        {/* Category */}
         <select value={category} onChange={handleCategoryChange} required>
           <option value="">Select Category</option>
           {categories.map(c => (
             <option key={c.pro_cat_id} value={c.pro_cat_id}>{c.category_name}</option>
           ))}
-
         </select>
-
         {showNewCategoryInput && (
           <input placeholder="New Category" value={newCategory}
             onChange={e => setNewCategory(e.target.value)} required />
         )}
 
+        {/* Subcategory */}
         <select value={subcategory} onChange={handleSubcategoryChange} disabled={!category} required>
           <option value="">Select Subcategory</option>
           {filteredSubcategories.map(s => (
             <option key={s.sub_cat_id} value={s.sub_cat_id}>{s.name}</option>
           ))}
-
         </select>
-
         {showNewSubInput && (
           <input placeholder="New Subcategory" value={newSubcategory}
             onChange={e => setNewSubcategory(e.target.value)} required />
         )}
 
+        {/* Brand */}
         <select value={brand} onChange={handleBrandChange} required>
           <option value="">Select Brand</option>
           {brands.map(b => (
             <option key={b.brand_id} value={b.brand_id}>{b.name}</option>
           ))}
-
         </select>
-
         {showNewBrandInput && (
           <input placeholder="New Brand" value={newBrand}
             onChange={e => setNewBrand(e.target.value)} required />
         )}
 
+        {/* Product Details */}
         <input placeholder="Product Name" value={productName}
           onChange={e => setProductName(e.target.value)} required />
-
         <textarea placeholder="Description" value={description}
           onChange={e => setDescription(e.target.value)} required />
 
-        <input type="number" placeholder="Price" value={price}
-          onChange={e => setPrice(e.target.value)} required />
+        <div className="form-row">
+          <input type="number" placeholder="Price" value={price} min= "0" onChange={e => setPrice(e.target.value)} required />
+          <input type="number" placeholder="Stock" value={stock} min="0" onChange={e => setStock(e.target.value)} required />
+        </div>
 
-        <input type="number" placeholder="Stock" value={stock}
-          onChange={e => setStock(e.target.value)} required />
-
-        <input type="number" placeholder="Shipping Charge" value={shippingCharge}
-          onChange={e => setShippingCharge(e.target.value)} required />
-
-        <input type="number" placeholder="Weight" value={weight}
-          onChange={e => setWeight(e.target.value)} required />
-        {/* 
-        <label>MFG Date</label>
-        <input type="date" value={mfgDate}
-          onChange={e => setMfgDate(e.target.value)} required /> */}
+        <div className="form-row">
+          <input type="number" placeholder="Shipping Charge" value={shippingCharge} onChange={e => setShippingCharge(e.target.value)} required />
+          <input type="number" placeholder="Weight" value={weight} min="0" onChange={e => setWeight(e.target.value)} required />
+        </div>
 
         <label>Expiry Date</label>
-        <input type="date" value={expiryDate} min={mfgDate}
+        <input type="date" value={expiryDate} min={new Date().toISOString().split("T")[0]}
           onChange={e => setExpiryDate(e.target.value)} required />
 
-        <input type="number" placeholder="Discount %"
-          value={discount} min="0" max="100"
+        <input type="number" placeholder="Discount %" value={discount} min="0" max="100"
           onChange={e => setDiscount(e.target.value)} required />
 
         {showDiscountDates && (
           <>
             <label>Discount Start Date</label>
-            <input type="date" value={startDate}
-              onChange={e => setStartDate(e.target.value)} required />
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
 
             <label>Discount End Date</label>
-            <input type="date" value={endDate} min={startDate}
-              onChange={e => setEndDate(e.target.value)} required />
+            <input type="date" value={endDate} min={startDate} onChange={e => setEndDate(e.target.value)} required />
           </>
         )}
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleImageChange}
-          required
-        />
-        {error && (
-          <p style={{ color: "red", fontWeight: "bold" }}>
-            ❌ {error}
-          </p>
-        )}
-        <button type="submit">Add Product</button>
+
+        <input type="file" multiple accept="image/*" onChange={handleImageChange} required />
+
+        {error && <p className="error-text">❌ {error}</p>}
+
+        <button type="submit" className="submit-btn">Add Product</button>
       </form>
     </div>
   );

@@ -40,6 +40,10 @@ const EditProduct = () => {
   }, [id]);
   const handleUpdate = async (e) => {
     e.preventDefault();
+    if (Number(price) < 0 || Number(stock) < 0 || Number(weight) < 0) {
+      alert("Price, Stock and Weight cannot be negative!");
+      return;
+    }
     const formData = new FormData();
 
     // Text fields
@@ -78,9 +82,10 @@ const EditProduct = () => {
         </select>
 
         <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-        <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} required />
-        <input type="number" placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)} required />
-        <input type="number" placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} required />
+        <input type="number" placeholder="Price" value={price} min="0" onChange={(e) => setPrice(e.target.value)} required />
+        <input type="number" placeholder="Stock" value={stock} min="0" onChange={(e) => setStock(e.target.value)} required />
+
+        <input type="number" placeholder="Weight" value={weight} min="0" onChange={(e) => setWeight(e.target.value)} required />
 
         <div>
           <p>Current Image:</p>

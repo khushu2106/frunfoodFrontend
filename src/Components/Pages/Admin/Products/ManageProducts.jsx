@@ -54,8 +54,8 @@ const AdminManageProducts = () => {
     return (product.product_name || "").toLowerCase().includes(searchText);
   })
 
-  const openProduct = (product_id) =>{
-   navigate(`/product/${product_id}`) 
+  const openProduct = (product_id) => {
+    navigate(`/product/${product_id}`)
   }
 
 
@@ -67,9 +67,9 @@ const AdminManageProducts = () => {
         placeholder="Search by product name"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{ marginTop: "10px", padding: "5px", width: "250px", marginBottom:"30px"}}
+        style={{ marginTop: "10px", padding: "5px", width: "250px", marginBottom: "30px" }}
       />
-      <div style={{maxHeight:"80vh",overflowY:"auto"}}>
+      <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
         <table border="1" width="100%" cellPadding="10">
           <thead>
             <tr>
@@ -78,6 +78,7 @@ const AdminManageProducts = () => {
               <th>category name</th>
               <th>Subcategory name</th>
               <th>Price</th>
+              <th>stock</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -107,6 +108,9 @@ const AdminManageProducts = () => {
                   <td>{p.category_name}</td>
                   <td>{p.sub_category_name}</td>
                   <td>₹ {p.price}</td>
+                  <td style={{ color: p.stock_status === 'In Stock' ? 'green' : 'red' }}>
+                    {p.stock_status}
+                  </td>
                   <td>
                     <button onClick={() => handleEdit(p.product_id)}>
                       Edit

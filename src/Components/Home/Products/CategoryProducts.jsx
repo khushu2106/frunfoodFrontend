@@ -58,9 +58,6 @@ const CategoryProducts = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-   const openProduct = (product_id) => {
-    navigate(`/product/${product_id}`);
-  };
 
   if (loading) {
     return (
@@ -94,14 +91,17 @@ const CategoryProducts = () => {
               {currentProducts.map((p) => (
                 <div key={p.product_id} className="product-card">
                   <div className="product-image-wrapper">
-                    <img 
-                      src={
-                        p.image
-                          ? `http://localhost:5000/${p.image}`
-                          : "https://via.placeholder.com/150"
-                      } onClick={openProduct()}
-                      alt={p.name}
-                    />
+                    <Link to={`/product/${p.product_id}`} className="product-image-wrapper">
+                      <img
+                        src={
+                          p.image
+                            ? `http://localhost:5000/${p.image}`
+                            : "https://via.placeholder.com/150"
+                        }
+                        alt={p.name}
+                      />
+                    </Link>
+
                   </div>
 
                   <div className="product-info">

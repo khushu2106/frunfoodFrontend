@@ -19,6 +19,7 @@ const ProductDetails = () => {
   const BASE_URL = "http://localhost:5000";
 
   const token = localStorage.getItem("userToken");
+  // const user_id = null;
 
   if (token) {
     try {
@@ -186,11 +187,22 @@ const ProductDetails = () => {
           {/* INFO SECTION */}
           <div className="pd-info-section">
             <h1 className="pd-title">{product.name}</h1>
+            <p className="Rating">
+              {/* Rating:  */}
+              {product.rating && Number(product.rating) > 0 ? Number(product.rating).toFixed(1) : "No Rating"}
+            </p>
             {/* <div className="pd-rating">
               {renderStars()}
               <span>({reviews.length} reviews)</span>
             </div> */}
             <p className="pd-price">₹{product.price}</p>
+            <p className={`pd-stock-status ${product.stock_status === "In Stock" ? "in-stock" :
+              product.stock_status === "Low Stock" ? "low-stock" :
+                "out-of-stock"
+              }`}>
+              {product.stock_status}
+            </p>
+
             <p className="pd-description">{product.description}</p>
 
             <div className="pd-options">

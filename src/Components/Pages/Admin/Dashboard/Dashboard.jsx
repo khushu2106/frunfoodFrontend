@@ -34,7 +34,7 @@ const Dashboard = () => {
         <StatCard
           title="Total Sales"
           value={`₹${stats.Total_sales}`}
-          onClick={() => navigate("/admin/balance")}
+          // onClick={() => navigate("/admin/balance")}
         />
 
         <StatCard

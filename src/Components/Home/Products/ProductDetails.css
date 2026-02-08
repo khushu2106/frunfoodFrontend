@@ -311,6 +311,16 @@ ProductDetails.css
   margin-bottom: 10px;
 }
 
+.Rating{
+  height: fit-content;
+  width: fit-content;
+  background-color: #e63946;
+  color: #ffffff;
+  border-radius: 20%;
+  padding: 10px;
+  margin: 10px;
+}
+
 .wishlist-btn {
   background: #fff;
   border: 1px solid #f97316;
@@ -344,6 +354,24 @@ ProductDetails.css
 .shop-now-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(88, 50, 23, 0.35);
+}
+
+.pd-stock-status {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.in-stock {
+  color: green;
+}
+
+.low-stock {
+  color: orange;
+}
+
+.out-of-stock {
+  color: red;
 }
 
 

@@ -110,7 +110,6 @@ function LayoutWrapper() {
         <Route path="/products/category/:category" element={<CategoryProducts />} />
 
         <Route path="/ProductFilter" element={<ProductFilter />} />
-        <Route path="/ProductSearch" element={<ProductSearch />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/faq" element={<FAQ />} />
