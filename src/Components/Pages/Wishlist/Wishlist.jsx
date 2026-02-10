@@ -71,7 +71,7 @@ const Wishlist = () => {
       toast.success("product remove successfully !");
     } catch (error) {
       console.error("Remove wishlist error:", error);
-      toast.error("Remove nahi ho paya");
+      toast.error("There are some error deleting the product ");
     }
   };
 

@@ -39,23 +39,42 @@ const ProductDetails = () => {
   // ];
 
   /* ================= FETCH PRODUCT ================= */
+  // useEffect(() => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`${BASE_URL}/api/products/${id}`)
+  //     .then((res) => {
+  //       const data = res.data;
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         setProduct(data[0]);
+  //         const imgs = data.map(i => i.image_url).filter(Boolean);
+  //         setImages(imgs);
+  //         setMainImage(imgs[0] || "");
+  //       } else if (data && data.product_id) {
+  //         setProduct(data);
+  //         setImages(data.image_url ? [data.image_url] : []);
+  //         setMainImage(data.image_url || "");
+  //       } else {
+  //         setProduct(null);
+  //       }
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Product API Error:", err);
+  //       setLoading(false);
+  //     });
+  // }, [id]);
   useEffect(() => {
     setLoading(true);
     axios
       .get(`${BASE_URL}/api/products/${id}`)
       .then((res) => {
-        const data = res.data;
-        if (Array.isArray(data) && data.length > 0) {
-          setProduct(data[0]);
-          const imgs = data.map(i => i.image_url).filter(Boolean);
-          setImages(imgs);
-          setMainImage(imgs[0] || "");
-        } else if (data && data.product_id) {
+        const data = res.data; 
+
+        if (data) {
           setProduct(data);
-          setImages(data.image_url ? [data.image_url] : []);
-          setMainImage(data.image_url || "");
-        } else {
-          setProduct(null);
+          setImages(data.images || []);
+          setMainImage(data.images && data.images.length > 0 ? data.images[0] : "");
         }
         setLoading(false);
       })
@@ -163,7 +182,7 @@ const ProductDetails = () => {
       <div className="product-details-page">
         <div className="pd-container">
           {/* IMAGE SECTION */}
-          <div className="pd-image-section">
+          {/* <div className="pd-image-section">
             <div className="main-image">
               {mainImage ? (
                 <img src={`${BASE_URL}/${mainImage}`} alt={product.name} />
@@ -182,6 +201,32 @@ const ProductDetails = () => {
                 />
               ))}
             </div>
+          </div> */}
+
+          {/* IMAGE SECTION */}
+          <div className="pd-image-section">
+            <div className="main-image">
+              {mainImage ? (
+                <img src={`${BASE_URL}/${mainImage}`} alt={product.name} />
+              ) : (
+                <img src="/no-image.png" alt="No Image" />
+              )}
+            </div>
+
+            {/* Thumbnails sirf tab dikhein jab 1 se zyada images hon */}
+            {images.length > 1 && (
+              <div className="thumbnail-row">
+                {images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={`${BASE_URL}/${img}`}
+                    onClick={() => setMainImage(img)}
+                    className={`thumbnail-img ${mainImage === img ? "active" : ""}`}
+                    alt={`thumb-${i}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* INFO SECTION */}

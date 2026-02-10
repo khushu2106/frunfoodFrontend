@@ -1,15 +1,58 @@
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./LoginD.css";
+import "./LoginD.css"; 
+import { AuthContext } from "../../Auth/Authcontext";
 
 function LoginD() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { login } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // set login flag
-    localStorage.setItem("deliveryLogin", "true");
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    // go to dashboard
-    navigate("/delivery/dashboard");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          expectedRole: "delivery_boy", 
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        login(data.token, data.user);
+
+        localStorage.setItem("deliveryLogin", "true");
+
+
+        navigate("/delivery/dashboard");
+      } else {
+        setError(data.error || "Invalid delivery credentials");
+      }
+    } catch (err) {
+      setError("Server error. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -17,10 +60,30 @@ function LoginD() {
       <div className="login-card">
         <h2>Delivery Login</h2>
 
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
 
-        <button onClick={handleLogin}>Login</button>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Delivery Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Checking..." : "Login"}
+          </button>
+        </form>
 
         <p style={{ marginTop: "10px" }}>
           <Link to="/delivery/forgot-password">Forgot Password?</Link>

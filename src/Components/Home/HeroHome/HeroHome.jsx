@@ -9,21 +9,24 @@ const HeroHome = () => {
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:5000";
 
-  // 🔍 Suggestions while typing (debounced)
   useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+
     const timer = setTimeout(() => {
-      if (searchTerm.length >= 2) {
-        axios
-          .get(`${BASE_URL}/api/products/search?q=${searchTerm}`)
-          .then((res) => setSuggestions(res.data))
-          .catch((err) => console.error(err));
-      } else {
-        setSuggestions([]);
-      }
-    }, 300); // 300ms debounce
+      fetch(
+        `http://localhost:5000/api/products/search?q=${searchTerm}`
+      )
+        .then((res) => res.json())
+        .then((data) => setSuggestions(data.slice(0, 5)))
+        .catch((err) => console.error(err));
+    }, 300); // debounce
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
+
 
   // 🔎 Search button / Enter key
   const handleSearch = () => {

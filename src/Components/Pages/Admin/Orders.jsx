@@ -37,7 +37,7 @@ const Orders = () => {
             <th>Customer</th>
             <th>Date</th>
             <th>Amount</th>
-            {/* <th>Status</th> */}
+            <th>Status</th>
             {/* <th>Action</th> */}
           </tr>
         </thead>
@@ -48,6 +48,7 @@ const Orders = () => {
               <td>{order.fname}</td>
               <td>{new Date(order.s_date).toLocaleDateString()}</td>
               <td>₹{order.total_amount}</td>
+              <td>{order.order_status}</td>
               {/* <td>{order.Order_status}</td> */}
               {/* <td>
                 <select

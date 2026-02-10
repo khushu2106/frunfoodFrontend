@@ -29,7 +29,7 @@ const InvoiceManager = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/admin/invoice/${type}?startDate=${startDate}&endDate=${endDate}`
+        `http://localhost:5000/api/invoice/${type}?startDate=${startDate}&endDate=${endDate}`
       );
       setInvoices(res.data);
     } catch (err) {

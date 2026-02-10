@@ -88,6 +88,7 @@
 .nav-links {
   display: flex;
   gap: 25px;
+  line-height: 2;
 }
 
 .nav-links a {

@@ -1,0 +1,197 @@
+:root {
+  --primary: #583217;
+  --secondary: #bba077;
+  --bg: #f8f9fb;
+  --card: #ffffff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --border: #e5e7eb;
+  --success: #16a34a;
+}
+
+/* ================= LAYOUT ================= */
+.account-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  background: #111827;
+  color: #fff;
+  padding: 25px 20px;
+}
+
+.sidebar h3 {
+  margin-bottom: 25px;
+  font-size: 20px;
+  color: var(--secondary);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #d1d5db;
+  transition: 0.3s;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.logout-btn {
+  margin-top: 40px;
+  width: 100%;
+  padding: 12px;
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+/* ================= MAIN CONTENT ================= */
+.profile-main-content {
+  flex: 1;
+  padding: 40px;
+}
+
+.profile-main-content h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: var(--text-dark);
+}
+
+/* ================= CARD ================= */
+.profile-card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+/* ================= FIELD ================= */
+.profile-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 6px;
+}
+
+.profile-field p {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 6px;
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+}
+
+.profile-field input,
+.profile-field textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.profile-field input:focus,
+.profile-field textarea:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 2px rgba(187, 160, 119, 0.2);
+}
+
+.profile-field textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+/* FULL WIDTH FIELDS */
+.profile-field.full-width {
+  grid-column: span 2;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.profile-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.edit-btn,
+.save-btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn {
+  background: var(--secondary);
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #a88e63;
+}
+
+.save-btn {
+  background: var(--success);
+  color: #fff;
+}
+
+.save-btn:hover {
+  background: #15803d;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .account-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .profile-card {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-field.full-width {
+    grid-column: span 1;
+  }
+
+  .profile-actions {
+    justify-content: center;
+  }
+}

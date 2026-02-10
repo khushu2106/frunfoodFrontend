@@ -34,19 +34,24 @@ const MyOrders = () => {
   };
 
   const cancelOrder = async (sales_id) => {
-    if (!window.confirm("Are you sure you want to cancel this order?")) return;
-
+    if (!window.confirm("Are you sure you want to cancle this order"));
     try {
       await axios.put(
-        `${BASE_URL}/api/sales/cancel/${sales_id}`,
+        `${BASE_URL}/api/sales/${sales_id}/cancel`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
 
       alert("Order cancelled successfully");
+      setOrders(prev =>
+        prev.filter(order => order.sales_id !== sales_id)
+      );
       fetchOrders();
     } catch (err) {
-      alert("Unable to cancel order");
+      console.log(err.response?.data);
+      alert("Cancel failed");
     }
   };
 
@@ -55,7 +60,29 @@ const MyOrders = () => {
   };
 
   const canCancel = (status) => {
-    return ["placed", "confirmed", "shipped"].includes(status);
+    return status === "placed" || status === "confirmed";
+  };
+
+  const canReturn = (status) => {
+    return status === "delivered";
+  };
+
+  const returnOrder = async (sales_id) => {
+    const reason = prompt("Please enter return reason:");
+    if (!reason) return;
+
+    try {
+      await axios.put(
+        `${BASE_URL}/api/sales/${sales_id}/return-request`,
+        { reason },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert("Return request submitted successfully");
+      fetchOrders();
+    } catch (err) {
+      alert("Return request failed");
+    }
   };
 
 
@@ -131,6 +158,16 @@ const MyOrders = () => {
                       Cancel Order
                     </button>
                   )}
+
+                  {canReturn(order.order_status) && (
+                    <button
+                      className="btn-return"
+                      onClick={() => returnOrder(order.sales_id)}
+                    >
+                      Return Order
+                    </button>
+                  )}
+
                 </div>
 
               </div>

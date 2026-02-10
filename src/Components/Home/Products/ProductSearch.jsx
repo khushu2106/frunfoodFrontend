@@ -1,45 +1,50 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./ProductSearch.css";
 
 const API_URL = "http://localhost:5000/api/products";
 
 export default function ProductSearch() {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filtered, setFiltered] = useState([]);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("search") || "";
 
-  // Fetch all products once on mount
-  // useEffect(() => {
-  //   fetch(API_URL)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data);
-  //       setFiltered(data);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+  const [search, setSearch] = useState(query);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Debounce search
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (search.trim() === "") {
-  //       // Empty search → show all products
-  //       setFiltered(products);
-  //       return;
-  //     }
+  // 🔁 URL → state sync
+  useEffect(() => {
+    setSearch(query);
+  }, [query]);
 
-  //     fetch(`${API_URL}/search?q=${search}`)
-  //       .then((res) => res.json())
-  //       .then((data) => setFiltered(data))
-  //       .catch((err) => console.error(err));
-  //   }, 300); // 300ms delay
+  // 🔍 API call
+  useEffect(() => {
+    if (search.trim() === "") {
+      setResults([]);
+      return;
+    }
 
-  //   return () => clearTimeout(timer);
-  // }, [search, products]);
+    const delay = setTimeout(() => {
+      setLoading(true);
+
+      fetch(`${API_URL}/search?q=${search}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setResults(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }, 400);
+
+    return () => clearTimeout(delay);
+  }, [search]);
 
   return (
     <div className="product-search-wrapper">
-      <h2>Search Products</h2>
+      <h2>Search Results</h2>
 
       <div className="search-bar">
         <input
@@ -50,11 +55,17 @@ export default function ProductSearch() {
         />
       </div>
 
+      {loading && <p>Searching...</p>}
+
       <div className="product-grid">
-        {filtered.length > 0 ? (
-          filtered.map((prod) => (
+        {results.length > 0 ? (
+          results.map((prod) => (
             <div className="product-card" key={prod.product_id}>
-              <img src={prod.image} alt={prod.product_name} />
+              <img
+                src={prod.image}
+                alt={prod.product_name}
+                onError={(e) => (e.target.src = "/no-image.png")}
+              />
               <h3>{prod.product_name}</h3>
               <p>₹{prod.price}</p>
               <a href={`/product/${prod.product_id}`} className="view-btn">
@@ -63,7 +74,7 @@ export default function ProductSearch() {
             </div>
           ))
         ) : (
-          <p>No products found!</p>
+          search && !loading && <p>No products found</p>
         )}
       </div>
     </div>

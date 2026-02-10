@@ -118,7 +118,17 @@ const Cart = () => {
                   className="cart-card"
                 >
                   <div className="item-info">
-                    <div className="item-img-placeholder">🛍️</div>
+                    {/* <div className="item-img-placeholder">🛍️</div> */}
+                    <div
+                      className="item-img"
+                      onClick={() => navigate(`/product/${item.product_id}`)}
+                    >
+                      <img
+                        src={`${BASE_URL}/uploads/${item.image_url}`}
+                        alt={item.name}
+                      />
+                    </div>
+
                     <div>
                       <h4>{item.name}</h4>
                       <p className="price-tag">₹{item.price}</p>

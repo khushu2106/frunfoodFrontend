@@ -38,6 +38,50 @@ const EditProduct = () => {
 
     axios.get(`${BASE_URL}/api/subcategories`).then(res => setSubcategories(res.data));
   }, [id]);
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setError("");
+
+    if (files.length === 0) return;
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    const validFiles = [];
+
+    // Basic filters
+    for (let file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        setError("Only JPG, JPEG, PNG, WEBP images are allowed");
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Each image must be less than 2MB");
+        return;
+      }
+      validFiles.push(file);
+    }
+
+    // Dimension validation
+    let processed = 0;
+    const finalImages = [];
+
+    validFiles.forEach((file) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        if (img.width < 300 || img.height < 300 || img.width > 800 || img.height > 800) {
+          setError(`Image ${file.name} dimensions must be between 300x300 and 800x800 px`);
+        } else {
+          finalImages.push(file);
+        }
+        processed++;
+        if (processed === validFiles.length) {
+          setImages(finalImages);
+        }
+      };
+    });
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (Number(price) < 0 || Number(stock) < 0 || Number(weight) < 0) {

@@ -27,7 +27,7 @@ const AddBrand = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:5000/api/brands', { name: brandName });
+            await axios.post('http://localhost:5000/api/brands', { brand_name: brandName });
             alert("Brand Added!");
             setBrandName('');
             fetchBrands();

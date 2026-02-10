@@ -86,7 +86,9 @@ import DeliveryList from './Components/Pages/Admin/Delivery/DeliveryList';
 import ScrollToTop from './Components/Pages/ScrollToTop';
 import FAQ from './Components/Pages/Admin/Chat';
 import OfferProducts from './Components/Home/Offers/OfferProduct';
-
+import SalesReturn from './Components/Pages/Admin/SalesReturn';
+import CancelledOrders from './Components/Pages/Order/CancelledOrders';
+import City from './Components/Pages/Admin/City';
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -130,12 +132,15 @@ function LayoutWrapper() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/cancelled-orders" element={<CancelledOrders />} />
         <Route path="/myorders" element={<><MyOrders /><ProductList/></>} />
         <Route path="/myorders/:id" element={<OrderDetails />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/complaint" element={<Complaint />} />
+        <Route path="/invoice/:id" element={<Invoice />} />
+        <Route path="/ProductFilter" element={<ProductFilter />} />
 
         {/* Admin */}
         <Route
@@ -173,6 +178,8 @@ function LayoutWrapper() {
           <Route path="delivery-list" element={<DeliveryList />} />
           <Route path="assignorder" element={<AssignDelivery />} />
           <Route path="deliverystatus" element={<DeliveryStatus />} />
+          <Route path="city" element={<City />} />
+          <Route path="return" element={<SalesReturn />} />
 
 
         </Route>

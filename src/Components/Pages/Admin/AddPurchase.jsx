@@ -119,7 +119,7 @@ const AddPurchase = () => {
           <option value="">Select Product</option>
           {products.map((p) => (
             <option key={p.product_id} value={p.product_id}>
-              {p.name}
+              {p.product_name}
             </option>
           ))}
         </select>

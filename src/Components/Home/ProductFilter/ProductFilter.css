@@ -1,24 +1,150 @@
-.filter-box {
+/* SIDEBAR */
+.filter-sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 90px;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* MAIN TITLE */
+.filter-main-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+/* BLOCK */
+.filter-block {
+  margin-bottom: 16px;
+}
+
+/* SECTION TITLES */
+.filter-title {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* COLOR HIGHLIGHTS */
+.category-title {
+  background: #ecfeff;
+  color: #0369a1;
+}
+
+.brand-title {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.price-title {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+/* SCROLL AREA */
+.scroll-box {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* SCROLLBAR */
+.scroll-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+/* FILTER ITEM */
+.filter-item {
   display: flex;
-  gap: 10px;
-  padding: 15px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.filter-box input,
-.filter-box select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.filter-box button {
-  padding: 8px 15px;
-  background: #1b4332;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  background: #f9fafb;
+  border-radius: 10px;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-item:hover {
+  background: #fff1e6;
+}
+
+/* TEXT */
+.filter-item span {
+  text-transform: capitalize;
+  color: #374151;
+}
+
+/* CHECKBOX */
+.filter-item input {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff7a00;
+  cursor: pointer;
+}
+
+/* PRICE INPUT */
+.filter-sidebar input[type="number"] {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.filter-sidebar input[type="number"]:focus {
+  outline: none;
+  border-color: #ff7a00;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+}
+
+/* BUTTONS */
+.apply-btn {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, #ff7a00, #ff9f45);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.clear-btn {
+  width: 100%;
+  padding: 10px;
+  background: #067aff;
+  border-radius: 12px;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .filter-sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+    margin-bottom: 16px;
+  }
 }
