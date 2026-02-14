@@ -1,63 +1,45 @@
-/* Orders card */
-.page-d {
-  max-width: 420px;
-  margin: 80px auto;
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  text-align: center;
-  position: relative;
-}
-
-/* Orders avatar */
-.page-d::before {
-  content: "📦";
-  font-size: 55px;
-  background: #2563eb;
-  color: #fff;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Heading */
-.page-d h2 {
-  margin-top: 55px;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
-/* Order rows */
-.page-d p {
-  background: #f9fafb;
-  padding: 12px 15px;
-  margin: 12px 0;
-  border-radius: 10px;
-  font-size: 16px;
-  color: #444;
+/* Footer buttons styling */
+.order-action-footer {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #edf2f7;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-/* Payment text */
-.page-d p span {
-  color: #2563eb;
+.deliver-btn {
+  background: #10b981; /* Green color for success */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
 }
 
-/* Hover effect */
-.page-d p:hover {
-  background: #eff6ff;
-  transform: scale(1.02);
-  transition: 0.3s ease;
+.deliver-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+.mode-tag {
+  background: #ebf8ff;
+  color: #2b6cb0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.price-tag {
+  font-size: 16px !important;
+  color: #2d3748 !important;
+  font-weight: 700;
+  margin-top: 10px !important;
 }

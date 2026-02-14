@@ -70,7 +70,16 @@ const CategoryProducts = () => {
   return (
     <>
       <div className="category-products-container">
-        <h2 className="category-title">
+        <h4>
+          <Link
+            to="/"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            ← Back to Home
+          </Link>
+        </h4>
+
+        <h2 className="category-title" style={{ backgroundColor: "#f9f9f9", color: "#6b2e1f" }}>
           Search for category :{" "}
           {parseInt(id) === 0
             ? "All Products"

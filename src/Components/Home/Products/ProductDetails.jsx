@@ -181,27 +181,6 @@ const ProductDetails = () => {
     <>
       <div className="product-details-page">
         <div className="pd-container">
-          {/* IMAGE SECTION */}
-          {/* <div className="pd-image-section">
-            <div className="main-image">
-              {mainImage ? (
-                <img src={`${BASE_URL}/${mainImage}`} alt={product.name} />
-              ) : (
-                <img src="/no-image.png" alt="No Image" />
-              )}
-            </div>
-            <div className="thumbnail-row">
-              {images.map((img, i) => (
-                <img
-                  key={i}
-                  src={`${BASE_URL}/${img}`}
-                  onClick={() => setMainImage(img)}
-                  className={`thumbnail-img ${mainImage === img ? "active" : ""}`}
-                  alt="thumb"
-                />
-              ))}
-            </div>
-          </div> */}
 
           {/* IMAGE SECTION */}
           <div className="pd-image-section">
@@ -213,7 +192,6 @@ const ProductDetails = () => {
               )}
             </div>
 
-            {/* Thumbnails sirf tab dikhein jab 1 se zyada images hon */}
             {images.length > 1 && (
               <div className="thumbnail-row">
                 {images.map((img, i) => (
@@ -247,7 +225,7 @@ const ProductDetails = () => {
               }`}>
               {product.stock_status}
             </p>
-
+            {/* <p className="pd-discount">Discount rate : {product.discount}</p> */}
             <p className="pd-description">{product.description}</p>
 
             <div className="pd-options">

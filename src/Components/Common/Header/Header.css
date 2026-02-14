@@ -352,10 +352,12 @@
     border-radius: 0;
   }
 }
-.products-dropdown-menu {
-  display: none;
-}
 
-.dropdown:hover .products-dropdown-menu {
+.products-dropdown-menu {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  z-index: 999; 
+  background: white;
   display: block;
 }

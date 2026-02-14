@@ -57,44 +57,52 @@ function ProfileD() {
       <h2>Edit Profile</h2>
 
       <form className="profile-card" onSubmit={handleSubmit}>
-        {/* Profile Image */}
-        <div className="image-box">
+        {/* <div className="image-box">
           <img
-            src={profile.image || "https://via.placeholder.com/120"}
+            src={profile.image || "https://via.placeholder.com/150"}
             alt="Profile"
           />
-          <input type="file" accept="image/*" onChange={handleImage} />
+          <input type="file" id="img-upload" hidden accept="image/*" onChange={handleImage} />
+          <label htmlFor="img-upload" style={{cursor:'pointer', color:'#3b82f6', marginTop:'5px'}}>
+             Change Photo
+          </label>
+        </div> */}
+
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px'}}>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <label>Full Name</label>
+            <input name="name" value={profile.name} onChange={handleChange} placeholder="Rahul Sharma" />
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <label>Phone Number</label>
+            <input name="phone" value={profile.phone} onChange={handleChange} placeholder="9876543210" />
+          </div>
         </div>
 
-        <label>Name</label>
-        <input name="name" value={profile.name} onChange={handleChange} />
+        <label>Email Address</label>
+        <input name="email" type="email" value={profile.email} onChange={handleChange} placeholder="example@mail.com" />
 
-        <label>Phone Number</label>
-        <input name="phone" value={profile.phone} onChange={handleChange} />
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px'}}>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <label>Vehicle Type</label>
+            <select name="vehicleType" value={profile.vehicleType} onChange={handleChange}>
+              <option>Bike</option>
+              <option>Cycle</option>
+              <option>Scooter</option>
+            </select>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <label>Vehicle Number</label>
+            <input name="vehicleNumber" value={profile.vehicleNumber} onChange={handleChange} placeholder="GJ01AB1234" />
+          </div>
+        </div>
 
-        <label>Email</label>
-        <input name="email" type="email" value={profile.email} onChange={handleChange} />
-
-        <label>Password</label>
-        <input name="password" type="password" value={profile.password} onChange={handleChange} />
-
-        <label>Vehicle Type</label>
-        <select name="vehicleType" value={profile.vehicleType} onChange={handleChange}>
-          <option>Bike</option>
-          <option>Cycle</option>
-          <option>Scooter</option>
-        </select>
-
-        <label>Vehicle Number</label>
-        <input name="vehicleNumber" value={profile.vehicleNumber} onChange={handleChange} />
-
-        <label>Address</label>
-        <textarea name="address" value={profile.address} onChange={handleChange} />
+        <label>Work Address</label>
+        <textarea name="address" value={profile.address} onChange={handleChange} placeholder="Enter your full address" />
 
         <button type="submit">Save Changes</button>
       </form>
     </div>
   );
 }
-
 export default ProfileD;

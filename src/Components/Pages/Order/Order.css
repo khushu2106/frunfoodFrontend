@@ -35,6 +35,9 @@
 .order-card:hover {
   transform: translateY(-3px);
 }
+.clickable{
+  cursor: pointer;
+}
 
 /* Left content */
 .order-card p {

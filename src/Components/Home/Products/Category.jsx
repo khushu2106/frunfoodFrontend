@@ -26,20 +26,21 @@ const Category = () => {
 
   return (
     <>
-    <div className="home-category-wrapper">
-      {categories.map((cat) => (
-        <div
-          className="home-category-item"
-          key={cat.id}
-          onClick={() => handleCategoryClick(cat)}
-        >
-          <div className="home-category-icon" style={{ backgroundColor: cat.bg }}>
-            <img src={cat.icon} alt={cat.name} />
+      <h2 className="category">Shop by category </h2>
+      <div className="home-category-wrapper">
+        {categories.map((cat) => (
+          <div
+            className="home-category-item"
+            key={cat.id}
+            onClick={() => handleCategoryClick(cat)}
+          >
+            <div className="home-category-icon" style={{ backgroundColor: cat.bg }}>
+              <img src={cat.icon} alt={cat.name} />
+            </div>
+            <p className="home-category-name">{cat.name}</p>
           </div>
-          <p className="home-category-name">{cat.name}</p>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
     </>
   );
 };

@@ -10,15 +10,16 @@ import Aboutus from './Components/Home/Aboutus/Aboutus';
 import AdminLayout from './Components/Pages/Admin/AdminLayout';
 import Dashboard from './Components/Pages/Admin/Dashboard/Dashboard';
 import Balance from './Components/Pages/Admin/Balance';
-import Invoice from './Components/Pages/Admin/Invoice';
+// import Invoice from './Components/Pages/Admin/Invoice';
 import Users from './Components/Pages/Admin/Users';
 import Orders from './Components/Pages/Admin/Orders';
 import Cards from './Components/Pages/Admin/Cards';
-import Transaction from './Components/Pages/Admin/Transaction'
 import Profile from './Components/Pages/Admin/Profile';
 import Settings from './Components/Pages/Admin/Settings';
 import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
+import InvoiceManager from './Components/Pages/Admin/Invoicemanager';
+import InvoiceView from './Components/Pages/Admin/InvoiceView';
 // import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
@@ -52,6 +53,9 @@ import AddSubcategory from './Components/Pages/Admin/Products/AddSubcategory';
 import AdminLogin from './Components/Pages/Admin/AdminLogin';
 import AdminLogout from './Components/Pages/Admin/AdminLogout';
 import AddPurchase from './Components/Pages/Admin/AddPurchase';
+import AddSupplier from './Components/Pages/Admin/Purchase/AddSupplier';
+import ViewSupplier from './Components/Pages/Admin/Purchase/ViewSupplier';
+import AddPurchaseReturn from './Components/Pages/Admin/Purchase/AddPurchaseReturn';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
@@ -89,6 +93,13 @@ import OfferProducts from './Components/Home/Offers/OfferProduct';
 import SalesReturn from './Components/Pages/Admin/SalesReturn';
 import CancelledOrders from './Components/Pages/Order/CancelledOrders';
 import City from './Components/Pages/Admin/City';
+import Brand from './Components/Home/Products/brand';
+import BrandProducts from './Components/Home/Products/BrandProduct';
+import Complaints from './Components/Pages/Complaint/Complaint';
+import Reports from './Components/Pages/Admin/Reports';
+import Enquiries from './Components/Pages/Admin/Enquiries';
+// import InvoiceManager from './Components/Pages/Admin/InvoiceManager';
+// import InvoiceView from './Components/Pages/Admin/InvoiceView';
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -105,7 +116,7 @@ function LayoutWrapper() {
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome /><Category /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
+        <Route path="/" element={<><HeroHome /><Category /><Brand /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
         <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
         <Route path="/product/:id" element={<ProductDetails />}/>
         <Route path="/productSearch" element={<ProductSearch />} />
@@ -117,6 +128,7 @@ function LayoutWrapper() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
+        <Route path="/brands/:id" element={<BrandProducts />} />
         <Route path="/offers/:offerType" element={<OfferProducts />} />
 
         {/* Auth */}
@@ -139,9 +151,10 @@ function LayoutWrapper() {
         <Route path="/profile" element={<ProfileC />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/complaint" element={<Complaint />} />
-        <Route path="/invoice/:id" element={<Invoice />} />
         <Route path="/ProductFilter" element={<ProductFilter />} />
+        {/* <Route path="/admin/invoice/:type/:id" element={<InvoiceView />}/> */}
 
+         
         {/* Admin */}
         <Route
           path="/admin"
@@ -154,9 +167,8 @@ function LayoutWrapper() {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="balance" element={<Balance />} />
-          <Route path="invoice/:id" element={<Invoice />} />
           <Route path="cards" element={<Cards />} />
-          <Route path="transaction" element={<Transaction />} />
+          <Route path="purchase" element={<AddPurchase />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="add-product" element={<AddProduct />} />
@@ -171,7 +183,7 @@ function LayoutWrapper() {
           <Route path="manage-products" element={<AdminManageProducts />} />
           <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="users/:id" element={<UserDetails />} />
-          <Route path="invoice" element={<Invoice />} />
+          {/* <Route path="invoice" element={<Invoice />} /> */}
           <Route path="view-purchases" element={<ViewPurchases />} />
           {/* <Route path="delivery" element={<AdminDelivery />} /> */}
           <Route path="pending" element={<PendingOrders />} />
@@ -180,7 +192,12 @@ function LayoutWrapper() {
           <Route path="deliverystatus" element={<DeliveryStatus />} />
           <Route path="city" element={<City />} />
           <Route path="return" element={<SalesReturn />} />
-
+          <Route path="invoice" element={<InvoiceManager />}/>
+          <Route path="supplier" element={<AddSupplier />}/>
+          <Route path="view-suppliers" element={<ViewSupplier />}/>
+          <Route path="purchasereturn" element={<AddPurchaseReturn />}/>
+          <Route path="complaints" element={<Complaints />}/>
+          <Route path="enquiries" element={<Enquiries />}/>
 
         </Route>
         <Route path="/admin/logout" element={<AdminLogout />} />

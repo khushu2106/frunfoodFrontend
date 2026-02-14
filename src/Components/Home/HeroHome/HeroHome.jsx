@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./HeroHome.css";
 
 const HeroHome = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -16,22 +14,19 @@ const HeroHome = () => {
     }
 
     const timer = setTimeout(() => {
-      fetch(
-        `http://localhost:5000/api/products/search?q=${searchTerm}`
-      )
+      fetch(`http://localhost:5000/api/products/search?q=${encodeURIComponent(searchTerm)}`)
         .then((res) => res.json())
         .then((data) => setSuggestions(data.slice(0, 5)))
-        .catch((err) => console.error(err));
-    }, 300); // debounce
+        .catch((err) => console.error("Suggestion error:", err));
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-
-  // 🔎 Search button / Enter key
   const handleSearch = () => {
     if (searchTerm.trim() !== "") {
-      navigate(`/products?search=${searchTerm}`);
+      // Navigates to the correct route defined in your App.js
+      navigate(`/productSearch?search=${encodeURIComponent(searchTerm)}`);
       setSuggestions([]);
     }
   };
@@ -53,7 +48,6 @@ const HeroHome = () => {
             Premium supplies, expert grooming, and a community that loves pets.
           </p>
 
-          {/* 🔍 SEARCH BAR */}
           <div className="search-bar-mini">
             <input
               type="text"
@@ -69,8 +63,8 @@ const HeroHome = () => {
                   <li
                     key={item.product_id}
                     onClick={() => {
-                      navigate(`/products?search=${item.product_name}`);
                       setSearchTerm(item.product_name);
+                      navigate(`/productSearch?search=${encodeURIComponent(item.product_name)}`);
                       setSuggestions([]);
                     }}
                   >

@@ -40,7 +40,7 @@ const AdminReturns = () => {
 
   return (
     <div>
-      <h2>Return Requests</h2>
+      <h2>Order Return</h2>
 
       <table border="1" width="100%">
         <thead>

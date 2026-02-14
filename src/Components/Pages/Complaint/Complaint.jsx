@@ -1,78 +1,71 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./Complaint.css";
-import { useState } from "react";
 
-function Complaint() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    orderId: "",
-    issue: "",
-    message: "",
-  });
+const Complaints = () => {
+  const [complaints, setComplaints] = useState([]);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const fetchComplaints = async () => {
+    const res = await axios.get("http://localhost:5000/api/complaints");
+    setComplaints(res.data);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Complaint submitted successfully!");
-    console.log(form);
+  const updateStatus = async (id, status) => {
+    await axios.put(`http://localhost:5000/api/complaints/${id}`, { status });
+    fetchComplaints();
   };
+
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
 
   return (
-    
-      
+    <div className="complaint-container">
+      <h2>Customer Complaints</h2>
 
-      <form className="complaint-form" onSubmit={handleSubmit}>
-        <div className="complaint-container"></div>
-        <h2>Customer Complaint</h2>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          required
-          onChange={handleChange}
-        />
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          required
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          name="orderId"
-          placeholder="Order ID"
-          required
-          onChange={handleChange}
-        />
-
-        <select name="issue" required onChange={handleChange}>
-          <option value="">Select Issue</option>
-          <option>Late Delivery</option>
-          <option>Wrong Item</option>
-          <option>Payment Issue</option>
-          <option>Quality Issue</option>
-          <option>Other</option>
-        </select>
-
-        <textarea
-          name="message"
-          placeholder="Describe your issue"
-          rows="4"
-          required
-          onChange={handleChange}
-        />
-
-        <button type="submit">Submit Complaint</button>
-        
-      </form>
-    
+        <tbody>
+          {complaints.map((c) => (
+            <tr key={c.complaint_id}>
+              <td>{c.complaint_id}</td>
+              <td>{c.fname} {c.lname}</td>
+              <td>{c.email}</td>
+              <td>{c.subject}</td>
+              <td>{c.message}</td>
+              <td>
+                <span className={`status ${c.status}`}>
+                  {c.status}
+                </span>
+              </td>
+              <td>
+                {c.status === "pending" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(c.complaint_id, "resolved")
+                    }
+                  >
+                    Mark Resolved
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
-}
+};
 
-export default Complaint;
+export default Complaints;

@@ -49,12 +49,118 @@
   font-weight: 500;
 }
 
+/* ================= ORDER SUMMARY ================= */
+
 .summary p {
   display: flex;
   justify-content: space-between;
 }
 
-/* --- Place Order Button & Loading State --- */
+/* Order Items */
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: 0.3s ease;
+}
+
+.order-item:hover {
+  background: #f5f5f5;
+}
+
+.order-item img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.order-item-details {
+  flex: 1;
+}
+
+.order-item-details h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Original Cut Price */
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+  margin-right: 6px;
+}
+
+/* Discount Price */
+.discount-price {
+  color: #e53935;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Offer Badge */
+.offer-badge {
+  display: inline-block;
+  background: #ffebee;
+  color: #e53935;
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.order-item-details .desc {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+/* ================= PRICE SUMMARY ================= */
+
+.price-summary {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.price-summary div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.grand-total {
+  font-size: 17px;
+  font-weight: bold;
+  color: #583217;
+}
+
+/* Savings Highlight */
+.total-savings {
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ================= BUTTON ================= */
+
 .place-order-btn {
   width: 100%;
   padding: 14px;
@@ -72,15 +178,15 @@
   background: #ff5252;
 }
 
-/* Jab button disabled ho (Processing state) */
 .place-order-btn:disabled {
   background: #cccccc;
   cursor: not-allowed;
   opacity: 0.8;
-  transform: scale(0.98); /* Click hone par thoda dab jayega */
+  transform: scale(0.98);
 }
 
-/* Payment Options */
+/* ================= PAYMENT OPTIONS ================= */
+
 .payment-option {
   display: flex;
   align-items: center;
@@ -89,7 +195,26 @@
   font-size: 15px;
 }
 
-/* --- Status Cards (Success/Failed) --- */
+.radio-box {
+  display: flex;
+  align-items: center;   
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.radio-box input[type="radio"] {
+  margin: 0;            
+  width: 16px;
+  height: 16px;
+}
+
+/* ================= STATUS CARDS ================= */
+
 .payment-failed, .payment-success {
   height: 100vh;
   display: flex;
@@ -133,3 +258,11 @@
 .retry:hover { background: #c82333; }
 .home:hover { background: #5a6268; }
 .success-card button:hover { background: #218838; }
+
+.checkout-error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}

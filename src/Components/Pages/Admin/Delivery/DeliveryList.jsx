@@ -62,22 +62,22 @@ const DeliveryList = () => {
                             <th style={styles.th}>Name</th>
                             <th style={styles.th}>Phone Number</th>
                             <th style={styles.th}>Vehicle No</th>
-                            <th style={styles.th}>Status</th>
+                            {/* <th style={styles.th}>Status</th> */}
                         </tr>
                     </thead>
                     <tbody>
                         {deliveryBoys.length > 0 ? (
                             deliveryBoys.map((boy) => (
                                 <tr key={boy.delivery_id}>
-                                    <td style={styles.td}>#{boy.delivery_id}</td>
+                                    <td style={styles.td}>{boy.delivery_id}</td>
                                     <td style={styles.td}><strong>{boy.fname}</strong></td>
                                     <td style={styles.td}>{boy.mobile_no|| "N/A"}</td>
                                     <td style={styles.td}>{boy.vehicle_no}</td>
-                                    <td style={styles.td}>
+                                    {/* <td style={styles.td}>
                                         <span style={boy.status === 'active' ? styles.statusActive : styles.statusInactive}>
                                             {boy.status.toUpperCase()}
                                         </span>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             ))
                         ) : (

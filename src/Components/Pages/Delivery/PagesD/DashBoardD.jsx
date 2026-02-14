@@ -105,14 +105,14 @@ function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="quick-actions">
+      {/* <div className="quick-actions">
         <h3>Quick Actions</h3>
         <div className="action-buttons">
           <button onClick={() => window.location.href = "/orders"}>View Orders</button>
           <button onClick={() => window.location.href = "/update-status"}>Update Status</button>
           <button onClick={() => window.location.href = "/profile"}>My Profile</button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

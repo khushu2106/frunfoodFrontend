@@ -141,14 +141,14 @@ const MyOrders = () => {
                 </div>
 
                 <div className="order-actions">
-                  <button
+                  {/* <button
                     className="btn-view"
                     onClick={() =>
                       navigate(`/myorders/${order.sales_id}`)
                     }
                   >
                     Track
-                  </button>
+                  </button> */}
 
                   {canCancel(order.order_status) && (
                     <button

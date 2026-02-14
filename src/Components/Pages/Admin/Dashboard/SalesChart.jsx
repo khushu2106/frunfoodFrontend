@@ -72,7 +72,7 @@ const SalesChart = () => {
         <label htmlFor="sales-type" style={{ marginRight: "10px", fontWeight: 500 }}>
           View Sales:
         </label>
-        <select
+        {/* <select
           id="sales-type"
           value={type}
           onChange={(e) => setType(e.target.value)}
@@ -81,7 +81,7 @@ const SalesChart = () => {
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
-        </select>
+        </select> */}
       </div>
 
       {/* Line Chart */}

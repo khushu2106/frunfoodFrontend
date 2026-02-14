@@ -13,84 +13,88 @@ const EditProduct = () => {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [weight, setWeight] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [oldImage, setOldImage] = useState("");
 
   const [subcategories, setSubcategories] = useState([]);
 
+  // 🔹 Multiple image states
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [error, setError] = useState("");
+
+  // ---------------- FETCH PRODUCT ----------------
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/products/${id}`);
         const p = res.data;
-        setName(p.name || p.product_name);
+
+        setName(p.name);
         setSubCatId(p.sub_cat_id);
         setDescription(p.description);
         setPrice(p.price);
         setStock(p.stock);
         setWeight(p.weight);
-        setOldImage(p.image);
+
+        // 🔹 Expecting backend to return images array
+        setExistingImages(p.images || []);
+
       } catch (err) {
         console.error("Fetch Error:", err);
       }
     };
-    fetchProduct();
 
-    axios.get(`${BASE_URL}/api/subcategories`).then(res => setSubcategories(res.data));
+    fetchProduct();
+    axios.get(`${BASE_URL}/api/subcategories`)
+      .then(res => setSubcategories(res.data));
+
   }, [id]);
 
-  const handleImageChange = (e) => {
+  // ---------------- NEW IMAGE VALIDATION ----------------
+  const handleNewImages = (e) => {
     const files = Array.from(e.target.files);
     setError("");
-
-    if (files.length === 0) return;
 
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
     const validFiles = [];
 
-    // Basic filters
     for (let file of files) {
       if (!allowedTypes.includes(file.type)) {
-        setError("Only JPG, JPEG, PNG, WEBP images are allowed");
+        setError("Only JPG, JPEG, PNG, WEBP allowed");
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setError("Each image must be less than 2MB");
+        setError("Each image must be under 2MB");
         return;
       }
       validFiles.push(file);
     }
 
-    // Dimension validation
-    let processed = 0;
-    const finalImages = [];
-
-    validFiles.forEach((file) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        if (img.width < 300 || img.height < 300 || img.width > 800 || img.height > 800) {
-          setError(`Image ${file.name} dimensions must be between 300x300 and 800x800 px`);
-        } else {
-          finalImages.push(file);
-        }
-        processed++;
-        if (processed === validFiles.length) {
-          setImages(finalImages);
-        }
-      };
-    });
+    setNewImages(validFiles);
   };
 
+  // ---------------- REMOVE EXISTING IMAGE ----------------
+  const removeExistingImage = (index) => {
+    const updated = existingImages.filter((_, i) => i !== index);
+    setExistingImages(updated);
+  };
+
+  // ---------------- REMOVE NEW IMAGE ----------------
+  const removeNewImage = (index) => {
+    const updated = newImages.filter((_, i) => i !== index);
+    setNewImages(updated);
+  };
+
+  // ---------------- UPDATE PRODUCT ----------------
   const handleUpdate = async (e) => {
     e.preventDefault();
+
     if (Number(price) < 0 || Number(stock) < 0 || Number(weight) < 0) {
       alert("Price, Stock and Weight cannot be negative!");
       return;
     }
+
     const formData = new FormData();
 
-    // Text fields
     formData.append("name", name);
     formData.append("sub_cat_id", subCatId);
     formData.append("description", description);
@@ -98,50 +102,124 @@ const EditProduct = () => {
     formData.append("stock", stock);
     formData.append("weight", weight);
 
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
+    // 🔹 Send remaining existing images
+    formData.append("existingImages", JSON.stringify(existingImages));
+
+    // 🔹 Append new images
+    newImages.forEach((img) => {
+      formData.append("images", img);
+    });
 
     try {
       await axios.put(`${BASE_URL}/api/products/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       alert("Updated successfully!");
       navigate("/admin/manage-products");
+
     } catch (err) {
       console.error(err);
+      alert("Update failed");
     }
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "20px auto", padding: "20px", border: "1px solid #ddd" }}>
+    <div style={{ maxWidth: "600px", margin: "20px auto" }}>
       <h2>Edit Product</h2>
+
       <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 
-        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+        <input value={name} onChange={(e) => setName(e.target.value)} required />
 
         <select value={subCatId} onChange={(e) => setSubCatId(e.target.value)} required>
           <option value="">Subcategory</option>
-          {subcategories.map(s => <option key={s.sub_cat_id} value={s.sub_cat_id}>{s.name}</option>)}
+          {subcategories.map(s =>
+            <option key={s.sub_cat_id} value={s.sub_cat_id}>{s.name}</option>
+          )}
         </select>
 
-        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-        <input type="number" placeholder="Price" value={price} min="0" onChange={(e) => setPrice(e.target.value)} required />
-        <input type="number" placeholder="Stock" value={stock} min="0" onChange={(e) => setStock(e.target.value)} required />
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
 
-        <input type="number" placeholder="Weight" value={weight} min="0" onChange={(e) => setWeight(e.target.value)} required />
+        <input type="number" value={price} min="0"
+          onChange={(e) => setPrice(e.target.value)} required />
 
+        <input type="number" value={stock} min="0"
+          onChange={(e) => setStock(e.target.value)} required />
+
+        <input type="number" value={weight} min="0"
+          onChange={(e) => setWeight(e.target.value)} required />
+
+        {/* 🔹 Existing Images */}
         <div>
-          <p>Current Image:</p>
-          <img src={`${BASE_URL}/${oldImage}`} width="100" alt="Old" style={{ marginBottom: "10px" }} />
-          <br />
-          <label>Upload New Image (Optional):</label>
-          <input type="file" onChange={(e) => setImageFile(e.target.files[0])} accept="image/*" />
+          <h4>Existing Images</h4>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            {existingImages.map((img, index) => (
+              <div key={index} style={{ position: "relative" }}>
+                <img
+                  src={`${BASE_URL}/${img}`}
+                  alt="existing"
+                  width="100"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeExistingImage(index)}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    background: "red",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <button type="submit" style={{ padding: "10px", background: "blue", color: "white", cursor: "pointer" }}>
+        {/* 🔹 Upload New Images */}
+        <div>
+          <h4>Upload New Images</h4>
+          <input type="file" multiple accept="image/*" onChange={handleNewImages} />
+
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            {newImages.map((img, index) => (
+              <div key={index} style={{ position: "relative" }}>
+                <img
+                  src={URL.createObjectURL(img)}
+                  alt="preview"
+                  width="100"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeNewImage(index)}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    background: "red",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <button type="submit" style={{ padding: "10px", background: "blue", color: "white" }}>
           Update Product
         </button>
+
       </form>
     </div>
   );

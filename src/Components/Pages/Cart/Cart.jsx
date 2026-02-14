@@ -123,8 +123,8 @@ const Cart = () => {
                       className="item-img"
                       onClick={() => navigate(`/product/${item.product_id}`)}
                     >
-                      <img
-                        src={`${BASE_URL}/uploads/${item.image_url}`}
+                      <img className="image"
+                        src={`${BASE_URL}/${item.image_url}`}
                         alt={item.name}
                       />
                     </div>

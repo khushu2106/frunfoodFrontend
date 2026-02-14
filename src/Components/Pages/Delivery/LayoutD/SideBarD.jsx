@@ -10,7 +10,7 @@ function SideBarD() {
         <nav>
           <Link to="/delivery/dashboard">Dashboard</Link>
           <Link to="/delivery/assigned-orders">Assigned Orders</Link>
-          <Link to="/delivery/availability">Availability</Link>
+          {/* <Link to="/delivery/availability">Availability</Link> */}
           <Link to="/delivery/history">Delivery History</Link>
           <Link to="/delivery/earning">Earnings</Link>
           <Link to="/delivery/notifications">Notifications</Link>

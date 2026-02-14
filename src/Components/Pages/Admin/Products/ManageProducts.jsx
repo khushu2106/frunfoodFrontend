@@ -77,6 +77,7 @@ const AdminManageProducts = () => {
               <th>Name</th>
               <th>category name</th>
               <th>Subcategory name</th>
+              {/* <th>Brand name</th> */}
               <th>Price</th>
               <th>stock</th>
               <th>Actions</th>
@@ -107,6 +108,7 @@ const AdminManageProducts = () => {
                   <td>{p.product_name}</td>
                   <td>{p.category_name}</td>
                   <td>{p.sub_category_name}</td>
+                  {/* <td>{p.brand_name}</td> */}
                   <td>₹ {p.price}</td>
                   <td style={{ color: p.stock_status === 'In Stock' ? 'green' : 'red' }}>
                     {p.stock_status}

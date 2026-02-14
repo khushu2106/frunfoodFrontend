@@ -3,103 +3,49 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
 
-const ResetPassword = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
+const VerifyOTP = () => {
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const { email } = location.state || {};
 
-  const { otpId } = location.state || {};
-  
-  if (!otpId) {
-    return (
-      <div className="reset-container">
-        <div className="reset-box">
-          <h2>OTP Not Verified</h2>
-          <p>Please verify your OTP first to reset your password.</p>
-        </div>
-      </div>
-    );
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    const trimmedPassword = password.trim();
-    const trimmedConfirm = confirmPassword.trim();
-
-    if (!trimmedPassword || !trimmedConfirm) {
-      setError("All fields are required");
-      return;
-    }
-
-    if (trimmedPassword.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
-    if (trimmedPassword !== trimmedConfirm) {
-      setError("Passwords do not match");
-      return;
-    }
-
+  const handleVerify = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
-        otpId,
-        newPassword: trimmedPassword,
-        confirmPassword: trimmedConfirm,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/verify-otp",
+        { email, otp }
+      );
 
-      setSuccess(res.data.message || "Password reset successfully");
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-
-    } catch (err) {
-      console.log("Full Axios Error:", err);
-
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.request) {
-        setError("No response from server. Please try again.");
-      } else {
-        setError(err.message);
+      if (res.data.success) {
+        navigate("/reset-password", {
+          state: { otpId: res.data.otpId }
+        });
       }
+    } catch (err) {
+      alert("Invalid OTP");
     }
   };
 
   return (
-    <div className="reset-container">
-      <form className="reset-box" onSubmit={handleSubmit}>
-        <h2>Reset Password</h2>
-
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
+    <div className="otp-container">
+      <div className="otp-card">
+        <h2>Verify OTP</h2>
+        <p>Enter the OTP sent to your email</p>
 
         <input
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          type="text"
+          placeholder="Enter OTP"
+          value={otp}
+          onChange={e => setOtp(e.target.value)}
+          className="otp-input"
         />
 
-        <input
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-
-        <button type="submit">Reset Password</button>
-      </form>
+        <button className="otp-btn" onClick={handleVerify}>
+          Verify OTP
+        </button>
+      </div>
     </div>
   );
 };
 
-export default ResetPassword;
+export default VerifyOTP;

@@ -25,9 +25,9 @@ const Cards = () => {
         <thead>
           <tr>
             <th>Feedback ID</th>
-            <th>User ID</th>
-            <th>Product ID</th>
-            <th>Rating</th>
+            <th>User Name</th>
+            <th>Product Name</th>
+            <th>Avg. Rating</th>
             <th>Comment</th>
           </tr>
         </thead>
@@ -35,9 +35,9 @@ const Cards = () => {
           {feedbacks.map((fb) => (
             <tr key={fb.feedback_id}>
               <td>{fb.feedback_id}</td>
-              <td>{fb.user_id}</td>
-              <td>{fb.product_id}</td>
-              <td>{fb.rating} ⭐</td>
+              <td>{fb.user_name}</td>
+              <td>{fb.product_name}</td>
+              <td>{fb.rate} ⭐</td>
               <td>{fb.comment}</td>
             </tr>
           ))}

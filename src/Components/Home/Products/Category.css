@@ -38,6 +38,14 @@
   max-width: 110px;
 }
 
+.category{
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    color: #c2410c;
+    font-size: xx-large;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .home-category-wrapper {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaPaw } from 'react-icons/fa';
 import {
   FaHeart,
   FaShoppingCart,
@@ -50,9 +51,9 @@ const Header = () => {
 
     fetchCounts();
   }, [token]);
-/* =============================== LOGOUT =============================== */
+  /* =============================== LOGOUT =============================== */
   const handleLogout = () => {
-    localStorage.removeItem("userToken"); 
+    localStorage.removeItem("userToken");
     setCartCount(0);
     setWishlistCount(0);
     setProfileOpen(false);
@@ -62,7 +63,8 @@ const Header = () => {
   return (
     <header className="header">
       {/* LOGO */}
-      <div className="logo">🐶 Pet Food Shop</div>
+      <div className="logo"><FaPaw style={{ marginRight: '10px', color: '#ff6b6b'}} />
+        Fur & Food</div>
 
       {/* HAMBURGER */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>

@@ -32,3 +32,30 @@
   border: none;
   cursor: pointer;
 }
+
+.report-container {
+  padding: 20px;
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  width: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.profit {
+  background: #e6ffe6;
+}
