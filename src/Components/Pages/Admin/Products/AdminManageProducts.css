@@ -1,0 +1,23 @@
+/* Make table columns equal width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Equal column width */
+table th,
+table td {
+  width: 14.28%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Image center */
+table td img {
+  display: block;
+  margin: auto;
+}

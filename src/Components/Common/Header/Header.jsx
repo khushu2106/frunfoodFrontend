@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaPaw } from 'react-icons/fa';
 import {
   FaHeart,
   FaShoppingCart,
@@ -50,9 +51,9 @@ const Header = () => {
 
     fetchCounts();
   }, [token]);
-/* =============================== LOGOUT =============================== */
+  /* =============================== LOGOUT =============================== */
   const handleLogout = () => {
-    localStorage.removeItem("userToken"); 
+    localStorage.removeItem("userToken");
     setCartCount(0);
     setWishlistCount(0);
     setProfileOpen(false);
@@ -62,7 +63,8 @@ const Header = () => {
   return (
     <header className="header">
       {/* LOGO */}
-      <div className="logo">🐶 Pet Food Shop</div>
+      <div className="logo"><FaPaw style={{ marginRight: '10px', color: '#ff6b6b'}} />
+        Fur & Food</div>
 
       {/* HAMBURGER */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
@@ -84,11 +86,11 @@ const Header = () => {
             <div className="products-dropdown-menu">
               <Link to="/products" onClick={() => setMenuOpen(false)}>All</Link>
               <Link to="/category/1">Dog</Link>
-              <Link to="category/2">Cat</Link>
-              <Link to="category/3">Kitten</Link>
-              <Link to="category/4">Puppy</Link>
-              <Link to="category/5">Toys</Link>
-              <Link to="category/6">Groming & Accessories</Link>
+              <Link to="/category/2">Cat</Link>
+              <Link to="/category/3">Kitten</Link>
+              <Link to="/category/4">Puppy</Link>
+              <Link to="/category/5">Toys</Link>
+              <Link to="/category/6">Groming & Accessories</Link>
             </div>
           )}
         </div>

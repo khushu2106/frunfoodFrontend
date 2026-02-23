@@ -32,3 +32,86 @@
   border: none;
   cursor: pointer;
 }
+
+.report-container {
+  padding: 20px;
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  width: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.profit {
+  background: #e6ffe6;
+}
+
+.report-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.filter {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.filter label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card.profit {
+  background: #e6f7ff;
+}
+
+.download-btn {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.download-btn:hover {
+  opacity: 0.9;
+}
+
+.date-range {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}

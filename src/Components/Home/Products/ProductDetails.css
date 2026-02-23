@@ -2,7 +2,6 @@ ProductDetails.css
 
 .product-details-page {
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .pd-container {
@@ -111,6 +110,20 @@ ProductDetails.css
   cursor: pointer;
 }
 
+.old-price {
+  text-decoration: line-through;
+  color: #9ca3af;
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.offer-price {
+  color: #16a34a;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
 .add-to-cart-btn {
   padding: 10px 20px;
   background-color: #007BFF;
@@ -182,7 +195,6 @@ ProductDetails.css
 
 .product-details-page {
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .pd-container {
@@ -374,6 +386,31 @@ ProductDetails.css
   color: red;
 }
 
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  overflow-x: auto; /* Agar images zyada hain to scroll ho jayein */
+  padding-bottom: 5px;
+}
+
+.thumbnail-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.thumbnail-img.active {
+  border-color: #ff9900; 
+}
+
+.thumbnail-img:hover {
+  opacity: 0.8;
+}
 
 /* Responsive */
 @media screen and (max-width: 768px) {

@@ -1,0 +1,40 @@
+.complaint-container {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.status.pending {
+  color: red;
+  font-weight: bold;
+}
+
+.status.resolved {
+  color: green;
+  font-weight: bold;
+}
+
+button {
+  padding: 6px 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.truncate-cell {
+  max-width: 200px;      
+  white-space: nowrap;    
+  overflow: hidden;  
+  text-overflow: ellipsis;
+  cursor: pointer;        
+}

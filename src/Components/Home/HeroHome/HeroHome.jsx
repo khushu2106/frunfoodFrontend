@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./HeroHome.css";
 
 const HeroHome = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:5000";
 
-  // 🔍 Suggestions while typing (debounced)
   useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+
     const timer = setTimeout(() => {
-      if (searchTerm.length >= 2) {
-        axios
-          .get(`${BASE_URL}/api/products/search?q=${searchTerm}`)
-          .then((res) => setSuggestions(res.data))
-          .catch((err) => console.error(err));
-      } else {
-        setSuggestions([]);
-      }
-    }, 300); // 300ms debounce
+      fetch(`http://localhost:5000/api/products/search?q=${encodeURIComponent(searchTerm)}`)
+        .then((res) => res.json())
+        .then((data) => setSuggestions(data.slice(0, 5)))
+        .catch((err) => console.error("Suggestion error:", err));
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // 🔎 Search button / Enter key
   const handleSearch = () => {
     if (searchTerm.trim() !== "") {
-      navigate(`/products?search=${searchTerm}`);
+      // Navigates to the correct route defined in your App.js
+      navigate(`/productSearch?search=${encodeURIComponent(searchTerm)}`);
       setSuggestions([]);
     }
   };
@@ -49,38 +47,41 @@ const HeroHome = () => {
           <p className="main-subtext">
             Premium supplies, expert grooming, and a community that loves pets.
           </p>
-
-          {/* 🔍 SEARCH BAR */}
           <div className="search-bar-mini">
-            <input
-              type="text"
-              placeholder="Search products, categories..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
 
-            {suggestions.length > 0 && (
-              <ul className="suggestions-list">
-                {suggestions.map((item) => (
-                  <li
-                    key={item.product_id}
-                    onClick={() => {
-                      navigate(`/products?search=${item.product_name}`);
-                      setSearchTerm(item.product_name);
-                      setSuggestions([]);
-                    }}
-                  >
-                    <span className="suggestion-name">{item.product_name}</span>
-                    <span className="badge">{item.category_name}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                placeholder="Search products, categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((item) => (
+                    <li key={item.product_id}>
+                      <span className="suggestion-name">{item.product_name}</span>
+
+                      <div className="suggestion-meta">
+                        {item.category_name && (
+                          <span className="badge">{item.category_name}</span>
+                        )}
+                        {item.brand_name && (
+                          <span className="badge">{item.brand_name}</span>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             <button className="search-btn" onClick={handleSearch}>
               Search
             </button>
+
           </div>
         </div>
 

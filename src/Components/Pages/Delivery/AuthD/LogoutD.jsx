@@ -9,8 +9,8 @@ const DeliveryLogoutD = () => {
     localStorage.removeItem("deliveryToken");
 
     setTimeout(() => {
-      navigate("/delivery/logout");
-    }, 2000);
+      navigate("/delivery/login");
+    }, 1000);
   }, [navigate]);
 
   return (

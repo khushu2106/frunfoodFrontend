@@ -68,6 +68,7 @@ const Cart = () => {
         },
       });
       toast.success("Item removed");
+      window.location.reload();
       fetchCart();
     } catch (err) {
       console.error(err);
@@ -118,7 +119,17 @@ const Cart = () => {
                   className="cart-card"
                 >
                   <div className="item-info">
-                    <div className="item-img-placeholder">🛍️</div>
+                    {/* <div className="item-img-placeholder">🛍️</div> */}
+                    <div
+                      className="item-img"
+                      onClick={() => navigate(`/product/${item.product_id}`)}
+                    >
+                      <img className="image"
+                        src={`${BASE_URL}/${item.image_url}`}
+                        alt={item.name}
+                      />
+                    </div>
+
                     <div>
                       <h4>{item.name}</h4>
                       <p className="price-tag">₹{item.price}</p>
@@ -126,34 +137,35 @@ const Cart = () => {
                   </div>
 
                   <div className="item-actions">
-                    <div className="qty-control">
-                      <button
-                        onClick={() =>
-                          updateQty(item.product_id, item.price, -1)
-                        }
-                        disabled={item.qty <= 1}
-                        style={{ color: "black" }}
-                      >
-                        <Minus size={16} />
-                      </button>
-                      <span>{item.qty}</span>
-                      <button
-                        onClick={() =>
-                          updateQty(item.product_id, item.price, 1)
-                        }
-                        style={{ color: "black" }}
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
+                    <div className="qty-delete-row">
 
-                    <button
-                      className="delete-icon"
-                      onClick={() => removeItem(item.product_id)}
-                    >
-                      <Trash2 size={20} />
-                    </button>
+                      <div className="qty-control">
+                        <button
+                          onClick={() => updateQty(item.product_id, item.price, -1)}
+                          disabled={item.qty <= 1}
+                        >
+                          <Minus size={16} />
+                        </button>
+
+                        <span>{item.qty}</span>
+
+                        <button
+                          onClick={() => updateQty(item.product_id, item.price, 1)}
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+
+                      <button
+                        className="delete-icon"
+                        onClick={() => removeItem(item.product_id)}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+
+                    </div>
                   </div>
+
                 </motion.div>
               ))}
             </AnimatePresence>

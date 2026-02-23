@@ -3,10 +3,13 @@ import axios from "axios";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const token = localStorage.getItem("userToken"); // Auth token for security
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/sales");
+      const response = await axios.get("http://localhost:5000/api/sales", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -17,53 +20,94 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-//   // Update order status
-//   const handleStatusChange = async (orderId, newStatus) => {
-//     try {
-//       await axios.put(`http://localhost:5000/api/admin/order/${orderId}/status`, { status: newStatus });
-//       fetchOrders(); // refresh orders after status update
-//     } catch (error) {
-//       console.error("Error updating status:", error);
-//     }
-//   };
+  // Status update karne ka function
+  const handleStatusChange = async (sales_id, newStatus) => {
+    try {
+      // Naya status backend ko bhejna
+      await axios.put(
+        `http://localhost:5000/api/sales/status`, 
+        { sales_id, status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      alert(`Order #${sales_id} status updated to ${newStatus}`);
+      fetchOrders(); // List refresh karne ke liye
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert(error.response?.data?.error || "Failed to update status");
+    }
+  };
+
+  // Status ke hisaab se color change karne ke liye helper
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'delivered': return { color: '#28a745', fontWeight: 'bold' };
+      case 'cancelled': return { color: '#dc3545', fontWeight: 'bold' };
+      case 'shipped': return { color: '#fd7e14', fontWeight: 'bold' };
+      case 'confirmed': return { color: '#007bff', fontWeight: 'bold' };
+      default: return { color: '#666' };
+    }
+  };
 
   return (
-    <div style={{ padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
-      <h2>Order Management</h2>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <div style={{ padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+      <h2 style={{ marginBottom: "25px", color: "#333", display: 'flex', alignItems: 'center', gap: '10px' }}>
+        📦 Order Management
+      </h2>
+      
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
         <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Date</th>
-            <th>Amount</th>
-            {/* <th>Status</th> */}
-            {/* <th>Action</th> */}
+          <tr style={{ background: "#f8f9fa", borderBottom: "2px solid #eee", textAlign: "left" }}>
+            <th style={{ padding: "15px" }}>Order ID</th>
+            <th style={{ padding: "15px" }}>Customer</th>
+            <th style={{ padding: "15px" }}>Date</th>
+            <th style={{ padding: "15px" }}>Amount</th>
+            <th style={{ padding: "15px" }}>Current Status</th>
+            <th style={{ padding: "15px" }}>Update Action</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
-            <tr key={order.sale_id}>
-              <td>{order.sales_id}</td>
-              <td>{order.fname}</td>
-              <td>{new Date(order.s_date).toLocaleDateString()}</td>
-              <td>₹{order.total_amount}</td>
-              {/* <td>{order.Order_status}</td> */}
-              {/* <td>
+          {orders.map((order) => (
+            <tr key={order.sales_id} style={{ borderBottom: "1px solid #f1f1f1", transition: "0.3s" }}>
+              <td style={{ padding: "15px", fontWeight: "600" }}>#{order.sales_id}</td>
+              <td style={{ padding: "15px" }}>{order.fname || "Guest User"}</td>
+              <td style={{ padding: "15px" }}>{new Date(order.s_date).toLocaleDateString()}</td>
+              <td style={{ padding: "15px", fontWeight: "bold" }}>₹{order.total_amount}</td>
+              <td style={{ padding: "15px" }}>
+                <span style={getStatusStyle(order.order_status)}>
+                  {order.order_status.toUpperCase()}
+                </span>
+              </td>
+              <td style={{ padding: "15px" }}>
                 <select
-                  value={order.status}
+                  value={order.order_status}
                   onChange={(e) => handleStatusChange(order.sales_id, e.target.value)}
+                  style={{
+                    padding: "8px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                    cursor: "pointer",
+                    outline: "none",
+                    background: "#fff"
+                  }}
                 >
-                  <option value="pending">Pending</option>
+                  <option value="placed">Placed</option>
+                  <option value="confirmed">Confirmed</option>
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {orders.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
+          No orders found in the database.
+        </div>
+      )}
     </div>
   );
 };

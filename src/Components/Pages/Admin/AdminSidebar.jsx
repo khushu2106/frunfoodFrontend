@@ -1,6 +1,33 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaInfoCircle } from "react-icons/fa";
+import {
+  FaTachometerAlt,
+  FaBoxOpen,
+  FaTags,
+  FaLayerGroup,
+  FaTrademark,
+  FaShoppingBag,
+  FaPlusCircle,
+  FaTruck,
+  FaClock,
+  FaUserFriends,
+  FaTasks,
+  FaMapMarkedAlt,
+  FaFileInvoice,
+  FaStar,
+  FaShoppingCart,
+  FaQuestionCircle,
+  FaUserCog,
+  FaCog,
+  FaChartBar,
+  FaRegCommentDots,
+  FaExchangeAlt,
+  FaUsers,
+  FaHeadset,
+  FaUserTie,
+  FaGift
+} from "react-icons/fa";
 import "./AdminSidebar.css";
 
 const AdminSidebar = () => {
@@ -15,35 +42,44 @@ const AdminSidebar = () => {
   };
 
   const menuConfig = [
-    { name: "Dashboard", path: "/admin/dashboard" },
+    { name: "Dashboard", path: "/admin/dashboard", icon: <FaTachometerAlt /> },
     {
       name: "Product",
+      icon: <FaBoxOpen />,
       subItems: [
-        { name: "Manage Category", path: "/admin/add-category" },
-        { name: "Manage Subcategory", path: "/admin/subcategory" },
-        { name: "Manage Brand", path: "/admin/brand" },
-        { name: "Manage Product", path: "/admin/manage-products" },
-        { name: "Add New Product", path: "/admin/add-product" },
+        { name: "Manage Category", path: "/admin/add-category", icon: <FaTags /> },
+        { name: "Manage Subcategory", path: "/admin/subcategory", icon: <FaLayerGroup /> },
+        { name: "Manage Brand", path: "/admin/brand", icon: <FaTrademark /> },
+        { name: "Manage Product", path: "/admin/manage-products", icon: <FaShoppingBag /> },
+        { name: "Add New Product", path: "/admin/add-product", icon: <FaPlusCircle /> },
       ],
     },
     {
       name: "Delivery",
+      icon: <FaTruck />,
       subItems: [
-        { name: "Pending orders", path: "/admin/pending" },
-        { name: "Delivery boy details", path: "/admin/delivery-list" },
-        { name: "Assign delivery", path: "/admin/assignorder" },
-        { name: "Delivery status", path: "/admin/deliverystatus" },
+        { name: "Pending orders", path: "/admin/pending", icon: <FaClock />, },
+        { name: "Delivery boy details", path: "/admin/delivery-list", icon: <FaUserFriends />, },
+        { name: "Assign delivery", path: "/admin/assignorder", icon: <FaTasks />, }
+        // { name: "Delivery status", path: "/admin/deliverystatus", icon: <FaTruck />, },
       ],
     },
-    // { name: "Balance", path: "/admin/balance" },
-    { name: "Users", path: "/admin/users" },
-    { name: "Orders", path: "/admin/orders" },
-    { name: "Invoice", path: "/admin/invoice" },
-    { name: "Feedback", path: "/admin/cards" },
-    { name: "Purchase", path: "/admin/transaction" },
-    { name: "FAQ", path: "/admin/chat" },
-    { name: "Profile", path: "/admin/profile" },
-    { name: "Settings", path: "/admin/settings" },
+    { name: "Offers", path: "/admin/offers", icon: <FaGift /> },
+    { name: "Users", path: "/admin/users", icon: <FaUsers />, },
+    { name: "Orders", path: "/admin/orders", icon: <FaShoppingCart />, },
+    { name: "Order Return", path: "/admin/return", icon: <FaBoxOpen />, },
+    { name: "Invoice", path: "/admin/invoice", icon: <FaFileInvoice />, },
+    { name: "Feedback", path: "/admin/cards", icon: <FaStar />, },
+    { name: "Supplier", path: "/admin/supplier", icon: <FaUserTie />, },
+    { name: "Purchase", path: "/admin/purchase", icon: <FaShoppingBag />, },
+    { name: "Purchase Return", path: "/admin/purchasereturn", icon: <FaExchangeAlt />, },
+    { name: "Complaints", path: "/admin/complaints", icon: <FaRegCommentDots />, },
+    { name: "Reports", path: "/admin/reports", icon: <FaChartBar />, },
+    { name: "Enquiries", path: "/admin/enquiries", icon: <FaHeadset />, },
+    { name: "FAQ", path: "/admin/chat", icon: <FaQuestionCircle />, },
+    { name: "Profile", path: "/admin/profile", icon: <FaUserCog />, },
+    { name: "City", path: "/admin/city", icon: <FaMapMarkedAlt />, },
+    { name: "Settings", path: "/admin/settings", icon: <FaCog />, },
   ];
 
   return (
@@ -64,7 +100,10 @@ const AdminSidebar = () => {
                     onClick={() => toggleMenu(item.name)}
                     style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
                   >
-                    <span>{item.name}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      {item.icon}
+                      {item.name}
+                    </span>
                     {isOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
                   </div>
 
@@ -74,7 +113,10 @@ const AdminSidebar = () => {
                       {item.subItems.map((sub) => (
                         <li key={sub.path}>
                           <NavLink to={sub.path} className="sidebar-link sub-link">
-                            {sub.name}
+                            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              {sub.icon}
+                              {sub.name}
+                            </span>
                           </NavLink>
                         </li>
                       ))}
@@ -87,14 +129,17 @@ const AdminSidebar = () => {
                   to={item.path}
                   className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
                 >
-                  {item.name}
+                  <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    {item.icon}
+                    {item.name}
+                  </span>
                 </NavLink>
               )}
             </li>
           );
         })}
       </ul>
-      
+
     </div>
   );
 };

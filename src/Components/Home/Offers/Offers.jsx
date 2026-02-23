@@ -14,7 +14,7 @@ const Offers = () => {
         discount: "Up to 90% OFF",
         desc: "Stock up before you miss out!",
         image: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
-        type: "clearance",   // 🔥 offer type
+        type: 1,   // 🔥 offer type
         size: "big"
       },
       {
@@ -22,7 +22,7 @@ const Offers = () => {
         title: "Festival Offer",
         desc: "To brighten a loved one's day.",
         image: "https://cdn-icons-png.flaticon.com/512/616/616554.png",
-        type: "festival",
+        type: 2,
         size: "small"
       },
       {
@@ -30,7 +30,7 @@ const Offers = () => {
         title: "Black Friday",
         desc: "Get exciting discounts",
         image: "https://cdn-icons-png.flaticon.com/512/616/616430.png",
-        type: "black-friday",
+        type: 3,
         size: "small"
       }
     ]);

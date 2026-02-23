@@ -1,11 +1,25 @@
 
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #fffcf9 0%, #fff4e6 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  background: url("../../../assets/background.jpeg") center/cover no-repeat;
 }
+
+.auth-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: rgba(0,0,0,0.3);  */
+}
+
+.auth-container > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 .auth-card {
   background: #fff;
@@ -282,4 +296,62 @@
 .puppy-main{
   width: 120px;
   height: 120px;
+}
+
+.otp-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.otp-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.otp-card h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.otp-card p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.otp-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+.otp-input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.otp-btn {
+  width: 100%;
+  padding: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.otp-btn:hover {
+  background: #5a67d8;
 }

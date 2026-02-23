@@ -10,7 +10,7 @@ function HeaderD() {
   };
 
   return (
-    <header className="header">
+    <header className="header" style={{backgroundColor: "#006d5b", zIndex: 0}}>
       <div className="logo">
         🐾 <span>PetFood</span>
       </div>

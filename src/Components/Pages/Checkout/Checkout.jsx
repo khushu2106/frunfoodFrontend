@@ -4,56 +4,120 @@ import axios from "axios";
 import "./Checkout.css";
 
 function Checkout() {
+
+  const nameRegex = /^[A-Za-z ]{3,40}$/;
+  const mobileRegex = /^[6-9]\d{9}$/;
+  const pincodeRegex = /^[1-9][0-9]{5}$/;
+
   const location = useLocation();
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const totalAmount = location.state?.totalAmount || 0;
-  const cartItems = location.state?.cartItems || [];
+  /* ================= CHECKOUT TYPE ================= */
 
-  const cgst = +(totalAmount * 0.09).toFixed(2);
-  const sgst = +(totalAmount * 0.09).toFixed(2);
-  const grandTotal = +(totalAmount + cgst + sgst).toFixed(2);
+  const isDirectBuy = location.state?.directBuy || false;
+
+  const cartItems =
+    location.state?.cartItems ||
+    (location.state?.directProduct ? [location.state.directProduct] : []);
+
+  if (!cartItems.length && !isDirectBuy) {
+    alert("Your cart is empty!");
+    navigate("/cart");
+  }
+
+  /* ================= DISCOUNT CALCULATION ================= */
+
+  const calculatedItems = cartItems.map((item) => {
+    return {
+      ...item,
+      discountedPrice: item.price,
+      itemTotal: item.price * item.qty,
+      originalTotal: item.originalPrice
+        ? item.originalPrice * item.qty
+        : item.price * item.qty,
+      discountAmount:
+        item.originalPrice
+          ? (item.originalPrice - item.price) * item.qty
+          : 0
+    };
+  });
+
+  const subtotal = calculatedItems.reduce((sum, item) => sum + item.itemTotal, 0);
+  const cgst = +(subtotal * 0.09).toFixed(2);
+  const sgst = +(subtotal * 0.09).toFixed(2);
+  const grandTotal = +(subtotal + cgst + sgst).toFixed(2);
+
+  /* ================= USER AUTH ================= */
 
   const token = localStorage.getItem("userToken");
-  let userId = null;
-  let userEmail = "customer@gmail.com";
 
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      userId = payload.id || payload.userId;
-      if (payload.email) userEmail = payload.email;
-    } catch (e) {
-      console.error("Token parsing error", e);
-      navigate("/login");
-    }
-  } else {
+  if (!token) {
+    alert("Please login to continue");
     navigate("/login");
   }
+
+  let userId = null;
+  let userEmail = null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    userId = payload.id || payload.userId;
+    userEmail = payload.email;
+
+    if (!userId || !userEmail) {
+      throw new Error("Invalid token");
+    }
+
+  } catch {
+    alert("Session expired. Please login again.");
+    navigate("/login");
+  }
+
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     mobile: "",
     address: "",
-    city: "Gujarat",
-    pincode: "380001",
+    city: "Ahmedabad",
+    pincode: "",
     payment: "COD",
-    transaction_id: ""
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value.trimStart() });
   };
 
+  const validateForm = () => {
+    if (!nameRegex.test(form.name.trim()))
+      return "Enter valid Full Name";
+
+    if (!mobileRegex.test(form.mobile))
+      return "Enter valid Mobile Number";
+
+    if (!pincodeRegex.test(form.pincode))
+      return "Enter valid Pincode";
+
+    if (form.address.trim().length < 10)
+      return "Enter complete Address";
+
+    return "";
+  };
+
+  /* ================= FINAL ORDER ================= */
+
   const submitFinalOrder = async (transactionId = "") => {
+
     setIsSubmitting(true);
 
     const orderData = {
       user_id: userId,
-      total_amount: totalAmount,
-      CGST: cgst,
+      total_amount: subtotal,
       SGST: sgst,
+      CGST: cgst,
       shipping_charge: 0,
       S_date: new Date().toISOString().split("T")[0],
       delivery_add1: form.address,
@@ -67,46 +131,55 @@ function Checkout() {
         name: form.name,
         email: userEmail,
         phone: form.mobile,
-        address: `${form.address}, ${form.city} - ${form.pincode}`
       },
-      items: cartItems.length > 0 ? cartItems : [{ name: "General Items", quantity: 1, price: totalAmount }],
-      tax: +(cgst + sgst).toFixed(2),
-      total: grandTotal
+      items: calculatedItems,
+      is_cart_checkout: !isDirectBuy
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/api/sales", orderData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await axios.post(
+        "http://localhost:5000/api/sales",
+        orderData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      alert("Order placed successfully!");
-      if (res.data.invoice) window.open(`http://localhost:5000/api/sales/invoice/${res.data.invoice}`);
-      navigate("/");
+      alert("Order placed successfully 🎉");
+
+      if (!isDirectBuy) {
+        localStorage.removeItem("cartItems");
+      }
+
+      navigate(isDirectBuy ? "/orders" : "/", { replace: true });
+      window.location.reload();
+
     } catch (err) {
-      console.error("Order Error:", err.response?.data || err.message);
-      alert("Order Failed: " + (err.response?.data?.error || "Unknown error"));
+      alert("Order failed. Please try again.");
       setIsSubmitting(false);
     }
   };
 
+  /* ================= SUBMIT ================= */
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!userId) {
-      alert("Please login first!");
-      navigate("/login");
+
+    const error = validateForm();
+
+    if (error) {
+      alert(error);
       return;
     }
 
-    if (form.payment === "UPI") handleRazorpayPayment();
-    else submitFinalOrder();
+    if (form.payment === "UPI") {
+      handleRazorpayPayment();
+    } else {
+      submitFinalOrder();
+    }
   };
 
-  const handleRazorpayPayment = async () => {
-    if (!window.Razorpay) {
-      alert("Razorpay SDK not loaded. Check your internet connection.");
-      return;
-    }
+  /* ================= RAZORPAY ================= */
 
+  const handleRazorpayPayment = async () => {
     try {
       const orderResponse = await axios.post(
         "http://localhost:5000/api/payment/add-payment",
@@ -120,25 +193,25 @@ function Checkout() {
         key: "rzp_test_S9ljGtWRbBKAdB",
         amount: order.amount,
         currency: "INR",
-        name: "Pet Food Shop",
+        name: "Pet Shop",
         description: "Order Payment",
         order_id: order.id,
-        handler: function (response) {
+        handler: (response) => {
           submitFinalOrder(response.razorpay_payment_id);
         },
         prefill: {
           name: form.name,
           email: userEmail,
-          contact: form.mobile
+          contact: form.mobile,
         },
-        theme: { color: "#3399cc" }
+        theme: { color: "#583217" }
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-    } catch (err) {
-      console.error("Payment Error:", err.response?.data || err.message);
-      alert("Payment failed. Try again.");
+
+    } catch {
+      alert("Payment failed");
     }
   };
 
@@ -147,41 +220,38 @@ function Checkout() {
       <h2>Checkout</h2>
 
       <form className="checkout-form" onSubmit={handleSubmit}>
+
         <div className="section">
           <h3>Delivery Address</h3>
-          <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
-          <input type="text" name="mobile" placeholder="Mobile Number" required onChange={handleChange} />
-          <textarea name="address" placeholder="Full Address" rows="3" required onChange={handleChange} />
+
+          <input name="name" placeholder="Full Name" onChange={handleChange} required />
+          <input name="mobile" placeholder="Mobile Number" maxLength="10" onChange={handleChange} required />
+          <textarea name="address" placeholder="Full Address" rows="3" onChange={handleChange} required />
+
           <div className="row">
-            <input type="text" name="city" value={form.city} readOnly />
-            <input type="text" name="pincode" value={form.pincode} readOnly />
+            <input value={form.city} readOnly />
+            <input name="pincode" placeholder="Pincode" maxLength="6" onChange={handleChange} required />
           </div>
         </div>
 
         <div className="section">
           <h3>Payment Method</h3>
+
           <label>
             <input type="radio" name="payment" value="COD" checked={form.payment === "COD"} onChange={handleChange} />
             Cash on Delivery
           </label>
+
           <label>
             <input type="radio" name="payment" value="UPI" checked={form.payment === "UPI"} onChange={handleChange} />
-            Online Payment (Razorpay)
+            Online Payment
           </label>
         </div>
 
-        <div className="section summary">
-          <h3>Order Summary</h3>
-          <p>Items Total: ₹{totalAmount}</p>
-          <p>CGST (9%): ₹{cgst}</p>
-          <p>SGST (9%): ₹{sgst}</p>
-          <hr />
-          <h4>Grand Total: ₹{grandTotal}</h4>
-        </div>
-
-        <button type="submit" className={`place-order-btn ${isSubmitting ? "disabled" : ""}`} disabled={isSubmitting}>
-          {isSubmitting ? "Processing..." : form.payment === "UPI" ? "Pay Now" : "Place Order"}
+        <button type="submit" className="place-order-btn" disabled={isSubmitting}>
+          {isSubmitting ? "Processing..." : (form.payment === "UPI" ? "Pay Now" : "Place Order")}
         </button>
+
       </form>
     </div>
   );

@@ -1,0 +1,90 @@
+.assign-container {
+  padding: 30px;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.assign-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Table */
+.assign-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.assign-table thead {
+  background: #1e293b;
+  color: white;
+}
+
+.assign-table th,
+.assign-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.assign-table tr:hover {
+  background: #f1f5f9;
+}
+
+/* Dropdown */
+.assign-table select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Button */
+.assign-btn {
+  padding: 8px 14px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.assign-btn:hover {
+  background: #15803d;
+}
+
+/* No Data */
+.no-data {
+  padding: 20px;
+  color: gray;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .assign-container {
+    padding: 15px;
+  }
+
+  .assign-table th,
+  .assign-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .assign-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

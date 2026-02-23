@@ -1,71 +1,125 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import "./ProductSearch.css";
+import Category from "./Category";
+import ProductList from "./ProductList";
+import Offers from "../Offers/Offers";
 
 const API_URL = "http://localhost:5000/api/products";
 
 export default function ProductSearch() {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filtered, setFiltered] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("search") || "";
 
-  // Fetch all products once on mount
-  // useEffect(() => {
-  //   fetch(API_URL)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data);
-  //       setFiltered(data);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+  const [search, setSearch] = useState(query);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [typingTimeout, setTypingTimeout] = useState(null);
 
-  // Debounce search
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (search.trim() === "") {
-  //       // Empty search → show all products
-  //       setFiltered(products);
-  //       return;
-  //     }
+  // Sync input with URL
+  useEffect(() => {
+    setSearch(query);
+  }, [query]);
 
-  //     fetch(`${API_URL}/search?q=${search}`)
-  //       .then((res) => res.json())
-  //       .then((data) => setFiltered(data))
-  //       .catch((err) => console.error(err));
-  //   }, 300); // 300ms delay
+  // Fetch search results
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
 
-  //   return () => clearTimeout(timer);
-  // }, [search, products]);
+    const fetchResults = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setResults(data);
+      } catch (err) {
+        console.error("Search API error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, [query]);
+
+  // Smooth debounce search input
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (typingTimeout) clearTimeout(typingTimeout);
+
+    const timeout = setTimeout(() => {
+      if (value.trim()) {
+        setSearchParams({ search: value });
+      } else {
+        setSearchParams({});
+      }
+    }, 500);
+
+    setTypingTimeout(timeout);
+  };
 
   return (
+    <>
     <div className="product-search-wrapper">
-      <h2>Search Products</h2>
+      <Link to={`/`}>
+      <h4>Back to home </h4>
+      </Link>
+      {/* <h2>Search Products</h2> */}
 
-      <div className="search-bar">
+      {/* Search Input */}
+      {/* <div className="search-bar">
         <input
           type="text"
-          placeholder="Search by name or category..."
+          placeholder="Search products..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleInputChange}
         />
-      </div>
+      </div> */}
 
+      {/* Loader */}
+      {/* {loading && <div className="loader">Searching products...</div>} */}
+
+      {/* Results */}
       <div className="product-grid">
-        {filtered.length > 0 ? (
-          filtered.map((prod) => (
+        {!loading && results.length > 0 &&
+          results.map((prod) => (
             <div className="product-card" key={prod.product_id}>
-              <img src={prod.image} alt={prod.product_name} />
-              <h3>{prod.product_name}</h3>
-              <p>₹{prod.price}</p>
-              <a href={`/product/${prod.product_id}`} className="view-btn">
-                View
-              </a>
+              <Link to={`/product/${prod.product_id}`}>
+              <img
+                src={`http://localhost:5000/${prod.image}`}
+                alt={prod.product_name} 
+                // onError={(e) =>
+                //   (e.target.src = "https://via.placeholder.com/150?text=No+Image")
+                // }
+              />
+              </Link>
+              <div className="product-info">
+                <h3>{prod.product_name}</h3>
+                <p className="price">₹{prod.price}</p>
+                <Link to={`/product/${prod.product_id}`} className="view-btn">
+                  View Details
+                </Link>
+              </div>
             </div>
           ))
-        ) : (
-          <p>No products found!</p>
-        )}
+        }
       </div>
+      
+
+      {/* No Results */}
+      {!loading && query && results.length === 0 && (
+        <div className="no-results">
+          No products found for "{query}"
+        </div>
+      )}
+
     </div>
+    {/* <Category />
+    <Offers /> */}
+    </>
   );
 }

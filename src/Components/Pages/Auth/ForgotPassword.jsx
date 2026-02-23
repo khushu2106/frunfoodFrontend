@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");     
   const [loading, setLoading] = useState(false); 
 
-  const navigate = useNavigate();   // ✅ yahan hona chahiye
+  const navigate = useNavigate();  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
       const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
       
       if (response.data.success) {
-        alert("✅ Password reset link has been sent to your email!");
+        alert("✅ Otp send successfully to your email!");
         navigate("/verify-otp", { state: { email: email } }); 
         setEmail(""); 
       }

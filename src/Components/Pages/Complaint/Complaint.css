@@ -1,91 +1,68 @@
-/* Full page center */
-.complaint-form {
-  width: 380px;
-  margin: 80px auto;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+.complaint-container {
+  padding: 20px;
 }
 
-/* Title center */
-.complaint-form h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Inputs, select, textarea */
-.complaint-form input,
-.complaint-form select,
-.complaint-form textarea {
+table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
   padding: 10px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
+  border-bottom: 1px solid #ddd;
 }
 
-/* Focus effect */
-.complaint-form input:focus,
-.complaint-form select:focus,
-.complaint-form textarea:focus {
-  border-color: #ff6b00;
+.status.pending {
+  color: red;
+  font-weight: bold;
 }
 
-/* Submit button */
-.complaint-form button {
-  margin-top: 10px;
-  padding: 12px;
-  background-color: #ff6b00;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.status.resolved {
+  color: green;
+  font-weight: bold;
 }
 
-/* Hover effect */
-.complaint-form button:hover {
-  background-color: #e55f00;
-}
-
-.thankyou-container {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.thankyou-container h1 {
-  color: #28a745;
-  font-size: 36px;
-}
-
-.thankyou-container p {
-  font-size: 18px;
-  margin: 15px 0 30px;
-}
-
-.thankyou-actions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.btn {
-  padding: 10px 22px;
-  background: #ff6f61;
+button {
+  padding: 6px 10px;
+  background: #007bff;
   color: white;
-  border-radius: 5px;
-  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.btn.outline {
-  background: transparent;
-  border: 2px solid #ff6f61;
-  color: #ff6f61;
+.complaint-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.complaint-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.complaint-table th,
+.complaint-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.complaint-table th {
+  background-color: #f8f8f8;
+}
+
+.complaint-table td button.resolve-btn {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.complaint-table td button.resolve-btn:hover {
+  opacity: 0.9;
 }

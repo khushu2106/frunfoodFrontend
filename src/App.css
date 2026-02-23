@@ -5,15 +5,18 @@ body {
     /* Soft light grey */
     color: #333;
     /* Default text color */
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
     caret-color: transparent;
 }
 
-input, textarea {
+input,
+textarea {
     caret-color: auto;
 }
 
-.hero-section h1, .hero-section p {
+.hero-section h1,
+.hero-section p {
     user-select: none;
-    cursor: default;  
+    cursor: default;
 }
