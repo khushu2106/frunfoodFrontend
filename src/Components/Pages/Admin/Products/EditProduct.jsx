@@ -69,7 +69,26 @@ const EditProduct = () => {
       validFiles.push(file);
     }
 
-    setNewImages(validFiles);
+    setNewImages(prev => {
+      const merged = [...prev];
+
+      validFiles.forEach(file => {
+        const alreadyExists = prev.some(
+          existing =>
+            existing.name === file.name &&
+            existing.size === file.size &&
+            existing.lastModified === file.lastModified
+        );
+
+        if (!alreadyExists) {
+          merged.push(file);
+        }
+      });
+
+      return merged;
+    });
+
+    e.target.value = null;
   };
 
   // ---------------- REMOVE IMAGES ----------------
@@ -90,7 +109,7 @@ const EditProduct = () => {
     if (!description.trim()) errs.description = "Description is required.";
     if (price === "" || Number(price) < 0) errs.price = "Price must be 0 or greater.";
     if (stock === "" || Number(stock) < 0) errs.stock = "Stock must be 0 or greater.";
-    if (weight === "" || Number(weight) < 0) errs.weight = "Weight must be 0 or greater.";
+   if (weight === "" || isNaN(weight) || Number(weight) < 0) errs.weight = "Weight must be 0 or greater.";
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -120,7 +139,7 @@ const EditProduct = () => {
       navigate("/admin/manage-products");
     } catch (err) {
       console.error(err);
-      setGeneralError("Update failed. Please try again.");
+      alert("Update failed. Please try again.");
     }
   };
 
@@ -185,6 +204,7 @@ const EditProduct = () => {
           type="number"
           value={weight}
           min="0"
+          step="0.01"
           onChange={(e) => setWeight(e.target.value)}
         />
         {errors.weight && <span style={{ color: "red" }}>{errors.weight}</span>}
