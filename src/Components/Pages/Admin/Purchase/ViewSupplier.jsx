@@ -30,7 +30,7 @@ const ViewSuppliers = () => {
       <h3>Suppliers</h3>
 
       <button
-        onClick={() => navigate("/admin/add-supplier")}
+        onClick={() => navigate("/admin/supplier")}
         style={primaryBtn}
       >
         + Add Supplier

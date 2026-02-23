@@ -1,0 +1,75 @@
+.offer-admin-container {
+  padding: 20px;
+}
+
+.offer-form {
+  max-width: 450px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.offer-form input,
+.offer-form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.date-row {
+  display: flex;
+  gap: 10px;
+}
+
+.offer-form button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.offer-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.offer-table th,
+.offer-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.assign-btn {
+  background: #6c757d;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.delete-btn {
+  background: red;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.assign-box {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.product-item {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}

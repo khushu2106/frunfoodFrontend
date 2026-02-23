@@ -30,3 +30,11 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.truncate-cell {
+  max-width: 200px;      
+  white-space: nowrap;    
+  overflow: hidden;  
+  text-overflow: ellipsis;
+  cursor: pointer;        
+}

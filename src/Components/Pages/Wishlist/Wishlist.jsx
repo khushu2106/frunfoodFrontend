@@ -24,7 +24,7 @@ const Wishlist = () => {
       setWishlist(res.data);
     } catch (error) {
       console.error("Wishlist fetch error", error);
-      toast.error("Wishlist load nahi ho saki");
+      toast.error("There are some error to fetch wishlist");
     } finally {
       setLoading(false);
     }
@@ -50,6 +50,7 @@ const Wishlist = () => {
       );
 
       toast.success(res.data.message || "Added to cart!");
+      window.location.reload();
     } catch (error) {
       console.error("Add to cart error:", error);
       toast.error("There are some error during the process");
@@ -69,6 +70,7 @@ const Wishlist = () => {
       );
 
       toast.success("product remove successfully !");
+      window.location.reload();
     } catch (error) {
       console.error("Remove wishlist error:", error);
       toast.error("There are some error deleting the product ");

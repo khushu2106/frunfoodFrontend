@@ -16,34 +16,35 @@ const AddBrand = () => {
     const fetchBrands = async () => {
         try {
             const res = await axios.get('http://localhost:5000/api/brands');
-            // Backend se aane wale data ko state mein set karein
             setBrands(res.data);
         } catch (err) {
             console.error("Error fetching brands:", err);
+            // Optional: Yahan alert tabhi dein agar data load hi na ho raha ho
         }
     };
 
     const handleAddBrand = async (e) => {
         e.preventDefault();
         
-        // Duplication check (Local check before API call)
+        // Local Check
         const existing = brands.find(
-            b => (b.name || "").toLowerCase() === brandName.toLowerCase()
+            b => (b.name || "").toLowerCase() === brandName.trim().toLowerCase()
         );
 
         if (existing) {
-            alert("Brand already exists!");
+            alert("Local Error: Brand already exists in the list!");
             return;
         }
 
         try {
-            await axios.post('http://localhost:5000/api/brands', { name: brandName });
-            alert("Brand Added!");
+            await axios.post('http://localhost:5000/api/brands', { name: brandName.trim() });
+            alert("Brand Added Successfully!");
             setBrandName('');
             fetchBrands();
         } catch (err) {
-            console.log(err);
-            alert(err.response?.data?.message || "Error adding brand");
+            // BACKEND ERROR HANDLING
+            const errorMsg = err.response?.data?.error || err.response?.data?.message || "Error adding brand";
+            alert("Server Error: " + errorMsg);
         }
     };
 
@@ -51,9 +52,12 @@ const AddBrand = () => {
         if (!window.confirm("Are you sure you want to delete this brand?")) return;
         try {
             await axios.delete(`http://localhost:5000/api/brands/${id}`);
+            alert("Brand Deleted!");
             fetchBrands();
         } catch (err) {
-            alert("Cannot delete. Brand is used in products.");
+            // Specific backend error message (e.g., Foreign Key constraint)
+            const errorMsg = err.response?.data?.error || err.response?.data?.message || "Cannot delete. Brand is used in products.";
+            alert("Delete Error: " + errorMsg);
         }
     };
 
@@ -63,30 +67,24 @@ const AddBrand = () => {
     };
 
     const handleUpdate = async () => {
-        // Edit check for duplicates
-        const existing = brands.find(b => 
-            (b.name || "").toLowerCase() === editName.toLowerCase() && b.brand_id !== editId
-        );
-        
-        if (existing) {
-            alert("Brand name already exists!");
+        if (!editName.trim()) {
+            alert("Brand name cannot be empty");
             return;
         }
 
         try {
-            await axios.put(`http://localhost:5000/api/brands/${editId}`, { name: editName });
-            alert("Brand name change successfully")
+            await axios.put(`http://localhost:5000/api/brands/${editId}`, { name: editName.trim() });
+            alert("Brand updated successfully!");
             setEditId(null);
             setEditName('');
             fetchBrands();
         } catch (err) {
-            console.log(err);
-            alert("Error updating brand");
+            // Backend update error (e.g., updated name already exists)
+            const errorMsg = err.response?.data?.error || err.response?.data?.message || "Error updating brand";
+            alert("Update Error: " + errorMsg);
         }
     };
 
-    // --- SEARCH LOGIC ---
-    // Hum brands array ko filter kar rahe hain search term ke basis parc
     const filteredBrands = brands.filter(brd =>
         (brd.name || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -105,12 +103,14 @@ const AddBrand = () => {
                         onChange={(e) => setBrandName(e.target.value)}
                         required
                     />
-                    <button type="submit" style={{ cursor: 'pointer', padding: '8px' }}>Add Brand</button>
+                    <button type="submit" style={{ cursor: 'pointer', padding: '8px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
+                        Add Brand
+                    </button>
                 </form>
             </section>
 
             {/* BRAND LIST SECTION */}
-            <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8_px' }}>
+            <section style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
                 <h3>Existing Brands</h3>
                 <input 
                     type="text"
@@ -126,52 +126,55 @@ const AddBrand = () => {
                         borderRadius: "4px"
                     }}
                 />
-                <table width="100%" style={{ borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ textAlign: 'left', borderBottom: '2px solid #eee' }}>
-                            <th>ID</th>
-                            <th>Brand</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredBrands.length > 0 ? (
-                            filteredBrands.map((brand) => (
-                                <tr key={brand.brand_id} style={{ borderBottom: '1px solid #eee' }}>
-                                    <td>{brand.brand_id}</td>
-                                    <td>
-                                        {editId === brand.brand_id ? (
-                                            <input
-                                                value={editName}
-                                                onChange={(e) => setEditName(e.target.value)}
-                                                autoFocus
-                                            />
-                                        ) : (
-                                            brand.name
-                                        )}
-                                    </td>
-                                    <td>
-                                        {editId === brand.brand_id ? (
-                                            <>
-                                                <button onClick={handleUpdate} style={{ marginRight: '5px' }}>Save</button>
-                                                <button onClick={() => setEditId(null)}>Cancel</button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <button onClick={() => handleEdit(brand)} style={{ marginRight: '5px' }}>Edit</button>
-                                                <button onClick={() => handleDelete(brand.brand_id)} style={{ color: 'white' }}>Delete</button>
-                                            </>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3" style={{ textAlign: 'center', padding: '10px' }}>No brands found.</td>
+                <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                    <table width="100%" style={{ borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ textAlign: 'left', borderBottom: '2px solid #eee' }}>
+                                <th style={{ padding: '10px' }}>ID</th>
+                                <th style={{ padding: '10px' }}>Brand</th>
+                                <th style={{ padding: '10px' }}>Action</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredBrands.length > 0 ? (
+                                filteredBrands.map((brand) => (
+                                    <tr key={brand.brand_id} style={{ borderBottom: '1px solid #eee' }}>
+                                        <td style={{ padding: '10px' }}>{brand.brand_id}</td>
+                                        <td style={{ padding: '10px' }}>
+                                            {editId === brand.brand_id ? (
+                                                <input
+                                                    value={editName}
+                                                    onChange={(e) => setEditName(e.target.value)}
+                                                    autoFocus
+                                                    style={{ padding: '4px' }}
+                                                />
+                                            ) : (
+                                                brand.name
+                                            )}
+                                        </td>
+                                        <td style={{ padding: '10px' }}>
+                                            {editId === brand.brand_id ? (
+                                                <>
+                                                    <button onClick={handleUpdate} style={{ marginRight: '5px', background: '#28a745', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px' }}>Save</button>
+                                                    <button onClick={() => setEditId(null)} style={{ background: '#6c757d', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px' }}>Cancel</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button onClick={() => handleEdit(brand)} style={{ marginRight: '5px', background: '#007bff', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px' }}>Edit</button>
+                                                    <button onClick={() => handleDelete(brand.brand_id)} style={{ background: '#dc3545', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px' }}>Delete</button>
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>No brands found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </div>
     );

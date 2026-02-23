@@ -78,18 +78,18 @@ const AddCategory = () => {
                 <p style={{ color: '#666' }}>Manage your product inventory categories efficiently</p>
             </header> */}
 
-            <div className="admin-grid" style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
+            <div className="admin-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
                 gap: '30px',
-                alignItems: 'start' 
+                alignItems: 'start'
             }}>
 
                 {/* --- ADD CATEGORY SECTION --- */}
-                <section className="admin-card" style={{ 
-                    padding: '25px', 
-                    backgroundColor: '#fff', 
-                    borderRadius: '12px', 
+                <section className="admin-card" style={{
+                    padding: '25px',
+                    backgroundColor: '#fff',
+                    borderRadius: '12px',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
                     position: 'sticky',
                     top: '20px'
@@ -107,9 +107,9 @@ const AddCategory = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" style={{ 
-                            width: '100%', padding: '12px', backgroundColor: '#28a745', color: '#fff', 
-                            border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' 
+                        <button type="submit" style={{
+                            width: '100%', padding: '12px', backgroundColor: '#28a745', color: '#fff',
+                            border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold'
                         }}>
                             Save Category
                         </button>
@@ -117,10 +117,10 @@ const AddCategory = () => {
                 </section>
 
                 {/* --- EXISTING CATEGORIES SECTION (WITH SCROLL) --- */}
-                <section className="admin-card" style={{ 
-                    padding: '25px', 
-                    backgroundColor: '#fff', 
-                    borderRadius: '12px', 
+                <section className="admin-card" style={{
+                    padding: '25px',
+                    backgroundColor: '#fff',
+                    borderRadius: '12px',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
                     maxHeight: '600px', // Fixed Height
                     display: 'flex',
@@ -133,8 +133,8 @@ const AddCategory = () => {
                         placeholder="🔍 Search categories..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{ 
-                            width: "100%", padding: "10px", margin: "15px 0", 
+                        style={{
+                            width: "100%", padding: "10px", margin: "15px 0",
                             borderRadius: "6px", border: "1px solid #ddd", fontSize: '14px'
                         }}
                     />
@@ -166,17 +166,50 @@ const AddCategory = () => {
                                                 )}
                                             </td>
                                             <td style={{ padding: '12px', textAlign: 'center' }}>
-                                                {editingId === cat.pro_cat_id ? (
-                                                    <button onClick={handleUpdateCategory} style={{ backgroundColor: '#007bff', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Update</button>
-                                                ) : (
-                                                    <button onClick={() => handleEditClick(cat)} style={{ backgroundColor: '#ffc107', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Edit</button>
-                                                )}
-                                                <button
-                                                    onClick={() => handleDeleteCategory(cat.pro_cat_id)}
-                                                    style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
-                                                >
-                                                    Delete
-                                                </button>
+                                                <div style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
+                                                    {editingId === cat.pro_cat_id ? (
+                                                        <button
+                                                            onClick={handleUpdateCategory}
+                                                            style={{
+                                                                backgroundColor: '#007bff',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                padding: '5px 10px',
+                                                                borderRadius: '4px',
+                                                                cursor: 'pointer'
+                                                            }}
+                                                        >
+                                                            Update
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => handleEditClick(cat)}
+                                                            style={{
+                                                                backgroundColor: '#ffc107',
+                                                                border: 'none',
+                                                                padding: '5px 10px',
+                                                                borderRadius: '4px',
+                                                                cursor: 'pointer'
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    )}
+
+                                                    <button
+                                                        onClick={() => handleDeleteCategory(cat.pro_cat_id)}
+                                                        style={{
+                                                            backgroundColor: "#dc3545",
+                                                            color: "white",
+                                                            border: "none",
+                                                            padding: "5px 10px",
+                                                            borderRadius: "4px",
+                                                            cursor: "pointer"
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))

@@ -86,11 +86,11 @@ const Header = () => {
             <div className="products-dropdown-menu">
               <Link to="/products" onClick={() => setMenuOpen(false)}>All</Link>
               <Link to="/category/1">Dog</Link>
-              <Link to="category/2">Cat</Link>
-              <Link to="category/3">Kitten</Link>
-              <Link to="category/4">Puppy</Link>
-              <Link to="category/5">Toys</Link>
-              <Link to="category/6">Groming & Accessories</Link>
+              <Link to="/category/2">Cat</Link>
+              <Link to="/category/3">Kitten</Link>
+              <Link to="/category/4">Puppy</Link>
+              <Link to="/category/5">Toys</Link>
+              <Link to="/category/6">Groming & Accessories</Link>
             </div>
           )}
         </div>

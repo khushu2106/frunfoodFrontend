@@ -25,7 +25,8 @@ import {
   FaExchangeAlt,
   FaUsers,
   FaHeadset,
-  FaUserTie
+  FaUserTie,
+  FaGift
 } from "react-icons/fa";
 import "./AdminSidebar.css";
 
@@ -59,10 +60,11 @@ const AdminSidebar = () => {
       subItems: [
         { name: "Pending orders", path: "/admin/pending", icon: <FaClock />, },
         { name: "Delivery boy details", path: "/admin/delivery-list", icon: <FaUserFriends />, },
-        { name: "Assign delivery", path: "/admin/assignorder", icon: <FaTasks />, },
-        { name: "Delivery status", path: "/admin/deliverystatus", icon: <FaTruck />, },
+        { name: "Assign delivery", path: "/admin/assignorder", icon: <FaTasks />, }
+        // { name: "Delivery status", path: "/admin/deliverystatus", icon: <FaTruck />, },
       ],
     },
+    { name: "Offers", path: "/admin/offers", icon: <FaGift /> },
     { name: "Users", path: "/admin/users", icon: <FaUsers />, },
     { name: "Orders", path: "/admin/orders", icon: <FaShoppingCart />, },
     { name: "Order Return", path: "/admin/return", icon: <FaBoxOpen />, },

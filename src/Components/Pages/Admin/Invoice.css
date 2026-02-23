@@ -21,6 +21,18 @@
   padding: 10px;
 }
 
+.invoice-company {
+  text-align: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.invoice-company h1 {
+  margin: 0;
+  color: #2f3e50;
+}
+
 @media print {
   button {
     display: none;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./Complaints.css"
 
 function Enquiries() {
   const [list, setList] = useState([]);
@@ -43,10 +44,10 @@ function Enquiries() {
         <tbody>
           {list.map((e) => (
             <tr key={e.enquiry_id}>
-              <td>{e.name}</td>
-              <td>{e.email}</td>
-              <td>{e.subject}</td>
-              <td>{e.message}</td>
+              <td className="truncate-cell" title={e.name}>{e.name}</td>
+              <td className="truncate-cell" title={e.email}>{e.email}</td>
+              <td className="truncate-cell" title={e.subject}>{e.subject}</td>
+              <td className="truncate-cell" title={e.message}>{e.message}</td>
               <td>{e.status}</td>
               <td>
                 <button onClick={() => markRead(e.enquiry_id)}>Read</button>

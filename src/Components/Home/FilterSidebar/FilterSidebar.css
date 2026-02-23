@@ -7,7 +7,6 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 90px;
-  font-family: "Inter", system-ui, sans-serif;
 }
 
 /* MAIN TITLE */
@@ -34,10 +33,10 @@
 }
 
 /* COLOR HIGHLIGHTS */
-.category-title {
+/* .category-title {
   background: #ecfeff;
   color: #0369a1;
-}
+} */
 
 .brand-title {
   background: #fff7ed;

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./LoginD.css"; 
+import "./LoginD.css";
 import { AuthContext } from "../../Auth/Authcontext";
 
 function LoginD() {
@@ -32,24 +32,25 @@ function LoginD() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          expectedRole: "delivery_boy", 
+          expectedRole: "delivery_boy",
         }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        login(data.token, data.user);
-
-        localStorage.setItem("deliveryLogin", "true");
-
-
-        navigate("/delivery/dashboard");
-      } else {
-        setError(data.error || "Invalid delivery credentials");
+      if (!response.ok) {
+        throw new Error(data.error || "Invalid delivery credentials");
       }
+
+      // ✅ Save delivery specific auth
+      localStorage.setItem("deliveryToken", data.token);
+      localStorage.setItem("deliveryRole", "delivery_boy");
+      localStorage.setItem("deliveryLogin", "true");
+
+      navigate("/delivery/dashboard");
+
     } catch (err) {
-      setError("Server error. Please try again later.");
+      alert(err.message || "Login failed");
     } finally {
       setIsLoading(false);
     }

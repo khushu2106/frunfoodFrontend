@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import axios from "axios";
@@ -17,10 +17,11 @@ const ProductList = () => {
   const [page, setPage] = useState(1);
 
   const BASE_URL = "http://localhost:5000";
-  const user_id = 1; // TODO: replace with JWT user
+  const token = localStorage.getItem("userToken");
+  const navigate = useNavigate();
+
   const productsPerPage = 12;
 
-  /* 🔍 SEARCH QUERY */
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get("search");
 
@@ -29,7 +30,6 @@ const ProductList = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // main products
         const productRes = await axios.get(
           searchQuery
             ? `${BASE_URL}/api/products?search=${searchQuery}`
@@ -40,7 +40,6 @@ const ProductList = () => {
         setProducts(mainProducts);
         setPage(1);
 
-        // suggested products
         if (searchQuery) {
           const allRes = await axios.get(`${BASE_URL}/api/products`);
           const others = allRes.data.filter(
@@ -64,29 +63,49 @@ const ProductList = () => {
 
   /* ================= QUICK ADD ================= */
   const handleQuickAdd = async (product) => {
+    if (!token) {
+      alert("Please login first!");
+      return;
+    }
+
     try {
       await axios.post(`${BASE_URL}/api/cart/add`, {
-        user_id,
         product_id: product.product_id,
         qty: 1,
         price: product.price,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
+
       alert("Added to cart 🛒");
+      window.location.reload();
     } catch (error) {
+      console.error(error);
       alert("Failed to add to cart");
     }
   };
 
   /* ================= WISHLIST ================= */
   const handleAddToWishlist = async (product) => {
+    if (!token) {
+      alert("Please login first!");
+      return;
+    }
+
     try {
-      await axios.post(`${BASE_URL}/api/wishlist`, {
-        user_id,
-        product_id: product.product_id,
-      });
+      await axios.post(`${BASE_URL}/api/wishlist`,
+        { product_id: product.product_id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       alert("Added to wishlist ❤️");
-    } catch {
-      alert("Already in wishlist");
+      window.location.reload();
+    } catch (error) {
+      if (error.response?.status === 400) {
+        alert("Already in wishlist ❤️");
+      } else {
+        alert("Failed to add to wishlist");
+      }
     }
   };
 
@@ -97,14 +116,11 @@ const ProductList = () => {
   /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(products.length / productsPerPage);
   const startIndex = (page - 1) * productsPerPage;
-  const currentProducts = products.slice(
-    startIndex,
-    startIndex + productsPerPage
-  );
+  const currentProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <section className="product-section">
-      {/* HEADER */}
+
       <div className="product-header">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
@@ -113,17 +129,12 @@ const ProductList = () => {
           className="section-title"
         >
           {searchQuery ? (
-            <>
-              Search results for{" "}
-              <span className="highlight">"{searchQuery}"</span>
-            </>
+            <>Search results for <span className="highlight">"{searchQuery}"</span></>
           ) : (
             <>
               <div className="text">
                 Shop Our <span className="highlight">Favorites</span>
               </div>
-
-              {/* ✨ Extra Line */}
               <div className="tagline">
                 Everything your pet loves, all in one place 🐾
               </div>
@@ -132,7 +143,6 @@ const ProductList = () => {
         </motion.h2>
       </div>
 
-      {/* PRODUCTS */}
       {currentProducts.length === 0 ? (
         <p className="no-products">No products found 😔</p>
       ) : (
@@ -165,32 +175,31 @@ const ProductList = () => {
                   className="product-card"
                 >
                   <div className="product-image-box">
-                    <Link to={`/product/${product.product_id}`}>
-                      <img src={imageUrl} alt={product.name} />
-                    </Link>
+
+                    {/* IMAGE CLICK OPENS DETAILS */}
+                    <img
+                      src={imageUrl}
+                      alt={product.name}
+                      onClick={() => navigate(`/product/${product.product_id}`)}
+                      style={{ cursor: "pointer" }}
+                    />
 
                     <div className="hover-action">
-                      <button
-                        className="action-btn"
-                        onClick={() => handleAddToWishlist(product)}
-                      >
+                      <button className="action-btn" onClick={() => handleAddToWishlist(product)}>
                         <Heart size={18} />
                       </button>
 
-                      <button
-                        className="add-to-cart-btn"
-                        onClick={() => handleQuickAdd(product)}
-                      >
+                      <button className="add-to-cart-btn" onClick={() => handleQuickAdd(product)}>
                         <ShoppingCart size={18} /> Quick Add
                       </button>
 
-                      <Link
-                        to={`/product/${product.product_id}`}
-                        className="action-btn"
-                      >
-                        <Eye size={18} />
-                      </Link>
+                      <Eye
+                        size={18}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => navigate(`/product/${product.product_id}`)}
+                      />
                     </div>
+
                   </div>
 
                   <div className="product-info">
@@ -203,71 +212,6 @@ const ProductList = () => {
           })}
         </Swiper>
       )}
-
-      {/* PAGINATION */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              className={page === i + 1 ? "active" : ""}
-              onClick={() => setPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
-        </div>
-      )}
-
-      {/* SUGGESTED PRODUCTS */}
-      {/* 🔥 YOU MAY ALSO LIKE */}
-      {searchQuery && suggestedProducts.length > 0 && (
-        <div className="suggested-section">
-          <h3 className="suggest-title">You may also like</h3>
-
-          <div className="suggest-grid">
-            {suggestedProducts.map((product) => {
-              const imageUrl = product.image
-                ? product.image.startsWith("http")
-                  ? product.image
-                  : `${BASE_URL}/${product.image}`
-                : "/no-image.png";
-
-              return (
-                <div className="suggest-card" key={product.product_id}>
-                  <Link to={`/product/${product.product_id}`}>
-                    <img src={imageUrl} alt={product.name} className="product-img" />
-                  </Link>
-
-                  <div className="suggest-info">
-                    <h4>{product.name}</h4>
-                    <p className="price">₹{product.price}</p>
-
-                    <button
-                      className="btn-view"
-                      onClick={() => navigate(`/product/${product.product_id}`)}
-                    >
-                      View Product
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
     </section>
   );
 };

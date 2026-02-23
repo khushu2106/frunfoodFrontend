@@ -47,37 +47,41 @@ const HeroHome = () => {
           <p className="main-subtext">
             Premium supplies, expert grooming, and a community that loves pets.
           </p>
-
           <div className="search-bar-mini">
-            <input
-              type="text"
-              placeholder="Search products, categories..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
 
-            {suggestions.length > 0 && (
-              <ul className="suggestions-list">
-                {suggestions.map((item) => (
-                  <li
-                    key={item.product_id}
-                    onClick={() => {
-                      setSearchTerm(item.product_name);
-                      navigate(`/productSearch?search=${encodeURIComponent(item.product_name)}`);
-                      setSuggestions([]);
-                    }}
-                  >
-                    <span className="suggestion-name">{item.product_name}</span>
-                    <span className="badge">{item.category_name}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                placeholder="Search products, categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((item) => (
+                    <li key={item.product_id}>
+                      <span className="suggestion-name">{item.product_name}</span>
+
+                      <div className="suggestion-meta">
+                        {item.category_name && (
+                          <span className="badge">{item.category_name}</span>
+                        )}
+                        {item.brand_name && (
+                          <span className="badge">{item.brand_name}</span>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             <button className="search-btn" onClick={handleSearch}>
               Search
             </button>
+
           </div>
         </div>
 

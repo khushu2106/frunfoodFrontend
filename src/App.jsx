@@ -35,7 +35,6 @@ import Category from './Components/Home/Products/Category';
 import CategoryProducts from './Components/Home/Products/CategoryProducts';
 import Offers from './Components/Home/Offers/Offers';
 import ProductSearch from './Components/Home/Products/ProductSearch';
-import ProductFilter from "./Components/Home/ProductFilter/ProductFilter";
 import Contact from './Components/Home/Contact/Contact';
 import Logout from './Components/Pages/Auth/Logout';
 import Cart from './Components/Pages/Cart/Cart';
@@ -45,6 +44,7 @@ import Payment from './Components/Pages/Payment/Payment';
 import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
 import Feedback from "./Components/Pages/Feedback/Feedback"
 import Complaint from "./Components/Pages/Complaint/Complaint"
+import ProductListing from './Components/Home/ProductListing/ProductListing';
 import Header from './Components/Common/Header/Header';
 // import FAQ from "./Components/Home/FAQ/FAQ";
 import Footer from './Components/Common/Footer/Footer';
@@ -59,6 +59,7 @@ import AddPurchaseReturn from './Components/Pages/Admin/Purchase/AddPurchaseRetu
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
+import DeliveryProtected from './Components/Pages/ProtectedRoutes/DeliveryProtected';
 import Products from "./Components/Pages/Products";
 import { CartProvider } from './Components/Pages/Cart/Cartcontext';
 
@@ -70,6 +71,7 @@ import OtpVerifyD from './Components/Pages/Delivery/AuthD/OtpVerifyD';
 
 // import HeaderD from './Components/Pages/Delivery/LayoutD/HeaderD';
 import SideBarD from './Components/Pages/Delivery/LayoutD/SideBarD';
+import DeliveryLayout from './Components/Pages/Delivery/LayoutD/DeliveryLayout';
 
 // --- Pages Components ---
 import AddDeliveryBoyD from './Components/Pages/Delivery/PagesD/AddDeliveryBoyD';
@@ -95,9 +97,10 @@ import CancelledOrders from './Components/Pages/Order/CancelledOrders';
 import City from './Components/Pages/Admin/City';
 import Brand from './Components/Home/Products/brand';
 import BrandProducts from './Components/Home/Products/BrandProduct';
-import Complaints from './Components/Pages/Complaint/Complaint';
+import Complaints from './Components/Pages/Admin/Complaints';
 import Reports from './Components/Pages/Admin/Reports';
 import Enquiries from './Components/Pages/Admin/Enquiries';
+import AdminOffers from './Components/Pages/Admin/AdminOffer';
 // import InvoiceManager from './Components/Pages/Admin/InvoiceManager';
 // import InvoiceView from './Components/Pages/Admin/InvoiceView';
 
@@ -111,25 +114,26 @@ function LayoutWrapper() {
   const showHeaderFooter = !isAdminRoute && !isAuthRoute && !isdeliveryRoute;
   return (
     <>
-    <ScrollToTop />
+      <ScrollToTop />
       {showHeaderFooter && <Header />}
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome /><Category /><Brand /><ProductList /><Offers /><Aboutus/><FAQ/></>} />
-        <Route path="/products" element={<><ProductList /><Category /><Offers /></>} />
-        <Route path="/product/:id" element={<ProductDetails />}/>
+        <Route path="/" element={<><HeroHome /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FAQ /></>} />
+        {/* <Route path="/products" element={<><ProductList /><Category /><Offers /></>} /> */}
+        <Route path="/products" element={<ProductListing />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/productSearch" element={<ProductSearch />} />
+        {/* <Route path="/category/:categoryId" element={<ProductListing />} /> */}
         <Route path="/products/category/:category" element={<CategoryProducts />} />
 
-        <Route path="/ProductFilter" element={<ProductFilter />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
-        <Route path="/brands/:id" element={<BrandProducts />} />
-        <Route path="/offers/:offerType" element={<OfferProducts />} />
+        <Route path="/brands/:id" element={<><BrandProducts /><Category /><Brand /><ProductList /><Offers /></>} />
+        <Route path="/offers/:offerType" element={<><OfferProducts /><Category /><Brand /><ProductList /><Offers /></>} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -145,16 +149,14 @@ function LayoutWrapper() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/cancelled-orders" element={<CancelledOrders />} />
-        <Route path="/myorders" element={<><MyOrders /><ProductList/></>} />
+        <Route path="/myorders" element={<><MyOrders /><ProductList /></>} />
         <Route path="/myorders/:id" element={<OrderDetails />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/complaint" element={<Complaint />} />
-        <Route path="/ProductFilter" element={<ProductFilter />} />
-        {/* <Route path="/admin/invoice/:type/:id" element={<InvoiceView />}/> */}
 
-         
+
         {/* Admin */}
         <Route
           path="/admin"
@@ -183,7 +185,7 @@ function LayoutWrapper() {
           <Route path="manage-products" element={<AdminManageProducts />} />
           <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="users/:id" element={<UserDetails />} />
-          {/* <Route path="invoice" element={<Invoice />} /> */}
+          <Route path="reports" element={<Reports />} />
           <Route path="view-purchases" element={<ViewPurchases />} />
           {/* <Route path="delivery" element={<AdminDelivery />} /> */}
           <Route path="pending" element={<PendingOrders />} />
@@ -192,27 +194,34 @@ function LayoutWrapper() {
           <Route path="deliverystatus" element={<DeliveryStatus />} />
           <Route path="city" element={<City />} />
           <Route path="return" element={<SalesReturn />} />
-          <Route path="invoice" element={<InvoiceManager />}/>
-          <Route path="supplier" element={<AddSupplier />}/>
-          <Route path="view-suppliers" element={<ViewSupplier />}/>
-          <Route path="purchasereturn" element={<AddPurchaseReturn />}/>
-          <Route path="complaints" element={<Complaints />}/>
-          <Route path="enquiries" element={<Enquiries />}/>
-
+          <Route path="invoice" element={<InvoiceManager />} />
+          <Route path="supplier" element={<AddSupplier />} />
+          <Route path="view-suppliers" element={<ViewSupplier />} />
+          <Route path="purchasereturn" element={<AddPurchaseReturn />} />
+          <Route path="complaints" element={<Complaints />} />
+          <Route path="enquiries" element={<Enquiries />} />
+          <Route path="offers" element={<AdminOffers />} />
+          <Route path="invoice/:type/:id" element={<InvoiceView />} />
         </Route>
         <Route path="/admin/logout" element={<AdminLogout />} />
 
+        {/* Delivery Auth Routes */}
+        <Route path="/delivery/login" element={<LoginD />} />
+        <Route path="/delivery/otpverify" element={<OtpVerifyD />} />
+        <Route path="/delivery/forgot-password" element={<ForgetPasswordD />} />
+        <Route path="/delivery/logout" element={<LogoutD />} />
+
+        {/* Delivery Protected Routes */}
         <Route
           path="/delivery"
           element={
-            <> <SideBarD /> </>} >
+            <DeliveryProtected>
+              <DeliveryLayout />
+            </DeliveryProtected>
+          }
+        >
           <Route index element={<DashBoardD />} />
-
           <Route path="dashboard" element={<DashBoardD />} />
-          <Route path="login" element={<LoginD />} />
-          <Route path="otpverify" element={<OtpVerifyD />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="logout" element={<LogoutD />} />
           <Route path="profile" element={<ProfileD />} />
           <Route path="settings" element={<SettingsD />} />
           <Route path="add-delivery" element={<AddDeliveryBoyD />} />
@@ -222,7 +231,6 @@ function LayoutWrapper() {
           <Route path="earning" element={<EarningD />} />
           <Route path="notifications" element={<NotificationsD />} />
           <Route path="orderdetails" element={<OrderDetailsD />} />
-
         </Route>
 
 

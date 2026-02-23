@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./AdminManageProducts.css"
 
 const AdminManageProducts = () => {
   const [products, setProducts] = useState([]);
@@ -70,7 +71,7 @@ const AdminManageProducts = () => {
         style={{ marginTop: "10px", padding: "5px", width: "250px", marginBottom: "30px" }}
       />
       <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
-        <table border="1" width="100%" cellPadding="10">
+        <table border="1" width="100%" cellPadding="5">
           <thead>
             <tr>
               <th>Image</th>

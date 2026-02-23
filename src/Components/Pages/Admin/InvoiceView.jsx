@@ -5,56 +5,103 @@ import "./Invoice.css";
 
 const InvoiceView = () => {
   const { type, id } = useParams();
-  const [invoice, setInvoice] = useState({});
-  const [items, setItems] = useState([]);
+  const [invoice, setInvoice] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const token = localStorage.getItem("adminToken");
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/invoices/${type}/${id}`)
-      .then((res) => {
-        setInvoice(res.data.invoice);
-        setItems(res.data.items);
-      });
-  }, []);
+    const fetchInvoice = async () => {
+      if (!token) {
+        setError("Admin not logged in");
+        setLoading(false);
+        return;
+      }
 
-  const printInvoice = () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/invoice/${type}/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        setInvoice(res.data);
+      } catch (err) {
+        setError("Invoice fetch failed");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoice();
+  }, [type, id]);
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-GB");
+  };
+
+  const handlePrint = () => {
     window.print();
   };
 
+  if (loading) return <p>Loading invoice...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (!invoice) return <p>No invoice found</p>;
+
   return (
-    <div className="invoice-box">
-      <div className="invoice-header">
-        <h1>PetShop Pvt Ltd</h1>
-        <p>GST: 24ABCDE1234F1Z5</p>
-      </div>
+    <div className="invoice-wrapper">
+      <div className="invoice-box">
 
-      <h3>Invoice #{id}</h3>
-      <p>Date: {invoice.s_date || invoice.p_date}</p>
+        {/* 🔥 COMPANY NAME */}
+        <div className="invoice-company">
+          <h1>Fur and Food</h1>
+          <p>Ahmedabad, Gujarat</p>
+          <p>Email: furandfood@gmail.com</p>
+        </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td>{item.product_id}</td>
-              <td>{item.quantity}</td>
-              <td>{item.price}</td>
-              <td>{item.total}</td>
+        <h2>{type === "sales" ? "Sales Invoice" : "Purchase Invoice"}</h2>
+
+        <div className="invoice-header">
+          <p><b>Invoice ID:</b> {invoice.id}</p>
+          <p><b>Date:</b> {formatDate(invoice.date)}</p>
+          <p><b>{type === "sales" ? "Customer" : "Supplier"}:</b> {invoice.name}</p>
+        </div>
+
+        <table className="invoice-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {invoice.items?.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.qty}</td>
+                <td>₹{item.price}</td>
+                <td>₹{item.qty * item.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <h2>Total: ₹{invoice.total_amount}</h2>
+        <div className="invoice-total">
+          <h3>Total: ₹{invoice.total_amount}</h3>
+        </div>
 
-      <button onClick={printInvoice}>Print</button>
+        <button onClick={handlePrint} className="print-btn">
+          Print Invoice
+        </button>
+
+      </div>
     </div>
   );
 };

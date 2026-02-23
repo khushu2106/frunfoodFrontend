@@ -1,43 +1,40 @@
-// FILTERSIDEBAR.JSX
 import { useState } from "react";
-import "./ProductFilter.css";
+import "./FilterSidebar.css";
 
-const categories = [
-  "Dog",
-  "Cat",
-  "Puppy",
-  "Kitten",
-  "Accessories",
-  "Grooming"
-];
+const categories = ["Dogs", "Cats", "Puppy", "Kitten", "Toys", "Grooming and accessories"];
+const brands = ["Pedigree", "Whiskas", "Royal Canin", "Drools", "Purepet", "Me-O", "Felix", "Sheba", "Himalaya"];
 
-const brands = [
-  "Pedigree",
-  "Whiskas",
-  "Royal Canin",
-  "Drools",
-  "Purepet",
-  "Me-O",
-  "Felix",
-  "Sheba",
-  "Himalaya"
-];
+const FilterSidebar = ({ onFilter }) => {
 
-const ProductFilter = ({ filters, setFilters }) => {
-  // ✅ temp state (before apply)
-  const [tempFilters, setTempFilters] = useState(filters);
+  const [tempFilters, setTempFilters] = useState({
+    categories: [],
+    brands: [],
+    minPrice: "",
+    maxPrice: ""
+  });
 
   const toggleValue = (type, value) => {
-    setTempFilters({
-      ...tempFilters,
-      [type]: tempFilters[type].includes(value)
-        ? tempFilters[type].filter(v => v !== value)
-        : [...tempFilters[type], value]
-    });
+    setTempFilters(prev => ({
+      ...prev,
+      [type]: prev[type].includes(value)
+        ? prev[type].filter(v => v !== value)
+        : [...prev[type], value]
+    }));
   };
 
   const applyFilters = () => {
-    setFilters(tempFilters);
+    const min = Number(tempFilters.minPrice);
+    const max = Number(tempFilters.maxPrice);
+    
+    if(min<0 && max<0){
+      alert("price should be greater then zero");
+      return;
+    }
+    if (min && max && max < min) {
+      alert("Max price should be greater then Min price");
+      return;
+    }
+    onFilter(tempFilters);
   };
 
   const clearFilters = () => {
@@ -48,19 +45,18 @@ const ProductFilter = ({ filters, setFilters }) => {
       maxPrice: ""
     };
     setTempFilters(cleared);
-    setFilters(cleared);
+    onFilter(cleared);
   };
 
   return (
     <aside className="filter-sidebar">
       <h3>Filters</h3>
 
-      {/* CATEGORY */}
       <div className="filter-block">
         <div className="filter-title">Category</div>
         <div className="scroll-box">
           {categories.map(cat => (
-            <label className="filter-item" key={cat}>
+            <label key={cat} className="filter-item">
               <input
                 type="checkbox"
                 checked={tempFilters.categories.includes(cat)}
@@ -72,12 +68,11 @@ const ProductFilter = ({ filters, setFilters }) => {
         </div>
       </div>
 
-      {/* BRAND */}
       <div className="filter-block">
         <div className="filter-title">Brand</div>
         <div className="scroll-box">
           {brands.map(brand => (
-            <label className="filter-item" key={brand}>
+            <label key={brand} className="filter-item">
               <input
                 type="checkbox"
                 checked={tempFilters.brands.includes(brand)}
@@ -89,20 +84,22 @@ const ProductFilter = ({ filters, setFilters }) => {
         </div>
       </div>
 
-      {/* PRICE */}
       <div className="filter-block">
-        <div className="filter-title">Price Range</div>
+        <div className="filter-title">Price</div>
         <input
           type="number"
           placeholder="Min ₹"
+          min="0"
           value={tempFilters.minPrice}
           onChange={(e) =>
             setTempFilters({ ...tempFilters, minPrice: e.target.value })
           }
         />
+
         <input
           type="number"
           placeholder="Max ₹"
+          min="0"
           value={tempFilters.maxPrice}
           onChange={(e) =>
             setTempFilters({ ...tempFilters, maxPrice: e.target.value })
@@ -110,7 +107,6 @@ const ProductFilter = ({ filters, setFilters }) => {
         />
       </div>
 
-      {/* BUTTONS */}
       <button className="apply-btn" onClick={applyFilters}>
         Apply Filters
       </button>
@@ -122,4 +118,4 @@ const ProductFilter = ({ filters, setFilters }) => {
   );
 };
 
-export default ProductFilter;
+export default FilterSidebar;

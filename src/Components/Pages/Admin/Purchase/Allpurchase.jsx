@@ -22,13 +22,24 @@ const ViewPurchases = () => {
   }, []);
 
   const handleBack = () => {
-    navigate("/admin/transaction");
+    navigate("/admin/dashboard");
   };
+
+  function formatDate(dateString) {
+  const options = { 
+    year: 'numeric', 
+    month: 'short',   // short: Feb, long: February
+    day: '2-digit'
+  };
+  
+  const date = new Date(dateString);
+  return date.toLocaleString('en-US', options);
+}
 
   if (loading) return <p>Loading purchases...</p>;
 
   return (
-    <div style={{ maxWidth: "900px", margin: "20px auto", padding: "20px" }}>
+    <div style={{ maxWidth: "900%", margin: "20px auto", padding: "20px" }}>
       <h2>All Purchases</h2>
 
       <button
@@ -53,10 +64,11 @@ const ViewPurchases = () => {
           <thead>
             <tr>
               <th>Purchase ID</th>
-              <th>Supplier ID</th>
+              <th>Supplier name</th>
               <th>Product name</th>
               <th>Quantity</th>
               <th>Price</th>
+              <th>Total amount</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -64,11 +76,12 @@ const ViewPurchases = () => {
             {purchases.map((p) => (
               <tr key={p.purchase_id}>
                 <td>{p.purchase_id}</td>
-                <td>{p.supplier_id}</td>
+                <td>{p.fname}</td>
                 <td>{p.name}</td>
                 <td>{p.qty}</td>
-                <td>₹{p.payment_amount}</td>
-                <td>{p.p_date}</td>
+                <td>{p.price}</td>
+                <td>₹{p.total_amount}</td>
+                <td>{formatDate(p.p_date)}</td>
               </tr>
             ))}
           </tbody>

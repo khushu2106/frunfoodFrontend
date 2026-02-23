@@ -12,92 +12,61 @@ const InvoiceManager = () => {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const fetchInvoices = async () => {
-    setError("");
-    setInvoices([]);
+const fetchInvoices = async () => {
+  setError("");
+  const token =  localStorage.getItem("adminToken")
 
-    // 🔴 VALIDATIONS
-    if (!startDate || !endDate) {
-      setError("Please select both start and end dates");
-      return;
-    }
+  if (!token) {
+    setError("No token found. Please login again.");
+    return;
+  }
 
-    if (startDate > endDate) {
-      setError("Start date cannot be greater than End date");
-      return;
-    }
-
-    if (startDate > today || endDate > today) {
-      setError("Future dates are not allowed");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/invoices`,
-        {
-          params: {
-            type,
-            startDate,
-            endDate
-          }
+  setLoading(true);
+  try {
+    const res = await axios.get(
+      `http://localhost:5000/api/invoice/${type}`,
+      {
+        params: { startDate, endDate },
+        headers: { 
+          Authorization: `Bearer ${token}` 
         }
-      );
-
-      if (res.data.length === 0) {
-        setError("No invoices found for selected dates");
       }
+    );
+    setInvoices(res.data);
+  } catch (err) {
+    console.error(err);
+    setError(err.response?.status === 401 ? "Unauthorized: Please Login Again" : "Failed to fetch");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      setInvoices(res.data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch invoices");
-    } finally {
-      setLoading(false);
-    }
+  // Date format karne ke liye helper
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-GB"); // DD/MM/YYYY
   };
 
   return (
     <div className="invoice-container">
       <h2>Invoice Manager</h2>
 
-      {/* FILTER BOX */}
       <div className="filter-box">
-        <select
-          value={type}
-          onChange={(e) => {
-            setType(e.target.value);
-            setInvoices([]);
-          }}
-        >
+        <select value={type} onChange={(e) => { setType(e.target.value); setInvoices([]); }}>
           <option value="sales">Sales Invoice</option>
           <option value="purchase">Purchase Invoice</option>
         </select>
 
-        <input
-          type="date"
-          max={today}
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-
-        <input
-          type="date"
-          max={today}
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+        <input type="date" max={today} value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <input type="date" max={today} value={endDate} onChange={(e) => setEndDate(e.target.value)} />
 
         <button onClick={fetchInvoices} disabled={loading}>
           {loading ? "Fetching..." : "Fetch Invoices"}
         </button>
       </div>
 
-      {/* ERROR */}
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="error-text" style={{color: "red"}}>{error}</p>}
 
-      {/* TABLE */}
       {invoices.length > 0 && (
         <table className="invoice-table">
           <thead>
@@ -106,14 +75,14 @@ const InvoiceManager = () => {
               <th>Date</th>
               <th>Name</th>
               <th>Total</th>
-              <th>View</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((inv) => (
               <tr key={inv.id}>
                 <td>{inv.id}</td>
-                <td>{inv.date}</td>
+                <td>{formatDate(inv.date)}</td> {/* Readable Date */}
                 <td>{inv.name}</td>
                 <td>₹{inv.total_amount}</td>
                 <td>
@@ -121,6 +90,7 @@ const InvoiceManager = () => {
                     href={`/admin/invoice/${type}/${inv.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="view-link"
                   >
                     View / Print
                   </a>
