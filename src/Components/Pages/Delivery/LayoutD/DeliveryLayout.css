@@ -1,18 +1,105 @@
-.delivery-layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.delivery-body {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-.delivery-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+/* =======================
+   Page Wrapper
+======================= */
+.page-d {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px 25px;
+  font-family: 'Inter', sans-serif;
   background: #f5f7fa;
+  border-radius: 12px;
+}
+
+/* =======================
+   Page Heading
+======================= */
+.page-d h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 30px;
+}
+
+/* =======================
+   Table Styling
+======================= */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.orders-table th, .orders-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.orders-table th {
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.orders-table tr:hover {
+  background: #f0f9ff;
+  transform: translateY(1px);
+}
+
+/* =======================
+   Status Badge
+======================= */
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.pending { background: #fff3cd; color: #856404; }
+.status-badge.delivered { background: #d4edda; color: #155724; }
+.status-badge.picked_up { background: #cce5ff; color: #004085; }
+
+/* =======================
+   Action Button
+======================= */
+.deliver-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.deliver-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+/* =======================
+   Responsive Table
+======================= */
+@media (max-width: 768px) {
+  .orders-table th, .orders-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .deliver-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }

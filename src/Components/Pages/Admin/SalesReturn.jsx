@@ -4,6 +4,7 @@ import axios from "axios";
 const AdminReturns = () => {
   const [returns, setReturns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("userToken"); // Token key check karein (userToken ya token)
 
   const BASE_URL = "http://localhost:5000";
@@ -40,11 +41,27 @@ const AdminReturns = () => {
     }
   };
 
+  const filteredReturns = returns.filter(item =>
+    item.return_id?.toString().includes(searchTerm) ||
+    item.sales_id?.toString().includes(searchTerm) ||
+    item.fname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.return_status?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) return <div style={{ padding: "20px" }}>Loading returns...</div>;
 
   return (
     <div style={containerStyle}>
       <h2 style={headerStyle}>📦 Manage Customer Returns</h2>
+
+      <input
+        type="text"
+        placeholder="Search by ID, Order, Customer, Product or Status..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={searchStyle}
+      />
 
       <div style={tableContainerStyle}>
         <table style={tableStyle}>
@@ -60,10 +77,10 @@ const AdminReturns = () => {
             </tr>
           </thead>
           <tbody>
-            {returns.length === 0 ? (
+            {filteredReturns.length === 0 ? (
               <tr><td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>No return requests found.</td></tr>
             ) : (
-              returns.map((item) => (
+              filteredReturns.map((item) => (
                 <tr key={item.return_id} style={trStyle}>
                   <td style={tdStyle}>#{item.return_id}</td>
                   <td style={tdStyle}>#{item.sales_id}</td>
@@ -80,13 +97,13 @@ const AdminReturns = () => {
                   <td style={tdStyle}>
                     {item.return_status === "requested" ? (
                       <div style={{ display: "flex", gap: "10px" }}>
-                        <button 
+                        <button
                           onClick={() => handleAction(item.return_id, "approve")}
                           style={btnStyle("#28a745")}
                         >
                           Approve
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleAction(item.return_id, "reject")}
                           style={btnStyle("#dc3545")}
                         >
@@ -137,5 +154,14 @@ const btnStyle = (bg) => ({
   fontWeight: "bold",
   fontSize: "13px"
 });
+
+const searchStyle = {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "20px",
+  borderRadius: "6px",
+  border: "1px solid #ccc",
+  fontSize: "14px"
+};
 
 export default AdminReturns;

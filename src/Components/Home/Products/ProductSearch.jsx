@@ -66,7 +66,7 @@ export default function ProductSearch() {
     <>
     <div className="product-search-wrapper">
       <Link to={`/`}>
-      <h4>Back to home </h4>
+      <h4>← Back to Home</h4>
       </Link>
       {/* <h2>Search Products</h2> */}
 

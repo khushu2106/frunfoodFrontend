@@ -3,36 +3,59 @@ import { getAssignedOrders, getDashboardData, updateOrderStatus } from "../../..
 import "./DashBoardD.css";
 
 function Dashboard() {
+
+  const deliveryBoyId = 1;
+
   const [data, setData] = useState({
     totalOrders: 0,
     deliveredOrders: 0,
     pendingOrders: 0
   });
+
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    const deliveryBoyId = 1;
+  // 🔥 Common fetch function
+  const fetchDashboard = () => {
+    setLoading(true);
 
     Promise.all([
       getDashboardData(deliveryBoyId),
       getAssignedOrders(deliveryBoyId)
-    ]).then(([resDashboard, resOrders]) => {
-      if (resDashboard.data.success) setData(resDashboard.data.Dashboard);
-      if (resDashboard.data.success) setOrders(resOrders.data.orders);
-      setLoading(false);
-    }).catch((err) => {
-      console.error(err);
-      setLoading(false);
-    });
+    ])
+      .then(([resDashboard, resOrders]) => {
+
+        if (resDashboard?.data?.success) {
+          setData(resDashboard.data.dashboard || {});
+        }
+
+        if (resOrders?.data?.success) {
+          setOrders(resOrders.data.data || []);   // 🔥 SAFE
+        } else {
+          setOrders([]);  // 🔥 fallback
+        }
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setOrders([]);   // 🔥 avoid crash
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchDashboard();
   }, []);
 
-  const handleStatusChange = (orderId, newStatus) =>{
-    updateOrderStatus(orderId, newStatus).then(res => {
-      alert("status updated !");
-      window.location.reload();
-    })
-    .catch(err => console.log(err));
+  // 🔥 Status update without reload
+  const handleStatusChange = (orderId, newStatus) => {
+    updateOrderStatus(orderId, newStatus)
+      .then(res => {
+        alert("Status updated!");
+        fetchDashboard();   // ✔ live refresh
+      })
+      .catch(err => console.log(err));
   }
 
   if (loading) return <div className="dashboard">Loading...</div>;
@@ -58,61 +81,45 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Today's Orders (Table content abhi static hai) */}
       <div className="today-orders">
-        <h3>Today's Assigned Orders</h3>
+        <h3>Assigned Orders</h3>
+
         <table>
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>Customer(ID)</th>
+              <th>Customer</th>
               <th>Amount</th>
               <th>Status</th>
-              {/* <th>Action</th> */}
+              <th>Update</th>
             </tr>
           </thead>
+
           <tbody>
-            {orders.length > 0 ? (
+            {Array.isArray(orders) && orders.length > 0 ? (
               orders.map((order) => (
-                <tr key={order.id}>
+                <tr key={order.sales_id}>
                   <td>#{order.sales_id}</td>
-                  <td>{order.customer_name || order.user_id || "N/A"}</td>
+                  <td>{order.fname || "N/A"}</td>
                   <td>₹{order.total_amount}</td>
                   <td>
                     <span className={`status-badge ${order.order_status}`}>
-                      {order.Order_status}
+                      {order.order_status}
                     </span>
                   </td>
-                  {/* <td>
-                    <select value={order.Order_status} onChange={(e) => {
-                      handleStatusChange(order.sales_id, e.target.value)
-                    }}>
-                      <option value="pending">Pending</option>
-                      <option value="picked_up">Picked_up</option>
-                      <option value="out_for_delivery">Out for Delivery</option>
-                      <option value="delivered">Delivered</option>
-                    </select>
-                  </td> */}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" style={{ textAlign: "center" }}>No active orders found</td>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No active orders found
+                </td>
               </tr>
             )}
           </tbody>
+
         </table>
       </div>
-
-      {/* Quick Actions */}
-      {/* <div className="quick-actions">
-        <h3>Quick Actions</h3>
-        <div className="action-buttons">
-          <button onClick={() => window.location.href = "/orders"}>View Orders</button>
-          <button onClick={() => window.location.href = "/update-status"}>Update Status</button>
-          <button onClick={() => window.location.href = "/profile"}>My Profile</button>
-        </div>
-      </div> */}
     </div>
   );
 }

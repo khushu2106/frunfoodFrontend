@@ -59,7 +59,7 @@ const DeliveryHistoryD = () => {
                 <div className="status-pill">
                   <span className="dot"></span> Delivered
                 </div>
-                <button className="receipt-btn">View Receipt</button>
+                {/* <button className="receipt-btn">View Receipt</button> */}
               </div>
             </div>
           ))

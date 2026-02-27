@@ -26,6 +26,28 @@ const PendingOrders = () => {
       });
   }, []);
 
+  const assignDelivery = async (sales_id) => {
+    try {
+      await axios.post(
+        `http://localhost:5000/api/admin/delivery/assign/${sales_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+          }
+        }
+      );
+
+      alert("Delivery Assigned!");
+
+      // remove assigned order from list
+      setOrders(prev => prev.filter(order => order.sales_id !== sales_id));
+
+    } catch (err) {
+      console.error("Assign error", err);
+    }
+  };
+
   if (loading) return <p>Loading pending orders...</p>;
 
   return (
@@ -55,9 +77,10 @@ const PendingOrders = () => {
                 <td>{new Date(order.s_date).toLocaleDateString()}</td>
                 <td>
                   <button
+                    onClick={() => assignDelivery(order.sales_id)}
                     style={{
                       padding: "6px 10px",
-                      background: "#007bff",
+                      background: "#28a745",
                       color: "#fff",
                       border: "none",
                       borderRadius: "4px",

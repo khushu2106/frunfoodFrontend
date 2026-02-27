@@ -70,3 +70,9 @@ textarea:focus {
 .btn-submit:hover {
   background: #e96b0f;
 }
+
+.back-wrapper{
+  margin-top: 20px;
+  margin-left: 180px;
+  cursor: pointer;
+}

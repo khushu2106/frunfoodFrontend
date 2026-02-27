@@ -1,40 +1,137 @@
+/* Complaints.css */
+
 .complaint-container {
   padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
-table {
+.complaint-container h2 {
+  margin-bottom: 25px;
+  color: #2d3436;
+  font-size: 24px;
+  border-left: 5px solid #ff6b6b;
+  padding-left: 15px;
+}
+
+/* Table Styling */
+.complaint-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Rows ke beech space */
 }
 
-th, td {
+.complaint-table th {
+  background-color: #ffffff;
+  padding: 15px;
+  text-align: left;
+  color: #636e72;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  border-bottom: 2px solid #eee;
+}
+
+.complaint-table tbody tr {
+  background-color: #fff;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.complaint-table tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.complaint-table td {
+  padding: 15px;
+  vertical-align: top;
+  color: #2d3436;
+  font-size: 14px;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-badge.pending {
+  background-color: #ffeaa7;
+  color: #d6a01d;
+}
+
+.status-badge.resolved {
+  background-color: #55efc4;
+  color: #00b894;
+}
+
+/* Message & Text Styling */
+.msg-text {
+  color: #636e72;
+  font-size: 13px;
+  margin-top: 5px;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+/* Reply Box Styling */
+.reply-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+}
+
+.reply-box textarea {
+  width: 100%;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+  resize: vertical;
+  font-size: 13px;
+  min-height: 60px;
+  transition: border 0.3s;
 }
 
-.status.pending {
-  color: red;
-  font-weight: bold;
+.reply-box textarea:focus {
+  outline: none;
+  border-color: #ff6b6b;
 }
 
-.status.resolved {
-  color: green;
-  font-weight: bold;
-}
-
-button {
-  padding: 6px 10px;
-  background: #007bff;
+.resolve-btn {
+  background-color: #ff6b6b;
   color: white;
   border: none;
-  border-radius: 4px;
+  padding: 8px 15px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background 0.3s;
 }
 
-.truncate-cell {
-  max-width: 200px;      
-  white-space: nowrap;    
-  overflow: hidden;  
-  text-overflow: ellipsis;
-  cursor: pointer;        
+.resolve-btn:hover {
+  background-color: #ee5253;
+}
+
+.resolved-text {
+  color: #00b894;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .complaint-table thead { display: none; }
+  .complaint-table tr { display: block; margin-bottom: 20px; }
+  .complaint-table td { display: block; text-align: right; border-bottom: 1px solid #eee; }
+  .complaint-table td::before { content: attr(data-label); float: left; font-weight: bold; }
+  .reply-box { width: 100%; }
 }

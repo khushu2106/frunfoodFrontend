@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 30px;
+  padding: 6px 15px;
+  height: 70px;
   color: white;
 }
 
@@ -37,14 +38,13 @@
   padding: 2px;
 }
 
-.logout-btn {
-  padding: 8px 16px;
-  background-color: white;
-  color: #006d5b;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
+.logout{
+  text-decoration: none;
+  border: 2px solid black;
+  height: 36px;
+  width: 80px;
+  border-radius: 20%;
+  padding: 7px;
 }
 
 .logout-btn:hover {

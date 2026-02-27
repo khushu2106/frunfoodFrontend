@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const ViewPurchases = () => {
   const [purchases, setPurchases] = useState([]);
@@ -22,7 +22,7 @@ const ViewPurchases = () => {
   }, []);
 
   const handleBack = () => {
-    navigate("/admin/dashboard");
+    navigate("/admin/purchase");
   };
 
   function formatDate(dateString) {
@@ -54,7 +54,7 @@ const ViewPurchases = () => {
           marginBottom: "15px"
         }}
       >
-        Back
+        Add purchase
       </button>
 
       {purchases.length === 0 ? (

@@ -5,6 +5,11 @@
   --text: #1e293b;
 }
 
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .cart-page-wrapper {
   background-color: var(--bg);
   min-height: 100vh;

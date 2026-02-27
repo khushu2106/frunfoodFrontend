@@ -10,7 +10,7 @@ function HeaderD() {
   };
 
   return (
-    <header className="header" style={{backgroundColor: "#006d5b", zIndex: 0}}>
+    <header className="header" style={{backgroundColor: "#ffffff", zIndex: 0}}>
       <div className="logo">
         🐾 <span>PetFood</span>
       </div>
@@ -23,14 +23,11 @@ function HeaderD() {
             alt="Profile"
             className="profile-icon"
           />
-          <span>My Profile</span>
+          <span style={{color:"black"}}>My Profile</span>
         </Link>
-
         {/* Logout */}
-        <Link to="/delivery/logout" className="profile-link">
-        <button className="logout-btn" onClick={handleLogout} >
-          Logout
-        </button>
+        <Link to="/delivery/logout" className="logout">
+        <span style={{color:"black"}}>Logout</span>
         </Link>
       </div>
     </header>

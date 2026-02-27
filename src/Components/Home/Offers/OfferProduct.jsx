@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./OfferProduct.css";
 import axios from "axios";
@@ -99,6 +99,9 @@ const OfferProducts = () => {
 
   return (
     <div className="offer-products-container">
+       <h4>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>← Back to Home</Link>
+      </h4>
       <h2 className="offer-title">Special Offer Products</h2>
 
       {products.length === 0 ? (

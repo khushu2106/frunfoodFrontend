@@ -24,7 +24,7 @@ const EarningsD = () => {
       </div>
 
       <div className="earnings-grid">
-        <div className="earn-card total">
+        <div className="earn-card total" style={{backgroundColor:"#7841ae"}}>
           <h4>Total Earnings</h4>
           <p>₹{earningsData?.totalEarnings || 0}</p>
         </div>

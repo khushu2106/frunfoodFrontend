@@ -4,6 +4,17 @@ import axios from "axios";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const token = localStorage.getItem("userToken"); // Auth token for security
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredOrders = orders.filter((order) => {
+    const term = searchTerm.toLowerCase();
+
+    return (
+      order.sales_id.toString().includes(term) ||
+      (order.fname && order.fname.toLowerCase().includes(term)) ||
+      (order.order_status && order.order_status.toLowerCase().includes(term))
+    );
+  });
 
   const fetchOrders = async () => {
     try {
@@ -25,11 +36,11 @@ const Orders = () => {
     try {
       // Naya status backend ko bhejna
       await axios.put(
-        `http://localhost:5000/api/sales/status`, 
+        `http://localhost:5000/api/sales/status`,
         { sales_id, status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
+
       alert(`Order #${sales_id} status updated to ${newStatus}`);
       fetchOrders(); // List refresh karne ke liye
     } catch (error) {
@@ -54,7 +65,24 @@ const Orders = () => {
       <h2 style={{ marginBottom: "25px", color: "#333", display: 'flex', alignItems: 'center', gap: '10px' }}>
         📦 Order Management
       </h2>
-      
+
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "flex-start" }}>
+        <label htmlFor="" style={{marginRight:"10px"}}>Search by order id, customer : </label>
+        <input
+          type="text"
+          placeholder="🔍 Search by Order ID, Customer or Status..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            padding: "10px 14px",
+            width: "300px",
+            borderRadius: "8px",
+            border: "1px solid #ccc",
+            outline: "none"
+          }}
+        />
+      </div>
+
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
         <thead>
           <tr style={{ background: "#f8f9fa", borderBottom: "2px solid #eee", textAlign: "left" }}>
@@ -67,7 +95,7 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <tr key={order.sales_id} style={{ borderBottom: "1px solid #f1f1f1", transition: "0.3s" }}>
               <td style={{ padding: "15px", fontWeight: "600" }}>#{order.sales_id}</td>
               <td style={{ padding: "15px" }}>{order.fname || "Guest User"}</td>
@@ -103,7 +131,7 @@ const Orders = () => {
         </tbody>
       </table>
 
-      {orders.length === 0 && (
+      {filteredOrders.length === 0 && (
         <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
           No orders found in the database.
         </div>

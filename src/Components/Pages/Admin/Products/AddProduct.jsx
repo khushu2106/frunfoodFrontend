@@ -55,7 +55,7 @@ const AddProduct = () => {
           axios.get(`${BASE_URL}/api/categories`),
           axios.get(`${BASE_URL}/api/subcategories`),
           axios.get(`${BASE_URL}/api/brands`),
-          axios.get(`${BASE_URL}/api/products`) 
+          axios.get(`${BASE_URL}/api/products`)
         ]);
         setCategories(catRes.data);
         setSubcategories(subRes.data);
@@ -69,46 +69,107 @@ const AddProduct = () => {
   }, []);
 
   // MULTIPLE Image Handler with Validation
+  // const handleImageChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setError("");
+
+  //   if (files.length === 0) return;
+
+  //   const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+  //   const validFiles = [];
+
+  //   // Basic filters
+  //   for (let file of files) {
+  //     if (!allowedTypes.includes(file.type)) {
+  //       setError("Only JPG, JPEG, PNG, WEBP images are allowed");
+  //       return;
+  //     }
+  //     if (file.size > 2 * 1024 * 1024) {
+  //       setError("Each image must be less than 2MB");
+  //       return;
+  //     }
+  //     validFiles.push(file);
+  //   }
+
+  //   // Dimension validation
+  //   let processed = 0;
+  //   const finalImages = [];
+
+  //   validFiles.forEach((file) => {
+  //     const img = new Image();
+  //     img.src = URL.createObjectURL(file);
+  //     img.onload = () => {
+  //       if (img.width < 300 || img.height < 300 || img.width > 800 || img.height > 800) {
+  //         setError(`Image ${file.name} dimensions must be between 300x300 and 800x800 px`);
+  //       } else {
+  //         finalImages.push(file);
+  //       }
+  //       processed++;
+  //       if (processed === validFiles.length) {
+  //         setImages(finalImages);
+  //       }
+  //     };
+  //   });
+  // };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setError("");
 
-    if (files.length === 0) return;
+    if (!files.length) return;
 
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
-    const validFiles = [];
+    const promises = files.map((file) => {
+      return new Promise((resolve, reject) => {
 
-    // Basic filters
-    for (let file of files) {
-      if (!allowedTypes.includes(file.type)) {
-        setError("Only JPG, JPEG, PNG, WEBP images are allowed");
-        return;
-      }
-      if (file.size > 2 * 1024 * 1024) {
-        setError("Each image must be less than 2MB");
-        return;
-      }
-      validFiles.push(file);
-    }
-
-    // Dimension validation
-    let processed = 0;
-    const finalImages = [];
-
-    validFiles.forEach((file) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        if (img.width < 300 || img.height < 300 || img.width > 800 || img.height > 800) {
-          setError(`Image ${file.name} dimensions must be between 300x300 and 800x800 px`);
-        } else {
-          finalImages.push(file);
+        if (!allowedTypes.includes(file.type)) {
+          reject(`❌ ${file.name} - Only JPG, JPEG, PNG, WEBP allowed`);
+          return;
         }
-        processed++;
-        if (processed === validFiles.length) {
-          setImages(finalImages);
+
+        if (file.size > 2 * 1024 * 1024) {
+          reject(`❌ ${file.name} - Must be < 2MB`);
+          return;
         }
-      };
+
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+
+        img.onload = () => {
+          if (img.width < 300 || img.height < 300) {
+            reject(`❌ ${file.name} - Minimum size should be 300x300`);
+          } else {
+            resolve(file);
+          }
+          URL.revokeObjectURL(url);
+        };
+
+        img.onerror = () => {
+          reject(`❌ ${file.name} - Invalid image`);
+          URL.revokeObjectURL(url);
+        };
+
+        img.src = url;
+      });
+    });
+
+    Promise.allSettled(promises).then((results) => {
+      const validImages = results
+        .filter(r => r.status === "fulfilled")
+        .map(r => r.value);
+
+      const errors = results
+        .filter(r => r.status === "rejected")
+        .map(r => r.reason);
+
+      if (errors.length) {
+        setError(errors.join("\n"));
+      }
+
+      if (validImages.length) {
+        // APPEND instead of replace
+        setImages(prev => [...prev, ...validImages]);
+      }
     });
   };
 
@@ -198,7 +259,7 @@ const AddProduct = () => {
     formData.append("stock", stock);
     formData.append("shipping_charge", shippingCharge);
     formData.append("weight", weight);
-    formData.append("discount", discount);
+    // formData.append("discount", discount);
     formData.append("mfg_date", mfgDate);
     formData.append("expiry_date", expiryDate);
 
@@ -293,7 +354,7 @@ const AddProduct = () => {
         <input type="date" value={expiryDate} min={mfgDate}
           onChange={e => setExpiryDate(e.target.value)} required />
 
-        <input type="number" placeholder="Discount %" value={discount} min="0" max="100"
+        {/* <input type="number" placeholder="Discount %" value={discount} min="0" max="100"
           onChange={e => setDiscount(e.target.value)} required />
 
         {showDiscountDates && (
@@ -303,7 +364,7 @@ const AddProduct = () => {
             <label>Discount End</label>
             <input type="date" value={endDate} min={startDate} onChange={e => setEndDate(e.target.value)} required />
           </div>
-        )}
+        )} */}
 
         {/* Multiple Image Input */}
         <div className="image-section">

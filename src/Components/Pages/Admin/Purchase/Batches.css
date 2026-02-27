@@ -1,0 +1,145 @@
+/* Batches.css */
+
+.batches-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.batches-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.filters select,
+.filters input {
+  padding: 5px 8px;
+  font-size: 14px;
+  margin-top: 3px;
+}
+
+.filters button {
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.filters button:hover {
+  background-color: #0056b3;
+}
+
+.batches-table {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+.batches-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.batches-table th,
+.batches-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.batches-table th {
+  background-color:  #344254;
+}
+
+.batches-table tr:nth-child(even) {
+  background-color:  #344358;
+}
+
+.batches-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.batches-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.batch-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.batch-form input,
+.batch-form select {
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.batch-form button {
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.batch-form button:hover {
+  background-color: #218838;
+}
+
+.view-old-btn {
+  margin-bottom: 20px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.view-old-btn:hover {
+  background-color: #0056b3;
+}
+
+.batches-table {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+.batches-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.batches-table th,
+.batches-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+
+.batches-table tr:nth-child(even) {
+  background-color: #fafafa;
+}

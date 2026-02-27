@@ -11,7 +11,7 @@ const AssignOrder = () => {
   const fetchOrders = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/admin/pending-orders"
+        "http://localhost:5000/api/admin/delivery/pending"
       );
       setOrders(res.data.data);
     } catch (error) {
@@ -23,7 +23,7 @@ const AssignOrder = () => {
   const fetchDeliveryBoys = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/admin/delivery-boys"
+        "http://localhost:5000/api/admin/delivery/boys"
       );
       setDeliveryBoys(res.data.data);
     } catch (error) {
@@ -45,11 +45,15 @@ const AssignOrder = () => {
       return;
     }
 
-    try {
-      await axios.put("http://localhost:5000/api/admin/assign-order", {
-        orderId,
-        deliveryBoyId,
-      });
+    // try {
+    //   await axios.put("http://localhost:5000/api/admin/assign-order", {
+    //     orderId,
+    //     deliveryBoyId,
+    //   });
+    try{
+      await axios.put("http://localhost:5000/api/admin/delivery/assign",{
+
+      })
 
       alert("Order Assigned Successfully");
       fetchOrders(); 

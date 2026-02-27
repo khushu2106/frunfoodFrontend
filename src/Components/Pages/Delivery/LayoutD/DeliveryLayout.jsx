@@ -14,9 +14,6 @@ const DeliveryLayout = () => {
       <div className="delivery-body">
         <SideBarD />
 
-        <main className="delivery-content">
-          <Outlet />
-        </main>
       </div>
 
     </div>

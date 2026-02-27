@@ -22,19 +22,45 @@ const FilterSidebar = ({ onFilter }) => {
     }));
   };
 
+  // const applyFilters = () => {
+  //   const min = Number(tempFilters.minPrice);
+  //   const max = Number(tempFilters.maxPrice);
+
+  //   if(min<0 && max<0){
+  //     alert("price should be greater then zero");
+  //     return;
+  //   }
+  //   if (min && max && max < min) {
+  //     alert("Max price should be greater then Min price");
+  //     return;
+  //   }
+  //   onFilter(tempFilters);
+  // };
+
   const applyFilters = () => {
-    const min = Number(tempFilters.minPrice);
-    const max = Number(tempFilters.maxPrice);
-    
-    if(min<0 && max<0){
-      alert("price should be greater then zero");
+    const min = tempFilters.minPrice !== "" ? Number(tempFilters.minPrice) : null;
+    const max = tempFilters.maxPrice !== "" ? Number(tempFilters.maxPrice) : null;
+
+    if (min !== null && min < 0) {
+      alert("Min price should be greater than or equal to 0");
       return;
     }
-    if (min && max && max < min) {
-      alert("Max price should be greater then Min price");
+
+    if (max !== null && max < 0) {
+      alert("Max price should be greater than or equal to 0");
       return;
     }
-    onFilter(tempFilters);
+
+    if (min !== null && max !== null && max < min) {
+      alert("Max price should be greater than Min price");
+      return;
+    }
+
+    onFilter({
+      ...tempFilters,
+      minPrice: min,
+      maxPrice: max
+    });
   };
 
   const clearFilters = () => {
@@ -89,7 +115,7 @@ const FilterSidebar = ({ onFilter }) => {
         <input
           type="number"
           placeholder="Min ₹"
-          min="0"
+          min="100"
           value={tempFilters.minPrice}
           onChange={(e) =>
             setTempFilters({ ...tempFilters, minPrice: e.target.value })
@@ -99,7 +125,7 @@ const FilterSidebar = ({ onFilter }) => {
         <input
           type="number"
           placeholder="Max ₹"
-          min="0"
+          min="1"
           value={tempFilters.maxPrice}
           onChange={(e) =>
             setTempFilters({ ...tempFilters, maxPrice: e.target.value })

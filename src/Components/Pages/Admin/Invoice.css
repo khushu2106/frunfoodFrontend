@@ -15,6 +15,10 @@
   border-collapse: collapse;
 }
 
+.invoice-total{
+  margin-top: 20%;
+}
+
 .invoice-table th,
 .invoice-table td {
   border: 1px solid #ddd;
@@ -36,5 +40,36 @@
 @media print {
   button {
     display: none;
+  }
+  .admin-header{
+    display: none;
+  }
+}
+
+/* Sabse zyada powerful override */
+@media print {
+  /* Poore page se har cheez gayab kar do */
+  body * {
+    visibility: hidden;
+  }
+  /* Sirf invoice-box aur uske andar ki cheezon ko dikhao */
+  .invoice-box, .invoice-box * {
+    visibility: visible;
+  }
+  /* Invoice box ko page ke top-left mein fix kar do */
+  .invoice-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  /* Sidebar/Header/Buttons ko force hide karo */
+  header, nav, aside, footer, .sidebar, .admin-header, .print-btn {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
   }
 }

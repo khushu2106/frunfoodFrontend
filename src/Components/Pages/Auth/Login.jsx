@@ -35,15 +35,6 @@ const Login = () => {
     setIsLoading(true);
     setError("");
 
-    /* 🔐 FRONTEND PASSWORD CHECK */
-    // if (!isStrongPassword(formData.password)) {
-    //   setIsLoading(false);
-    //   setError(
-    //     "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
-    //   );
-    //   return;
-    // }
-
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -57,9 +48,36 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // save token + user in context
+
         login(data.token, data.user);
-        navigate("/");
+
+        const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+        if (guestCart.length > 0) {
+          await fetch("http://localhost:5000/api/cart/sync", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${data.token}`
+            },
+            body: JSON.stringify({ items: guestCart }),
+          });
+          localStorage.removeItem("guestCart");
+        }
+
+        const guestWish = JSON.parse(localStorage.getItem("guestWishlist") || "[]");
+        if (guestWish.length > 0) {
+          await fetch("http://localhost:5000/api/wishlist/sync", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${data.token}`
+            },
+            body: JSON.stringify({ items: guestWish }),
+          });
+          localStorage.removeItem("guestWishlist");
+        }
+
+        navigate("/", { state: { welcomeUser: data.user.name } });
       } else {
         setError(data.error || "Invalid email or password");
       }
@@ -128,7 +146,7 @@ const Login = () => {
           Don’t have an account? <Link to="/register">Register</Link>
         </p>
       </div>
-        {/* <div className="puppy-container">
+      {/* <div className="puppy-container">
           <div className="puppy-main">
             <span className="puppy-paw"></span>
             <div className="puppy-face"></div>

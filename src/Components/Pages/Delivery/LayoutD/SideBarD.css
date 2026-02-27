@@ -1,16 +1,46 @@
-
+/* ===== MAIN WRAPPER ===== */
 .delivery-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh; /* Full screen */
 }
 
+/* ===== HEADER ===== */
+.headerD {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: #0f766e;
+  z-index: 1; /* Sidebar se neeche */
+}
+
+/* ===== SIDEBAR ===== */
 .sidebar {
   width: 230px;
   background: #1e293b;
   color: white;
   padding: 20px;
+
+  position: fixed;
+  top: 0;              /* Header ke upar start */
+  left: 0;
+  height: 100vh;
+
+  z-index: 1000;       /* Header ke upar */
+  overflow-y: auto;    /* Sidebar scroll */
 }
 
+/* Sidebar Scrollbar Styling */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
+
+/* ===== SIDEBAR LINKS ===== */
 .sidebar h2 {
   margin-bottom: 20px;
 }
@@ -19,15 +49,33 @@
   display: block;
   color: white;
   text-decoration: none;
-  margin: 30px 0;
+  margin: 20px 0;
+  padding: 8px 5px;
+  border-radius: 6px;
+  transition: 0.3s;
 }
 
 .sidebar a:hover {
   background: #334155;
-  padding-left: 10px;
+  padding-left: 12px;
 }
 
+/* ===== CONTENT AREA ===== */
 .content {
-  flex: 1;
-  padding: 20px;
+  margin-left: 230px;              /* Same as sidebar width */
+  padding: 90px 30px 30px 30px;    /* Header space top */
+  width: calc(100% - 230px);
+  height: 100vh;
+  overflow-y: auto;                /* Content scroll */
+  background: #f1f5f9;
+  box-sizing: border-box;
+}
+
+/* Content Scrollbar */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+.content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }

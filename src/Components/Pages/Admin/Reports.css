@@ -1,0 +1,49 @@
+.report-container {
+  padding: 30px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #f5f7fb;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+.export-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #1f4b99;
+  color: white;
+  border: none;
+}
+
+.error {
+  color: red;
+}

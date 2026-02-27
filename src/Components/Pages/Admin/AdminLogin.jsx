@@ -39,7 +39,7 @@ const AdminLogin = () => {
 
       if (response.ok) {
         localStorage.setItem("adminToken", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user)); 
+        localStorage.setItem("userData", JSON.stringify(data.user)); // ⭐ FIX
         navigate("/admin/dashboard");
       }
 

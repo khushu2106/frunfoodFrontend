@@ -1,145 +1,180 @@
-import React, { useState, useEffect } from "react";
-import "./ProfileC.css";
+import "./Profile.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState({
+function Profile() {
+  const [profile, setProfile] = useState({
+    // user_id: "",
     fname: "",
     lname: "",
     email: "",
     mobile_no: "",
     address1: "",
+    address2: "",
+    area_id: ""
   });
 
-  const token = localStorage.getItem("userToken");
-
-  // Fetch Profile Data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users/profile", {
-          headers: { Authorization: `Bearer ${token}` },
+        const token = localStorage.getItem("userToken"); // ✅ same as old working code
+
+        const res = await axios.get(
+          "http://localhost:5000/api/users/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        console.log("PROFILE DATA:", res.data);
+
+        const data = res.data; // ✅ direct use
+
+        setProfile({
+          // user_id: data.user_id || "",
+          fname: data.fname || "",
+          lname: data.lname || "",
+          email: data.email || "",
+          mobile_no: data.mobile_no || "",
+          address1: data.address1 || "",
+          address2: data.address2 || "",
+          area_id: data.area_id || "",
         });
-        const data = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error("Fetch error:", err);
+
+      } catch (error) {
+        console.error("Error fetching profile:", error);
       }
     };
-    if (token) fetchProfile();
-  }, [token]);
+
+    fetchProfile();
+  }, []);
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleSave = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await fetch(
+      const token = localStorage.getItem("userToken");
+
+      const updateData = {
+        fname: profile.fname,
+        lname: profile.lname,
+        email: profile.email,
+        mobile_no: profile.mobile_no,
+        address1: profile.address1
+      };
+
+      await axios.put(
         "http://localhost:5000/api/users/profile/update",
+        updateData,
         {
-          method: "PUT",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(user),
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
-      if (response.ok) {
-        setIsEditing(false);
-        alert("Profile Updated Successfully!");
-      } else {
-        alert("Update failed!");
-      }
+      alert("Profile updated successfully!");
     } catch (error) {
-      console.error("Save Error:", error);
+      console.error("Update error:", error.response?.data || error);
     }
   };
 
   return (
-    <div className="account-layout">
-      {/* Sidebar Navigation */}
-      <aside className="sidebar">
-        <h3>My account</h3>
-        <ul>
-          <li className="active">My details</li>
-          <li>My wishlist</li>
-          <li>My orders</li>
-          <li>My address book</li>
-        </ul>
-        <button className="logout-btn">Log out</button>
-      </aside>
+    <div className="profile-container">
+      <form className="profile-card" onSubmit={handleSubmit}>
+        <h2>My Profile</h2>
 
-      {/* Main Content Area */}
-      <main className="profile-main-content">
-        <h2>My details</h2>
+        <div className="form-grid">
 
-        {/* Profile Card */}
-        <div className="profile-card">
-          {/* First Name */}
-          <div className="profile-field">
-            <label>First name</label>
-            {isEditing ? (
-              <input name="fname" value={user.fname || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.fname || "Not set"}</p>
-            )}
+          {/* <div>
+            <label>User ID</label>
+            <input type="text" value={profile.user_id} readOnly />
+          </div> */}
+
+          <div>
+            <label>First Name</label>
+            <input
+              type="text"
+              name="fname"
+              value={profile.fname}
+              onChange={handleChange}
+            />
           </div>
 
-          {/* Last Name */}
-          <div className="profile-field">
-            <label>Last name</label>
-            {isEditing ? (
-              <input name="lname" value={user.lname || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.lname || "Not set"}</p>
-            )}
+          <div>
+            <label>Last Name</label>
+            <input
+              type="text"
+              name="lname"
+              value={profile.lname}
+              onChange={handleChange}
+            />
           </div>
 
-          {/* Email */}
-          <div className="profile-field">
+          <div>
             <label>Email</label>
-            {isEditing ? (
-              <input name="email" value={user.email || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.email || "Not set"}</p>
-            )}
+            <input
+              type="email"
+              name="email"
+              value={profile.email}
+              onChange={handleChange}
+            />
           </div>
 
-          {/* Mobile */}
-          <div className="profile-field">
-            <label>Mobile number</label>
-            {isEditing ? (
-              <input name="mobile_no" value={user.mobile_no || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.mobile_no || "Not set"}</p>
-            )}
+          <div>
+            <label>Mobile Number</label>
+            <input
+              type="text"
+              name="mobile_no"
+              value={profile.mobile_no}
+              onChange={handleChange}
+            />
           </div>
 
-          {/* Address1 */}
-          <div className="profile-field full-width">
-            <label>Address 1</label>
-            {isEditing ? (
-              <textarea name="address1" value={user.address1 || ""} onChange={handleChange} />
-            ) : (
-              <p>{user.address1 || "Not set"}</p>
-            )}
+          <div className="full-width">
+            <label>Address Line 1</label>
+            <textarea
+              name="address1"
+              rows="3"
+              value={profile.address1}
+              onChange={handleChange}
+            />
           </div>
 
-          {/* Action Buttons */}
-          <div className="profile-actions">
-            {isEditing ? (
-              <button onClick={handleSave} className="save-btn">Save my details</button>
-            ) : (
-              <button onClick={() => setIsEditing(true)} className="edit-btn">Edit Details</button>
-            )}
+          <div>
+            <label>Address Line 2</label>
+            <input
+              type="text"
+              name="address2"
+              value={profile.address2}
+              onChange={handleChange}
+            />
           </div>
+
+          <div>
+            <label>Area ID</label>
+            <input
+              type="text"
+              name="area_id"
+              value={profile.area_id}
+              onChange={handleChange}
+            />
+          </div>
+
         </div>
-      </main>
+
+        <button type="submit" className="save-btn">
+          Save My Details
+        </button>
+      </form>
     </div>
   );
-};
+}
 
 export default Profile;

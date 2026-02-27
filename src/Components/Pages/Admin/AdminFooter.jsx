@@ -5,24 +5,23 @@ const AdminFooter = () => {
   return (
     <footer className="admin-footer">
       <div className="admin-footer-container">
-        
+
         {/* LEFT */}
-        <div className="admin-footer-left">
-          <h4>Fur & Food Admin Panel</h4>
-          <p>Manage products, categories, brands & orders easily.</p>
+        <div className="footer-section">
+          <h3>Fur & Food Admin</h3>
+          <p>Smart management system for products, orders & customers.</p>
         </div>
 
         {/* CENTER */}
-        <div className="admin-footer-center">
+        <div className="footer-section center">
           <p>© {new Date().getFullYear()} Fur & Food</p>
-          <p>All rights reserved.</p>
+          <p className="sub-text">All rights reserved</p>
         </div>
 
         {/* RIGHT */}
-        <div className="admin-footer-right">
-          <span>Admin Dashboard</span>
-          <span className="dot">•</span>
-          <span>v1.0</span>
+        <div className="footer-section right">
+          <p>Admin Dashboard</p>
+          <p className="version">Version 1.0</p>
         </div>
 
       </div>

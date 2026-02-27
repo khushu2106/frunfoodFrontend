@@ -11,7 +11,7 @@ const AddPurchase = () => {
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [date, setDate] = useState("");
-  
+
   const navigate = useNavigate();
 
   // 1. Fetch data on load
@@ -93,12 +93,40 @@ const AddPurchase = () => {
           </select>
         </div>
 
-        <div style={inputGroup}>
+        {/* <div style={inputGroup}>
           <label style={labelStyle}>Product *</label>
           <select value={productId} onChange={(e) => setProductId(e.target.value)} style={inputStyle}>
             <option value="">-- Select Product --</option>
             {products.map((p) => (
               <option key={p.product_id} value={p.product_id}>{p.product_name}</option>
+            ))}
+          </select>
+        </div> */}
+
+        <div style={inputGroup}>
+          <label style={labelStyle}>Product *</label>
+          <select
+            value={productId}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              setProductId(selectedId);
+
+              // 🔥 Auto Fill Price
+              const selectedProduct = products.find(
+                (p) => p.product_id === Number(selectedId)
+              );
+
+              if (selectedProduct) {
+                setPrice(selectedProduct.price);  // 👈 yaha se auto fill
+              }
+            }}
+            style={inputStyle}
+          >
+            <option value="">-- Select Product --</option>
+            {products.map((p) => (
+              <option key={p.product_id} value={p.product_id}>
+                {p.product_name}
+              </option>
             ))}
           </select>
         </div>

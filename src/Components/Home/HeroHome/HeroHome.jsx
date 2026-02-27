@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./HeroHome.css";
 
 const HeroHome = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state?.welcomeUser) {
+      alert(`Welcome ${location.state.welcomeUser} 🎉`);
+    }
+  }, [location.state]);
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setSuggestions([]);
@@ -61,7 +66,10 @@ const HeroHome = () => {
               {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                   {suggestions.map((item) => (
-                    <li key={item.product_id}>
+                    <li key={item.product_id} onClick={() => {
+                      navigate(`/productSearch?search=${encodeURIComponent(item.product_name)}`);
+                      setSuggestions([]);
+                    }}>
                       <span className="suggestion-name">{item.product_name}</span>
 
                       <div className="suggestion-meta">

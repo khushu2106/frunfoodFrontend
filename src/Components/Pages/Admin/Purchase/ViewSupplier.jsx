@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const ViewSuppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -13,6 +14,12 @@ const ViewSuppliers = () => {
     const res = await axios.get("http://localhost:5000/api/suppliers");
     setSuppliers(res.data);
   };
+
+  const filteredSuppliers = suppliers.filter((s) =>
+    `${s.fname} ${s.lname}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.mobile_no?.includes(searchTerm) ||
+    s.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     fetchSuppliers();
@@ -36,6 +43,14 @@ const ViewSuppliers = () => {
         + Add Supplier
       </button>
 
+      <input
+        type="text"
+        placeholder="Search by name, mobile or email..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={searchStyle}
+      />
+
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
       <table style={tableStyle}>
@@ -48,7 +63,7 @@ const ViewSuppliers = () => {
           </tr>
         </thead>
         <tbody>
-          {suppliers.map((s) => (
+          {filteredSuppliers.map((s) => (
             <tr key={s.supplier_id}>
               <td>{s.fname} {s.lname}</td>
               <td>{s.mobile_no}</td>
@@ -97,6 +112,15 @@ const deleteBtn = {
 const tableStyle = {
   width: "100%",
   borderCollapse: "collapse"
+};
+
+const searchStyle = {
+  width: "100%",
+  padding: "8px",
+  marginBottom: "15px",
+  borderRadius: "5px",
+  border: "1px solid #ccc",
+  fontSize: "14px"
 };
 
 export default ViewSuppliers;

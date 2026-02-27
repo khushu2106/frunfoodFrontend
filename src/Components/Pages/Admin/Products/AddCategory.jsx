@@ -185,7 +185,7 @@ const AddCategory = () => {
                                                         <button
                                                             onClick={() => handleEditClick(cat)}
                                                             style={{
-                                                                backgroundColor: '#ffc107',
+                                                                backgroundColor: '#0783ff',
                                                                 border: 'none',
                                                                 padding: '5px 10px',
                                                                 borderRadius: '4px',

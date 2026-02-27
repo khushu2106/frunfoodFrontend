@@ -20,9 +20,12 @@ import UserDetails from './Components/Pages/Admin/UserDetails';
 import Chat from './Components/Pages/Admin/Chat';
 import InvoiceManager from './Components/Pages/Admin/Invoicemanager';
 import InvoiceView from './Components/Pages/Admin/InvoiceView';
+import SalseChart from './Components/Pages/Admin/Dashboard/SalesChart';
 // import AdminDelivery from './Components/Pages/Admin/AdminDelivery';
 import AddProduct from './Components/Pages/Admin/Products/AddProduct';
 import ViewPurchases from './Components/Pages/Admin/Purchase/Allpurchase';
+import AddBatches from './Components/Pages/Admin/Purchase/AddBatch';
+import OldBatches from './Components/Pages/Admin/Purchase/OldBatches';
 import AddCategory from './Components/Pages/Admin/Products/AddCategory';
 import UpdateProduct from './Components/Pages/Admin/Products/UpdateProduct';
 import OrderDetails from './Components/Pages/Order/OrderDetails';
@@ -44,6 +47,7 @@ import Payment from './Components/Pages/Payment/Payment';
 import ProfileC from './Components/Pages/Auth/Profile/ProfileC';
 import Feedback from "./Components/Pages/Feedback/Feedback"
 import Complaint from "./Components/Pages/Complaint/Complaint"
+import FaqClient from "./Components/Pages/Complaint/FaqClient"
 import ProductListing from './Components/Home/ProductListing/ProductListing';
 import Header from './Components/Common/Header/Header';
 // import FAQ from "./Components/Home/FAQ/FAQ";
@@ -119,17 +123,17 @@ function LayoutWrapper() {
 
       <Routes>
         {/* Home */}
-        <Route path="/" element={<><HeroHome /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FAQ /></>} />
+        <Route path="/" element={<><HeroHome /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
         {/* <Route path="/products" element={<><ProductList /><Category /><Offers /></>} /> */}
-        <Route path="/products" element={<ProductListing />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/productSearch" element={<ProductSearch />} />
+        <Route path="/products" element={<><ProductListing /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
+        <Route path="/product/:id" element={<><ProductDetails /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
+        <Route path="/productSearch" element={<><ProductSearch /><Category /><Brand /><Offers/><Aboutus /></>} />
         {/* <Route path="/category/:categoryId" element={<ProductListing />} /> */}
         <Route path="/products/category/:category" element={<CategoryProducts />} />
 
         <Route path="/offers" element={<Offers />} />
         <Route path="/about" element={<Aboutus />} />
-        <Route path="/faq" element={<FAQ />} />
+        <Route path="/faq" element={<FaqClient />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
         <Route path="/brands/:id" element={<><BrandProducts /><Category /><Brand /><ProductList /><Offers /></>} />
@@ -145,16 +149,16 @@ function LayoutWrapper() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* User */}
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/cart" element={<><Cart /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
+        <Route path="/wishlist" element={<><Wishlist /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/cancelled-orders" element={<CancelledOrders />} />
-        <Route path="/myorders" element={<><MyOrders /><ProductList /></>} />
+        <Route path="/myorders" element={<><MyOrders /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
         <Route path="/myorders/:id" element={<OrderDetails />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<ProfileC />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/complaint" element={<Complaint />} />
+        <Route path="/feedback" element={<><Feedback /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
+        <Route path="/complaint" element={<><Complaint /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
 
 
         {/* Admin */}
@@ -201,7 +205,10 @@ function LayoutWrapper() {
           <Route path="complaints" element={<Complaints />} />
           <Route path="enquiries" element={<Enquiries />} />
           <Route path="offers" element={<AdminOffers />} />
+          <Route path="SalesChart" element={<SalseChart />} />
           <Route path="invoice/:type/:id" element={<InvoiceView />} />
+          <Route path="batches" element={<AddBatches />} />
+          <Route path="old-batches" element={<OldBatches />} />
         </Route>
         <Route path="/admin/logout" element={<AdminLogout />} />
 

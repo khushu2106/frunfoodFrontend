@@ -48,6 +48,7 @@ const AdminSidebar = () => {
       icon: <FaBoxOpen />,
       subItems: [
         { name: "Manage Category", path: "/admin/add-category", icon: <FaTags /> },
+        // { name: "Manage Batch", path: "/admin/batches", icon: <FaTags /> },
         { name: "Manage Subcategory", path: "/admin/subcategory", icon: <FaLayerGroup /> },
         { name: "Manage Brand", path: "/admin/brand", icon: <FaTrademark /> },
         { name: "Manage Product", path: "/admin/manage-products", icon: <FaShoppingBag /> },
@@ -60,7 +61,7 @@ const AdminSidebar = () => {
       subItems: [
         { name: "Pending orders", path: "/admin/pending", icon: <FaClock />, },
         { name: "Delivery boy details", path: "/admin/delivery-list", icon: <FaUserFriends />, },
-        { name: "Assign delivery", path: "/admin/assignorder", icon: <FaTasks />, }
+        // { name: "Assign delivery", path: "/admin/assignorder", icon: <FaTasks />, }
         // { name: "Delivery status", path: "/admin/deliverystatus", icon: <FaTruck />, },
       ],
     },
@@ -70,8 +71,8 @@ const AdminSidebar = () => {
     { name: "Order Return", path: "/admin/return", icon: <FaBoxOpen />, },
     { name: "Invoice", path: "/admin/invoice", icon: <FaFileInvoice />, },
     { name: "Feedback", path: "/admin/cards", icon: <FaStar />, },
-    { name: "Supplier", path: "/admin/supplier", icon: <FaUserTie />, },
-    { name: "Purchase", path: "/admin/purchase", icon: <FaShoppingBag />, },
+    { name: "Supplier", path: "/admin/view-suppliers", icon: <FaUserTie />, },
+    { name: "Purchase", path: "/admin/view-purchases", icon: <FaShoppingBag />, },
     { name: "Purchase Return", path: "/admin/purchasereturn", icon: <FaExchangeAlt />, },
     { name: "Complaints", path: "/admin/complaints", icon: <FaRegCommentDots />, },
     { name: "Reports", path: "/admin/reports", icon: <FaChartBar />, },
@@ -79,7 +80,7 @@ const AdminSidebar = () => {
     { name: "FAQ", path: "/admin/chat", icon: <FaQuestionCircle />, },
     { name: "Profile", path: "/admin/profile", icon: <FaUserCog />, },
     { name: "City", path: "/admin/city", icon: <FaMapMarkedAlt />, },
-    { name: "Settings", path: "/admin/settings", icon: <FaCog />, },
+    // { name: "Settings", path: "/admin/settings", icon: <FaCog />, },
   ];
 
   return (

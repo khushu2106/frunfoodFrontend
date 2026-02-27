@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const MyOrders = () => {
@@ -69,6 +69,16 @@ const MyOrders = () => {
     }
   };
 
+  const isReturnValid = (deliveryDate) => {
+    if (!deliveryDate) return false;
+
+    const deliveredTime = new Date(deliveryDate).getTime();
+    const currentTime = new Date().getTime();
+
+    const diffHours = (currentTime - deliveredTime) / (1000 * 60 * 60);
+    return diffHours <= 48;
+  }
+
   // --- Logic Helpers ---
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active") {
@@ -125,11 +135,58 @@ const MyOrders = () => {
     trackerWrap: { display: "flex", justifyContent: "space-between", padding: "20px", borderTop: "1px dashed #eee", backgroundColor: "#fafafa" }
   };
 
+  const openFeedback = (order) => {
+    navigate("/feedback", {
+      state: {
+        sales_id: order.sales_id,
+        product_id: order.product_id,
+        product_name: order.name,
+        image: order.image_url
+      }
+    });
+  };
+
+  const getReturnBadge = (status) => {
+    if (!status) return null;
+
+    let bg = "#ffeaa7";
+    let color = "#d35400";
+    let text = "Return Pending";
+
+    if (status === "approved") {
+      bg = "#d4edda";
+      color = "#155724";
+      text = "Return Approved";
+    }
+    if (status === "rejected") {
+      bg = "#f8d7da";
+      color = "#721c24";
+      text = "Return Rejected";
+    }
+
+    return (
+      <span style={{
+        padding: "4px 10px",
+        borderRadius: "20px",
+        fontSize: "12px",
+        fontWeight: "bold",
+        backgroundColor: bg,
+        color: color,
+        marginLeft: "10px"
+      }}>
+        {text}
+      </span>
+    );
+  };
+
   if (loading) return <div style={{ textAlign: "center", marginTop: "50px" }}>📦 Loading your orders...</div>;
 
   return (
     <div style={styles.page}>
       <div style={styles.container}>
+        <div><h4>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>← Back to Home</Link>
+        </h4></div>
         <h1 style={styles.header}>🛍️ My Orders</h1>
 
         <div style={styles.tabContainer}>
@@ -138,7 +195,14 @@ const MyOrders = () => {
               {tab.charAt(0).toUpperCase() + tab.slice(1)} Orders
             </button>
           ))}
+          <div><h4>
+          <Link to="/complaint" style={{ textDecoration: "none", color: "inherit" }}><button>complaint</button> </Link>
+        </h4></div>
         </div>
+
+        {/* <div><h4>
+          <Link to="/complaint" style={{ textDecoration: "none", color: "inherit" }}><button>complaint</button> </Link>
+        </h4></div> */}
 
         {filteredOrders.length === 0 ? (
           <div style={{ textAlign: "center", padding: "40px", color: "#b2bec3" }}>No {activeTab} orders found.</div>
@@ -159,7 +223,16 @@ const MyOrders = () => {
                 <div style={styles.details}>
                   <h3 style={styles.title} onClick={() => openProduct(order.product_id)}>{order.name}</h3>
                   <p style={{ color: "#636e72", fontSize: "14px", margin: "5px 0" }}>Qty: {order.qty}</p>
-                  <span style={styles.badge(order.order_status)}>{order.order_status}</span>
+                  <div>
+                    <span style={styles.badge(order.order_status)}>
+                      {order.order_status}
+                    </span>
+
+                    {/* Return Status */}
+                    {activeTab === "history" && order.return_status && (
+                      getReturnBadge(order.return_status)
+                    )}
+                  </div>
                 </div>
 
                 <div style={styles.actions}>
@@ -167,21 +240,35 @@ const MyOrders = () => {
                     <button style={styles.btn("reorder")} onClick={() => openProduct(order.product_id)}>🔄 Re-order</button>
                   )}
                   {canCancel(order.order_status) && (
-                    <button style={styles.btn("cancel")} onClick={() => cancelOrder(order.sales_id)}>Cancel Order</button>
+                    <button style={styles.btn("cancel")} onClick={() => cancelOrder(order.sales_id)}>
+                      Cancel Order
+                    </button>
                   )}
                   {canReturn(order.order_status) && (
-                    <button
-                      style={{
-                        ...styles.btn("return"),
-                        backgroundColor: order.is_returned > 0 ? "#bdc3c7" : "#0984e3", // Grey color if returned
-                        cursor: order.is_returned > 0 ? "not-allowed" : "pointer",
-                        opacity: order.is_returned > 0 ? 0.7 : 1
-                      }}
-                      onClick={() => returnOrder(order.sales_id, order.product_id)}
-                      disabled={order.is_returned > 0} // Button disable ho jayega
-                    >
-                      {order.is_returned > 0 ? "✅ Return Requested" : "Return Order"}
-                    </button>
+                    <>
+                      {order.return_status ? (
+                        getReturnBadge(order.return_status)
+                      ) : isReturnValid(order.s_date) ? (
+                        <button
+                          style={styles.btn("return")}
+                          onClick={() => returnOrder(order.sales_id, order.product_id)}
+                        >
+                          Return Order
+                        </button>
+                      ) : (
+                        <span style={{ color: "gray", fontSize: "13px" }}>
+                          Return window closed
+                        </span>
+                      )}
+                      {order.order_status === "delivered" && !order.feedback_given && (
+                        <button
+                          style={styles.btn("return")}
+                          onClick={() => openFeedback(order)}
+                        >
+                          ⭐ Give Feedback
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               </div>

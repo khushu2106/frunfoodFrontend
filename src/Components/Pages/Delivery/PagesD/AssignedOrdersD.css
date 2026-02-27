@@ -43,3 +43,15 @@
   font-weight: 700;
   margin-top: 10px !important;
 }
+
+.status-badge.assigned {
+  background: orange;
+}
+
+.status-badge.out_for_delivery {
+  background: #3b82f6;
+}
+
+.status-badge.delivered {
+  background: #22c55e;
+}
