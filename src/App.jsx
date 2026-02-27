@@ -63,6 +63,8 @@ import AddPurchaseReturn from './Components/Pages/Admin/Purchase/AddPurchaseRetu
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
+import Brand from "./Components/Home/Products/Brand";
+// import BrandProducts from './Components/Home/Products/BrandProducts';
 import DeliveryProtected from './Components/Pages/ProtectedRoutes/DeliveryProtected';
 import Products from "./Components/Pages/Products";
 import { CartProvider } from './Components/Pages/Cart/Cartcontext';
@@ -99,7 +101,7 @@ import OfferProducts from './Components/Home/Offers/OfferProduct';
 import SalesReturn from './Components/Pages/Admin/SalesReturn';
 import CancelledOrders from './Components/Pages/Order/CancelledOrders';
 import City from './Components/Pages/Admin/City';
-import Brand from './Components/Home/Products/brand';
+// import Brand from './Components/Home/Products/brand';
 import BrandProducts from './Components/Home/Products/BrandProduct';
 import Complaints from './Components/Pages/Admin/Complaints';
 import Reports from './Components/Pages/Admin/Reports';
