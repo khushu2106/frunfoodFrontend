@@ -1,126 +1,188 @@
-.dashboard {
-  width: 90%;
-  margin: 30px auto;
+.dashboard{
+width:92%;
+margin:30px auto;
+font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.dashboard h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #1b4332;
+.dashboard h2{
+text-align:center;
+margin-bottom:35px;
+color:#2c3e50;
 }
 
-/* Stats Cards */
-.stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 40px;
+/* ---------- STATS SECTION ---------- */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+margin-bottom:40px;
 }
 
-.card {
-  width: 200px;
-  padding: 20px;
-  margin: 20px;
-  background: #e9f5db;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+/* ---------- GRADIENT CARDS ---------- */
+
+.card{
+width:220px;
+padding:25px 20px;
+border-radius:14px;
+color:white;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
-.card.pending {
-  background: #fff3b0;
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
 }
 
-.card.delivered {
-  background: #caffbf;
+/* Gradient styles (Admin panel matching) */
+
+.card{
+background:linear-gradient(135deg,#6366f1,#d1c1f5);
 }
 
-.card h3 {
-  margin-bottom: 10px;
+.card.pending{
+background:linear-gradient(135deg,#f59e0b,#dfa2a2);
 }
 
-/* Today's Orders */
-.today-orders {
-  margin-bottom: 40px;
+.card.delivered{
+background:linear-gradient(135deg,#22c55e,#abf1c5);
 }
 
-.today-orders table {
-  width: 100%;
-  border-collapse: collapse;
+.card h3{
+font-size:16px;
+margin-bottom:10px;
+opacity:0.9;
 }
 
-.today-orders th,
-.today-orders td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+.card p{
+font-size:30px;
+font-weight:bold;
+margin-top:5px;
 }
 
-.today-orders th {
-  background: #2d6a4f;
-  color: white;
+/* ---------- TABLE ---------- */
+
+.today-orders{
+margin-top:20px;
 }
 
-/* Quick Actions */
-.quick-actions {
-  text-align: center;
+.today-orders h3{
+margin-bottom:12px;
+color:#374151;
 }
 
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+.today-orders table{
+width:100%;
+border-collapse:collapse;
+background:#ffffff;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
 }
 
-.action-buttons button {
-  padding: 12px 20px;
-  background: #40916c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.today-orders th{
+background:#1e293b;
+color:white;
+padding:12px;
+font-weight:500;
 }
 
-.action-buttons button:hover {
-  background: #2d6a4f;
+.today-orders td{
+padding:12px;
+border-bottom:1px solid #f1f1f1;
+text-align:center;
 }
 
-.status-badge {
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  text-transform: capitalize;
-}
-.status-badge.pending { background: #fff3cd; color: #856404; }
-.status-badge.delivered { background: #d4edda; color: #155724; }
-.status-badge.picked_up { background: #cce5ff; color: #004085; }
+.today-orders tr:hover
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+/* ---------- STATUS BADGES ---------- */
+
+.status-badge{
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+text-transform:capitalize;
 }
 
-.switch input { opacity: 0; width: 0; height: 0; }
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
+.status-badge.pending{
+background:#fff7ed;
+color:#ea580c;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px; width: 26px;
-  left: 4px; bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
+.status-badge.delivered{
+background:#ecfdf5;
+color:#16a34a;
 }
 
-input:checked + .slider { background-color: #4caf50; }
-input:checked + .slider:before { transform: translateX(26px); }
+.status-badge.picked_up{
+background:#eff6ff;
+color:#2563eb;
+}
+
+/* ---------- SWITCH ---------- */
+
+.switch{
+position:relative;
+display:inline-block;
+width:50px;
+height:26px;
+}
+
+.switch input{
+opacity:0;
+width:0;
+height:0;
+}
+
+.slider{
+position:absolute;
+cursor:pointer;
+inset:0;
+background:#d1d5db;
+transition:.4s;
+border-radius:30px;
+}
+
+.slider:before{
+position:absolute;
+content:"";
+height:20px;
+width:20px;
+left:3px;
+bottom:3px;
+background:white;
+transition:.4s;
+border-radius:50%;
+}
+
+input:checked + .slider{
+background:#22c55e;
+}
+
+input:checked + .slider:before{
+transform:translateX(24px);
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:768px){
+
+.stats{
+flex-direction:column;
+align-items:center;
+}
+
+.card{
+width:90%;
+}
+
+.today-orders table{
+font-size:14px;
+}
+
+}

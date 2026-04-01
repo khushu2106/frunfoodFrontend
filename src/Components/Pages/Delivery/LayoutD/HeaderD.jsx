@@ -26,9 +26,9 @@ function HeaderD() {
           <span style={{color:"black"}}>My Profile</span>
         </Link>
         {/* Logout */}
-        <Link to="/delivery/logout" className="logout">
+        {/* <Link to="/delivery/logout" className="logout">
         <span style={{color:"black"}}>Logout</span>
-        </Link>
+        </Link> */}
       </div>
     </header>
   );

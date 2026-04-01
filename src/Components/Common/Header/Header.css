@@ -99,8 +99,24 @@ body {
 
 /* LOGO */
 .logo {
-  font-size: 22px;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 100px;        /* logo size */
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  filter: brightness(0) invert(1);
+}
+
+/* Mobile logo size */
+@media screen and (max-width: 768px) {
+  .logo img {
+    height: 42px;
+  }
 }
 
 /* ================= NAV ================= */

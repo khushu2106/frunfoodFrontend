@@ -69,7 +69,7 @@ const DeliveryList = () => {
                         {deliveryBoys.length > 0 ? (
                             deliveryBoys.map((boy) => (
                                 <tr key={boy.delivery_id}>
-                                    <td style={styles.td}>{boy.delivery_id}</td>
+                                    <td style={styles.td}>{boy.user_id}</td>
                                     <td style={styles.td}><strong>{boy.fname}</strong></td>
                                     <td style={styles.td}>{boy.mobile_no|| "N/A"}</td>
                                     <td style={styles.td}>{boy.vehicle_no}</td>

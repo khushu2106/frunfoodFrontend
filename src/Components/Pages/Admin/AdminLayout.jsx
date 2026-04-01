@@ -26,7 +26,7 @@ import AdminFooter from "./AdminFooter";
 
 const AdminLayout = () => {
   return (
-    <div style={{ display: "flex", minHeight: "100vh",marginTop:"0" }}>
+    <div style={{ display: "flex", minHeight: "100vh",marginTop:"-70px" }}>
       
       {/* Sidebar */}
       <AdminSidebar />

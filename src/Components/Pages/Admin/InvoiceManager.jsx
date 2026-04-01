@@ -75,15 +75,21 @@ const InvoiceManager = () => {
             <th>Date</th>
             <th>Name</th>
             <th>Total</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {invoices.map(inv => (
             <tr key={inv.id}>
               <td>{inv.id}</td>
-              <td>{new Date(inv.date).toLocaleDateString("en-GB")}</td>
+              <td>{new Date(inv.date).toLocaleDateString()}</td>
               <td>{inv.name}</td>
               <td>₹{inv.total_amount}</td>
+              <td>
+                <button onClick={() => window.open(`http://localhost:5000/api/invoice/${type}/${inv.id}?token=${token}`, "_blank")}>
+                  View/Print
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

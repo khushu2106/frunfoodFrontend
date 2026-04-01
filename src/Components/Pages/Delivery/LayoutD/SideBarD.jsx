@@ -15,6 +15,7 @@ function SideBarD() {
           {/* <Link to="/delivery/earning">Earnings</Link> */}
           <Link to="/delivery/notifications">Notifications</Link>
           <Link to="/delivery/profile">Edit Profile</Link>
+          <Link to="/delivery/logout">Logout</Link>
         </nav>
       </aside>
 

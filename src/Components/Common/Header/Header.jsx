@@ -10,6 +10,7 @@ import {
   FaTimes
 } from "react-icons/fa";
 import axios from "axios";
+import logo from "../../../assets/logo1.png";
 import "./Header.css";
 
 const Header = () => {
@@ -63,8 +64,9 @@ const Header = () => {
   return (
     <header className="header">
       {/* LOGO */}
-      <div className="logo"><FaPaw style={{ marginRight: '10px', color: '#ff6b6b'}} />
-        Fur & Food</div>
+      <div className="logo">
+        <img src={logo} alt="Fur & Food" />
+      </div>
 
       {/* HAMBURGER */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>

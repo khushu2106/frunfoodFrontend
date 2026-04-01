@@ -47,6 +47,11 @@ function LoginD() {
       localStorage.setItem("deliveryRole", "delivery_boy");
       localStorage.setItem("deliveryLogin", "true");
 
+      const boyId = data.user?.id || data.id;
+      localStorage.setItem("deliveryBoyId", boyId);
+
+      console.log("Delivery Boy ID Saved:", boyId);
+
       navigate("/delivery/dashboard");
 
     } catch (err) {

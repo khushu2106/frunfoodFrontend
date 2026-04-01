@@ -88,3 +88,94 @@
     font-size: 12px;
   }
 }
+
+/* ===============================
+   Pending Orders Page Styling
+================================ */
+
+.pending-container{
+  padding:30px;
+  background:#f4f6f9;
+  min-height:100vh;
+}
+
+.pending-container h3{
+  text-align:center;
+  margin-bottom:25px;
+  color:#333;
+}
+
+.pending-table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.pending-table thead{
+  background:#1e293b;
+  color:white;
+}
+
+.pending-table th,
+.pending-table td{
+  padding:14px;
+  text-align:center;
+  border-bottom:1px solid #ddd;
+}
+
+.pending-table tr:hover{
+  background:#f1f5f9;
+}
+
+.pending-select{
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  cursor:pointer;
+}
+
+/* Assign Button (reuse) */
+.assign-btn{
+  padding:8px 14px;
+  background:#16a34a;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.assign-btn:hover{
+  background:#15803d;
+}
+
+/* View Button */
+.view-btn{
+  background:#3498db;
+  border:none;
+  padding:8px 14px;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.view-btn:hover{
+  background:#217dbb;
+}
+
+.action-buttons{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+.no-orders{
+  text-align:center;
+  padding:20px;
+  color:gray;
+  font-weight:500;
+}

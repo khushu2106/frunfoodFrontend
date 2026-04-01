@@ -55,10 +55,9 @@ function ProfileD() {
   return (
     <div className="profile-page">
       {/* Left Form */}
-      <h2>Edit Profile</h2>
       <form className="profile-card" onSubmit={handleSubmit}>
         
-
+         <h2>Profile</h2>
         {/* Profile Image */}
         <div className="image-box">
           {/* <img

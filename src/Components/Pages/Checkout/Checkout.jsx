@@ -109,7 +109,7 @@ function Checkout() {
     mobile: "",
     address: "",
     city: "Ahmedabad",
-    pincode: "380001",
+    pincode: "382415",
     payment: "COD",
   });
 
@@ -252,7 +252,7 @@ function Checkout() {
         key: "rzp_test_S9ljGtWRbBKAdB",
         amount: order.amount,
         currency: "INR",
-        name: "Pet Food Shop",
+        name: "Fur & Food",
         description: "Order Payment",
         order_id: order.id,
         handler: function (response) {
@@ -327,7 +327,7 @@ function Checkout() {
           <div className="row">
             <div><label htmlFor="">City</label>
               <input type="text" name="city" value={form.city} readOnly /></div>
-              <div><label htmlFor="">City</label>
+            <div><label htmlFor="">Pincode</label>
               <input type="text" name="pincode" value={form.pincode} readOnly /></div>
           </div>
         </div>
@@ -352,12 +352,12 @@ function Checkout() {
 
         <div className="section summary">
           <h3>Order Summary</h3>
-          <p>Items Total: ₹{totalAmount}</p>
-          <p>CGST (9%): ₹{cgst}</p>
-          <p>SGST (9%): ₹{sgst}</p>
-          <p>Payment Mode: {form.payment}</p>
+          <p>Items Total: <div>₹{totalAmount}</div></p>
+          <p>CGST (9%):<div> ₹{cgst}</div></p>
+          <p>SGST (9%): <div>₹{sgst}</div></p>
+          <p>Payment Mode: <div>{form.payment}</div></p>
           <hr />
-          <h4>Grand Total: ₹{grandTotal}</h4>
+          <p><h4>Grand Total:</h4> <div>₹{grandTotal}</div></p>
         </div>
 
         <button type="submit" disabled={isSubmitting}>

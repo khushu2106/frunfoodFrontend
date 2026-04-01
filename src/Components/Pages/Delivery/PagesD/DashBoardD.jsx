@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAssignedOrders, getDashboardData, updateOrderStatus } from "../../../Services/Api";
 import "./DashBoardD.css";
 
@@ -14,7 +15,7 @@ function Dashboard() {
 
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
-
+const navigate = useNavigate();
   // 🔥 Common fetch function
   const fetchDashboard = () => {
     setLoading(true);
@@ -64,22 +65,38 @@ function Dashboard() {
     <div className="dashboard">
       <h2>Delivery Dashboard</h2>
 
-      <div className="stats">
-        <div className="card">
-          <h3>Total Orders</h3>
-          <p>{data?.totalOrders || 0}</p>
-        </div>
+     <div className="stats">
 
-        <div className="card pending">
-          <h3>Pending</h3>
-          <p>{data?.pendingOrders || 0}</p>
-        </div>
+  <div 
+    className="card" 
+    onClick={() => navigate("/delivery/assigned-orders")}
+    style={{ cursor: "pointer" }}
+  >
+    <h3>Total Orders</h3>
+    <p>{data?.totalOrders || 0}</p>
+  </div>
 
-        <div className="card delivered">
-          <h3>Delivered</h3>
-          <p>{data?.deliveredOrders || 0}</p>
-        </div>
-      </div>
+  <div 
+    className="card pending" 
+    onClick={() => navigate("/delivery/assigned-orders")}
+    style={{ cursor: "pointer" }}
+  >
+    <h3>Pending</h3>
+    <p>{data?.pendingOrders || 0}</p>
+  </div>
+
+  <div 
+    className="card delivered" 
+    onClick={() => navigate("/delivery/history")}
+    style={{ cursor: "pointer" }}
+  >
+    <h3>Delivered</h3>
+    <p>{
+    // data?.deliveredOrders ||
+     3}</p>
+  </div>
+
+</div>
 
       <div className="today-orders">
         <h3>Assigned Orders</h3>

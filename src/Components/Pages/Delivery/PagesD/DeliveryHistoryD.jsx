@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "./DeliveryHistoryD.css";
+import axios from "axios"; // Consistency ke liye axios use karein
 
 const DeliveryHistoryD = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const deliveryBoyId = 1; 
+
+  // 1. Dynamic ID: localStorage se uthayein (Jo login ke waqt save ki thi)
+  const deliveryBoyId = localStorage.getItem("userId") || 5;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/delivery-boy/orders/${deliveryBoyId}`)
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          // Hum sirf wo orders filter kar rahe hain jo 'delivered' hain
-          const completedOrders = data.orders.filter(
+    const fetchHistory = async () => {
+      try {
+        // 2. Dashboard wala same prefix use karein
+        const response = await axios.get(`http://localhost:5000/api/delivery-boy/orders/${deliveryBoyId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (response.data.success) {
+          // 3. Status filter check (Make sure it matches 'delivered')
+          const completedOrders = response.data.orders.filter(
             (order) => order.order_status === "delivered"
           );
           setHistory(completedOrders);
         }
-        setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         console.error("History fetch error:", err);
+      } finally {
         setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchHistory();
+  }, [deliveryBoyId]);
 
   if (loading) return <div className="history-loader">Loading History...</div>;
 
@@ -40,9 +50,9 @@ const DeliveryHistoryD = () => {
             <div key={item.sales_id} className="history-item-card">
               <div className="item-main">
                 <div className="id-section">
-                  <span className="order-id">#{item.sales_id}</span>
+                  <span className="order-id">Order #{item.sales_id}</span>
                   <span className="order-date">
-                    {new Date(item.s_date).toLocaleDateString('en-GB', {
+                    📅 {new Date(item.s_date).toLocaleDateString('en-GB', {
                       day: '2-digit',
                       month: 'short',
                       year: 'numeric'
@@ -56,15 +66,15 @@ const DeliveryHistoryD = () => {
               </div>
 
               <div className="item-footer">
-                <div className="status-pill">
-                  <span className="dot"></span> Delivered
+                <div className="status-pill delivered">
+                  <span className="dot"></span> Successfully Delivered
                 </div>
-                {/* <button className="receipt-btn">View Receipt</button> */}
               </div>
             </div>
           ))
         ) : (
           <div className="empty-history">
+             <div className="box-icon">📦</div>
             <p>No completed deliveries found in your history yet.</p>
           </div>
         )}

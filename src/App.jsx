@@ -61,6 +61,7 @@ import AddSupplier from './Components/Pages/Admin/Purchase/AddSupplier';
 import ViewSupplier from './Components/Pages/Admin/Purchase/ViewSupplier';
 import AddPurchaseReturn from './Components/Pages/Admin/Purchase/AddPurchaseReturn';
 import AdminManageProducts from './Components/Pages/Admin/Products/ManageProducts';
+import OrderDetailPage from './Components/Pages/Admin/Delivery/OrderDetailPage';
 import EditProduct from './Components/Pages/Admin/Products/EditProduct';
 import AdminProtected from './Components/Pages/ProtectedRoutes/AdminProtected';
 import Brand from "./Components/Home/Products/Brand";
@@ -107,6 +108,9 @@ import Complaints from './Components/Pages/Admin/Complaints';
 import Reports from './Components/Pages/Admin/Reports';
 import Enquiries from './Components/Pages/Admin/Enquiries';
 import AdminOffers from './Components/Pages/Admin/AdminOffer';
+import Chatbot from './Components/Pages/Chatbot';
+import Refunds from './Components/Pages/Admin/Refunds';
+import OrderDetailsAdmin from './Components/Pages/Admin/OrderDetailsAdmin';
 // import InvoiceManager from './Components/Pages/Admin/InvoiceManager';
 // import InvoiceView from './Components/Pages/Admin/InvoiceView';
 
@@ -118,10 +122,13 @@ function LayoutWrapper() {
 
   const isAuthRoute = authRoutes.includes(location.pathname);
   const showHeaderFooter = !isAdminRoute && !isAuthRoute && !isdeliveryRoute;
+  const hasToken = localStorage.getItem("userToken");
   return (
     <>
       <ScrollToTop />
       {showHeaderFooter && <Header />}
+
+      {hasToken && !isAdminRoute && !isdeliveryRoute && <Chatbot />}
 
       <Routes>
         {/* Home */}
@@ -129,7 +136,7 @@ function LayoutWrapper() {
         {/* <Route path="/products" element={<><ProductList /><Category /><Offers /></>} /> */}
         <Route path="/products" element={<><ProductListing /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
         <Route path="/product/:id" element={<><ProductDetails /><Category /><Brand /><ProductList /><Offers /><Aboutus /><FaqClient /></>} />
-        <Route path="/productSearch" element={<><ProductSearch /><Category /><Brand /><Offers/><Aboutus /></>} />
+        <Route path="/productSearch" element={<><ProductSearch /><Category /><Brand /><Offers /><Aboutus /></>} />
         {/* <Route path="/category/:categoryId" element={<ProductListing />} /> */}
         <Route path="/products/category/:category" element={<CategoryProducts />} />
 
@@ -211,6 +218,9 @@ function LayoutWrapper() {
           <Route path="invoice/:type/:id" element={<InvoiceView />} />
           <Route path="batches" element={<AddBatches />} />
           <Route path="old-batches" element={<OldBatches />} />
+          <Route path="refunds" element={<Refunds />} />
+          <Route path="orders-details" element={< OrderDetailsAdmin/>} />
+          <Route path="Details/:id" element={<OrderDetailPage/>}/>
         </Route>
         <Route path="/admin/logout" element={<AdminLogout />} />
 

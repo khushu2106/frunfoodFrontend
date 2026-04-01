@@ -64,7 +64,12 @@ const AddPurchase = () => {
         product_id: Number(productId),
         quantity: Number(quantity),
         price: Number(price),
-        p_date: date
+        p_date: date,
+        sgst: 0,
+        cgst: 0,
+        payment_mode: "cash"
+      }, {
+        responseType: "blob"
       });
 
       alert("✅ Success! Purchase record saved.");

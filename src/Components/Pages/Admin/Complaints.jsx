@@ -56,8 +56,8 @@ const Complaints = () => {
             <th>ID</th>
             <th>Customer</th>
             <th>Subject & Message</th>
-            {/* <th>Status</th>
-            <th>Admin Reply & Action</th> */}
+            <th>Status</th>
+            <th>Admin Reply & Action</th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +73,7 @@ const Complaints = () => {
                 <p><b>Sub:</b> {c.subject}</p>
                 <p className="msg-text">{c.message}</p>
               </td>
-              {/* <td>
+              <td>
                 <span className={`status-badge ${c.status}`}>
                   {c.status}
                 </span>
@@ -96,7 +96,7 @@ const Complaints = () => {
                 ) : (
                   <span className="resolved-text">✅ Resolved</span>
                 )}
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

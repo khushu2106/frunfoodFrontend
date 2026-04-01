@@ -108,6 +108,7 @@ const Feedback = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows="4"
+              required
             />
             <button type="submit" className="btn-submit">
               Submit Feedback
