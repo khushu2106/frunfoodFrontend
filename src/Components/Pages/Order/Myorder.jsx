@@ -32,40 +32,92 @@ const MyOrders = () => {
     }
   };
 
-  const cancelOrder = async (sales_id) => {
-    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+  // const cancelOrder = async (sales_id) => {
+  //   if (!window.confirm("Are you sure you want to cancel this order?")) return;
+  //   try {
+  //     await axios.put(
+  //       `${BASE_URL}/api/sales/${sales_id}/cancel`,
+  //       {},
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     alert("Order cancelled successfully");
+  //     fetchOrders();
+  //   } catch (err) {
+  //     alert(err.response?.data?.message || "Cancel failed");
+  //   }
+  // };
+
+  const cancelOrder = async (sales_id, product_id, maxQty) => {
+    const qty = prompt(`Enter quantity to cancel (Max: ${maxQty})`);
+
+    if (!qty || qty <= 0 || qty > maxQty) {
+      alert("Invalid quantity");
+      return;
+    }
+
     try {
       await axios.put(
         `${BASE_URL}/api/sales/${sales_id}/cancel`,
-        {},
+        {
+          product_id,
+          qty: Number(qty)
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Order cancelled successfully");
+
+      alert("Cancelled successfully");
       fetchOrders();
     } catch (err) {
       alert(err.response?.data?.message || "Cancel failed");
     }
   };
 
-  const returnOrder = async (sales_id, product_id) => {
-    console.log("Front-end Sending:", { sales_id, product_id });
-    const reason = prompt("Please enter return reason:");
-    if (!reason) return;
+  // const returnOrder = async (sales_id, product_id) => {
+  //   console.log("Front-end Sending:", { sales_id, product_id });
+  //   const reason = prompt("Please enter return reason:");
+  //   if (!reason) return;
+
+  //   try {
+  //     await axios.post(
+  //       `${BASE_URL}/api/return/${sales_id}`,
+  //       {
+  //         sales_id,       // Sales ID
+  //         product_id,     // Specific Product ID
+  //         reason
+  //       },
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     alert("Return request submitted successfully");
+  //     fetchOrders(); // List refresh karein
+  //   } catch (err) {
+  //     alert(err.response?.data?.message || "Return request failed");
+  //   }
+  // };
+
+  const returnOrder = async (sales_id, product_id, maxQty) => {
+    const qty = prompt(`Enter quantity to return (Max: ${maxQty})`);
+    const reason = prompt("Enter return reason:");
+
+    if (!qty || qty <= 0 || qty > maxQty || !reason) {
+      alert("Invalid input");
+      return;
+    }
 
     try {
       await axios.post(
         `${BASE_URL}/api/return/${sales_id}`,
         {
-          sales_id,       // Sales ID
-          product_id,     // Specific Product ID
+          product_id,
+          qty: Number(qty),
           reason
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Return request submitted successfully");
-      fetchOrders(); // List refresh karein
+
+      alert("Return requested");
+      fetchOrders();
     } catch (err) {
-      alert(err.response?.data?.message || "Return request failed");
+      alert(err.response?.data?.message || "Return failed");
     }
   };
 
@@ -146,6 +198,7 @@ const MyOrders = () => {
     });
   };
 
+
   const getReturnBadge = (status) => {
     if (!status) return null;
 
@@ -196,8 +249,8 @@ const MyOrders = () => {
             </button>
           ))}
           <div><h4>
-          <Link to="/complaint" style={{ textDecoration: "none", color: "inherit" }}><button>complaint</button> </Link>
-        </h4></div>
+            <Link to="/complaint" style={{ textDecoration: "none", color: "inherit" }}><button>complaint</button> </Link>
+          </h4></div>
         </div>
 
         {/* <div><h4>
@@ -240,7 +293,15 @@ const MyOrders = () => {
                     <button style={styles.btn("reorder")} onClick={() => openProduct(order.product_id)}>🔄 Re-order</button>
                   )}
                   {canCancel(order.order_status) && (
-                    <button style={styles.btn("cancel")} onClick={() => cancelOrder(order.sales_id)}>
+                    // <button style={styles.btn("cancel")} onClick={() => cancelOrder(order.sales_id)}>
+                    //   Cancel Order
+                    // </button>
+                    <button
+                      style={styles.btn("cancel")}
+                      onClick={() =>
+                        cancelOrder(order.sales_id, order.product_id, order.qty)
+                      }
+                    >
                       Cancel Order
                     </button>
                   )}
@@ -249,9 +310,18 @@ const MyOrders = () => {
                       {order.return_status ? (
                         getReturnBadge(order.return_status)
                       ) : isReturnValid(order.s_date) ? (
+                        // <button
+                        //   style={styles.btn("return")}
+                        //   onClick={() => returnOrder(order.sales_id, order.product_id)}
+                        // >
+                        //   Return Order
+                        // </button>
+
                         <button
                           style={styles.btn("return")}
-                          onClick={() => returnOrder(order.sales_id, order.product_id)}
+                          onClick={() =>
+                            returnOrder(order.sales_id, order.product_id, order.qty)
+                          }
                         >
                           Return Order
                         </button>

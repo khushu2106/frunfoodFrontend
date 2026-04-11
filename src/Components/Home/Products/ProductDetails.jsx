@@ -17,15 +17,15 @@ const ProductDetails = () => {
   const [images, setImages] = useState([]);
   const [mainImage, setMainImage] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
-  const maxQty = product?.stock || 0;
+  const maxQty = product?.qty || 0;
 
   const BASE_URL = "http://localhost:5000";
   const token = localStorage.getItem("userToken");
 
   /* ================= FETCH PRODUCT ================= */
   useEffect(() => {
-    if (product && quantity > product.stock) {
-      setQuantity(product.stock);
+    if (product && quantity > product.qty) {
+      setQuantity(product.qty);
     }
   }, [product]);
 
@@ -98,8 +98,8 @@ const ProductDetails = () => {
   /* ================= ADD TO CART ================= */
   /* ================= ADD TO CART (Sync Support) ================= */
   const handleAddToCart = async () => {
-    if (quantity > product.stock) {
-      alert(`Only ${product.stock} items available`);
+    if (quantity > product.qty) {
+      alert(`Only ${product.qty} items available`);
       return;
     }
     const cartItem = {
@@ -293,14 +293,14 @@ const ProductDetails = () => {
               )}
             </p>
 
-            {/* STOCK */}
-            <p className={`pd-stock-status ${product.stock_status === "In Stock"
-              ? "in-stock"
-              : product.stock_status === "Low Stock"
-                ? "low-stock"
-                : "out-of-stock"
+            {/* qty */}
+            <p className={`pd-qty-status ${product.qty_status === "In qty"
+              ? "in-qty"
+              : product.qty_status === "Low qty"
+                ? "low-qty"
+                : "out-of-qty"
               }`}>
-              {product.stock_status}
+              {product.qty_status}
             </p>
 
             {/* ================= WEIGHT ================= */}
@@ -316,7 +316,7 @@ const ProductDetails = () => {
               <div className="quantity-control">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  disabled={product?.stock === 0}
+                  disabled={product?.qty === 0}
                 >
                   -
                 </button>
@@ -334,7 +334,7 @@ const ProductDetails = () => {
               <button
                 className="add-to-cart-btn"
                 onClick={handleAddToCart}
-                disabled={product.stock_status === "Out of Stock"}
+                disabled={product.qty_status === "Out of qty"}
               >
                 Add to Cart 🛒
               </button>
@@ -342,7 +342,7 @@ const ProductDetails = () => {
               <button
                 className="shop-now-btn"
                 onClick={handleShopNow}
-                disabled={product?.stock === 0}
+                disabled={product?.qty === 0}
               >
                 Shop Now ⚡
               </button>
