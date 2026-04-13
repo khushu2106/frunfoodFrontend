@@ -5,7 +5,7 @@ import "./DashBoardD.css";
 
 function Dashboard() {
 
-  const deliveryBoyId = 1;
+  const deliveryBoyId = 5; // ✅ FIXED
 
   const [data, setData] = useState({
     totalOrders: 0,
@@ -15,8 +15,10 @@ function Dashboard() {
 
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
-const navigate = useNavigate();
-  // 🔥 Common fetch function
+
+  const navigate = useNavigate();
+
+  // 🔥 Fetch Dashboard + Orders
   const fetchDashboard = () => {
     setLoading(true);
 
@@ -31,16 +33,16 @@ const navigate = useNavigate();
         }
 
         if (resOrders?.data?.success) {
-          setOrders(resOrders.data.data || []);   // 🔥 SAFE
+          setOrders(resOrders.data.data || []);
         } else {
-          setOrders([]);  // 🔥 fallback
+          setOrders([]);
         }
 
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        setOrders([]);   // 🔥 avoid crash
+        setOrders([]);
         setLoading(false);
       });
   };
@@ -49,15 +51,15 @@ const navigate = useNavigate();
     fetchDashboard();
   }, []);
 
-  // 🔥 Status update without reload
+  // 🔥 Update Status
   const handleStatusChange = (orderId, newStatus) => {
     updateOrderStatus(orderId, newStatus)
-      .then(res => {
+      .then(() => {
         alert("Status updated!");
-        fetchDashboard();   // ✔ live refresh
+        fetchDashboard(); // refresh
       })
       .catch(err => console.log(err));
-  }
+  };
 
   if (loading) return <div className="dashboard">Loading...</div>;
 
@@ -65,38 +67,36 @@ const navigate = useNavigate();
     <div className="dashboard">
       <h2>Delivery Dashboard</h2>
 
-     <div className="stats">
+      <div className="stats">
 
-  <div 
-    className="card" 
-    onClick={() => navigate("/delivery/assigned-orders")}
-    style={{ cursor: "pointer" }}
-  >
-    <h3>Total Orders</h3>
-    <p>{data?.totalOrders || 0}</p>
-  </div>
+        <div 
+          className="card" 
+          onClick={() => navigate("/delivery/assigned-orders")}
+          style={{ cursor: "pointer" }}
+        >
+          <h3>Total Orders</h3>
+          <p>{data?.totalOrders || 0}</p>
+        </div>
 
-  <div 
-    className="card pending" 
-    onClick={() => navigate("/delivery/assigned-orders")}
-    style={{ cursor: "pointer" }}
-  >
-    <h3>Pending</h3>
-    <p>{data?.pendingOrders || 0}</p>
-  </div>
+        <div 
+          className="card pending" 
+          onClick={() => navigate("/delivery/assigned-orders")}
+          style={{ cursor: "pointer" }}
+        >
+          <h3>Pending</h3>
+          <p>{data?.pendingOrders || 0}</p>
+        </div>
 
-  <div 
-    className="card delivered" 
-    onClick={() => navigate("/delivery/history")}
-    style={{ cursor: "pointer" }}
-  >
-    <h3>Delivered</h3>
-    <p>{
-    // data?.deliveredOrders ||
-     3}</p>
-  </div>
+        <div 
+          className="card delivered" 
+          onClick={() => navigate("/delivery/history")}
+          style={{ cursor: "pointer" }}
+        >
+          <h3>Delivered</h3>
+          <p>{data?.deliveredOrders || 0}</p> {/* ✅ FIXED */}
+        </div>
 
-</div>
+      </div>
 
       <div className="today-orders">
         <h3>Assigned Orders</h3>
@@ -119,11 +119,26 @@ const navigate = useNavigate();
                   <td>#{order.sales_id}</td>
                   <td>{order.fname || "N/A"}</td>
                   <td>₹{order.total_amount}</td>
+
                   <td>
                     <span className={`status-badge ${order.order_status}`}>
                       {order.order_status}
                     </span>
                   </td>
+
+                  {/* ✅ NEW: Update Button */}
+                  <td>
+                    <select
+                      value={order.order_status}
+                      onChange={(e) =>
+                        handleStatusChange(order.sales_id, e.target.value)
+                      }
+                    >
+                      <option value="assigned">Assigned</option>
+                      <option value="delivered">Delivered</option>
+                    </select>
+                  </td>
+
                 </tr>
               ))
             ) : (
