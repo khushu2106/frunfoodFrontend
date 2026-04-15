@@ -144,3 +144,99 @@
   margin-top: 20px;
   padding: 10px 20px;
 }
+
+/* --- Desktop & Base Styles (Jo aapne likha hai) --- */
+.offer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Desktop view */
+  gap: 20px;
+  margin: 0 auto;
+}
+
+/* Card Improvements */
+.offer-card {
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+}
+
+.offer-card.big {
+  min-height: 350px; 
+}
+
+
+/* Tablet View (Max 1024px) */
+@media screen and (max-width: 1024px) {
+  .offer-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .offers-page {
+    padding: 15px;
+  }
+
+  .offer-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .offer-card.big {
+    height: auto; 
+    min-height: unset;
+    padding: 20px;
+  }
+
+  .offer-card h2 {
+    font-size: 24px;
+  }
+
+  .offer-img.left {
+    width: 80px; 
+    position: relative; 
+    bottom: 0;
+    right: 0;
+    float: right;
+    margin-top: 10px;
+  }
+
+  .right-offers {
+    gap: 15px;
+  }
+
+  .offer-card.light {
+    padding: 20px;
+    flex-direction: column-reverse; 
+    text-align: center;
+    gap: 15px;
+  }
+
+  .offer-card.light img {
+    width: 80px;
+    margin: 0 auto;
+  }
+  
+  .offer-card.light div {
+    width: 100%;
+  }
+}
+
+/* Extra Small Phones (Max 480px) */
+@media screen and (max-width: 480px) {
+  .offer-card h2 {
+    font-size: 20px;
+  }
+  
+  .badge {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}

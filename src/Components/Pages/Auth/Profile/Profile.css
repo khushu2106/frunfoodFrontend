@@ -75,3 +75,73 @@ textarea:focus {
 .save-btn:hover {
   opacity: 0.9;
 }
+
+/* --- Desktop Styles (Jo aapke paas hain) --- */
+.profile-container {
+  min-height: 100vh;
+  background: #f4f7fb;
+  display: flex;
+  flex-direction: column; /* Back link ko upar rakhne ke liye */
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 850px; /* Responsive fix */
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Responsive Media Queries --- */
+
+/* Tablet View (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    padding: 20px;
+  }
+
+  .profile-card {
+    padding: 25px;
+  }
+
+  .form-grid {
+    gap: 15px; /* Gap thoda kam kiya */
+  }
+}
+
+/* Mobile View (max-width: 580px) */
+@media screen and (max-width: 580px) {
+  .form-grid {
+    grid-template-columns: 1fr; /* Do column ki jagah ab ek column dikhega */
+  }
+
+  .full-width {
+    grid-column: span 1; /* Full width field ab normal column ban jayegi */
+  }
+
+  .profile-card h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .save-btn {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+/* Extra Small Phones */
+@media screen and (max-width: 400px) {
+  .profile-container {
+    padding: 10px;
+  }
+  
+  .profile-card {
+    padding: 15px;
+    border-radius: 8px;
+  }
+}

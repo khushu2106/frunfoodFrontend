@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { FaComments, FaTimes, FaDog, FaPaperPlane, FaRobot } from 'react-icons/fa';
 import "./Chatbot.css";
 
 const Chatbot = () => {
@@ -13,25 +14,20 @@ const Chatbot = () => {
     const token = localStorage.getItem("userToken");
     const userId = localStorage.getItem("userId");
 
-    useEffect(() => { if (isOpen) chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chat, isOpen]);
-
-    // --- NAVIGATION LOGIC ---
-    // const handleNavigation = (type, id) => {
-    //     // Change this URL to match your website's actual route structure
-    //     window.location.href = `/shop/${type}/${id}`;
-    // };
+    useEffect(() => { 
+        if (isOpen) chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); 
+    }, [chat, isOpen]);
 
     const handleNavigation = (type, id) => {
-    if (type === "category") {
-        window.location.href = `/category/${id}`;
-    } else if (type === "product") {
-        window.location.href = `/product/${id}`;
-    } else if (type === "brand") {
-        window.location.href = `/brands/${id}`;
-    }
-};
+        if (type === "category") {
+            window.location.href = `/category/${id}`;
+        } else if (type === "product") {
+            window.location.href = `/product/${id}`;
+        } else if (type === "brand") {
+            window.location.href = `/brands/${id}`;
+        }
+    };
 
-    // --- MESSAGE PARSER ---
     const renderMessageWithLinks = (text) => {
         const regex = /\[(.*?)\]\(route:(.*?):(.*?)\)/g;
         const parts = [];
@@ -80,17 +76,28 @@ const Chatbot = () => {
 
     return (
         <>
+            {/* FLOATING ICON */}
             <div className={`chat-icon ${isOpen ? "active" : ""}`} onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? "✕" : "🐾"}
+                {isOpen ? <FaTimes /> : <FaComments size={32} />}
             </div>
 
             {isOpen && (
                 <div className="chat-window">
+                    {/* HEADER */}
                     <div className="chat-header">
-                        <span>Fur & Food AI</span>
-                        <span onClick={() => setIsOpen(false)} style={{cursor:'pointer'}}>✕</span>
+                        <div className="header-info">
+                            <div className="bot-avatar">
+                                <FaDog size={18} />
+                            </div>
+                            <div className="header-text">
+                                <strong>Fur & Food AI</strong>
+                                <span className="online-status"><span className="dot"></span> Online</span>
+                            </div>
+                        </div>
+                        <FaTimes className="close-x" onClick={() => setIsOpen(false)} />
                     </div>
 
+                    {/* CHAT BODY */}
                     <div className="chat-body">
                         {chat.map((msg, i) => (
                             <div key={i} className={`message-bubble ${msg.sender}`}>
@@ -100,20 +107,22 @@ const Chatbot = () => {
                                 </div>
                             </div>
                         ))}
-                        {isTyping && <div className="typing">Typing .. 🐶</div>}
+                        {isTyping && <div className="typing">Typing ...  🐶</div>}
                         <div ref={chatEndRef} />
                     </div>
 
-                    {/* ... rest of your footer code (voice, image input, etc) ... */}
+                    {/* FOOTER */}
                     <div className="chat-footer">
                          <input 
                             type="text" 
                             value={message} 
-                            placeholder="Ask about brands..." 
+                            placeholder="Type a message..." 
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                         />
-                        <button onClick={sendMessage}>➤</button>
+                        <button className="send-btn" onClick={sendMessage}>
+                            <FaPaperPlane />
+                        </button>
                     </div>
                 </div>
             )}
