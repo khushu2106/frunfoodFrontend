@@ -48,11 +48,27 @@ const MyOrders = () => {
   // };
 
   const cancelOrder = async (sales_id, product_id, maxQty) => {
-    const qty = prompt(`Enter quantity to cancel (Max: ${maxQty})`);
+    let qtyToCancel;
 
-    if (!qty || qty <= 0 || qty > maxQty) {
-      alert("Invalid quantity");
-      return;
+    // Case 1: If only 1 item exists, just ask for confirmation
+    if (maxQty === 1) {
+      if (!window.confirm("Are you sure you want to cancel this item?")) return;
+      qtyToCancel = 1;
+    } 
+    // Case 2: If multiple items exist, ask how many to cancel
+    else {
+      const userInput = prompt(`Enter quantity to cancel (1 - ${maxQty})`, "1");
+      
+      // If user clicks "Cancel" on prompt
+      if (userInput === null) return;
+
+      qtyToCancel = Number(userInput);
+
+      // Validation: Must be a number, greater than 0, and not more than maxQty
+      if (isNaN(qtyToCancel) || qtyToCancel <= 0 || qtyToCancel > maxQty) {
+        alert(`Please enter a valid quantity between 1 and ${maxQty}`);
+        return;
+      }
     }
 
     try {
@@ -60,13 +76,13 @@ const MyOrders = () => {
         `${BASE_URL}/api/sales/${sales_id}/cancel`,
         {
           product_id,
-          qty: Number(qty)
+          qty: qtyToCancel
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       alert("Cancelled successfully");
-      fetchOrders();
+      fetchOrders(); // Refresh the list
     } catch (err) {
       alert(err.response?.data?.message || "Cancel failed");
     }

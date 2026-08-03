@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Link import karna zaroori hai
 import "./Footer.css";
+import logo from "../../../assets/logo1.png";
 
 const Footer = () => {
   return (
@@ -8,7 +10,10 @@ const Footer = () => {
 
         {/* Brand Section */}
         <div className="footer-section">
-          <h2 className="footer-logo">🐾 PetFood</h2>
+          <h2 className="footer-logo">
+            <img src={logo} alt="Fur & Food" className="logo-footer" />
+            PetFood
+          </h2>
           <p>
             Healthy & nutritious food for your lovely pets.
             Made with love and care.
@@ -19,31 +24,45 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/products">Products</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
 
-        {/* Categories */}
-        {/* <div className="footer-section">
+        {/* Categories Section (Cleaned & Updated) */}
+        <div className="footer-section">
           <h3>Pet Categories</h3>
           <ul>
-            <li><a href="/dog-food">Dog Food</a></li>
-            <li><a href="/cat-food">Cat Food</a></li>
-            <li><a href="/kitten-food">Kitten Food</a></li>
-            <li><a href="/puppy-food">Puppy Food</a></li>
-            <li><a href="/toys">Toys</a></li>
-            <li><a href="/grooming-accessories">Grooming-Accessories</a></li>
+            <li><Link to="/category/1">Dog Food</Link></li>
+            <li><Link to="/category/2">Cat Food</Link></li>
+            <li><Link to="/category/3">Kitten Food</Link></li>
+            <li><Link to="/category/4">Puppy Food</Link></li>
+            <li><Link to="/category/5">Toys</Link></li>
+            <li><Link to="/category/6">Grooming & Accessories</Link></li>
           </ul>
-        </div> */}
+        </div>
 
         {/* Contact Info */}
+        {/* Contact Info Section */}
         <div className="footer-section">
           <h3>Contact Us</h3>
-          <p>Email: fur&food@gmail.com</p>
-          <p>Phone: 6354529996</p>
+
+          {/* Email Link */}
+          <p>
+            Email: <a href="mailto:fur&food@gmail.com" className="contact-link">
+              fur&food@gmail.com
+            </a>
+          </p>
+
+          {/* Phone Link */}
+          <p>
+            Phone: <a href="tel:+916354529996" className="contact-link">
+              +91 7069209050
+            </a>
+          </p>
+
           <p>Location: Ahmedabad</p>
         </div>
 

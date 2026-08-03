@@ -57,3 +57,48 @@
   font-size: 13px;
   background-color: #252525;
 }
+
+.logo{
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.logo-footer {
+  height: 100px; 
+  width: auto;
+  margin-right: 10px;
+  filter: brightness(0) invert(1); /* Logo White karne ke liye */
+  vertical-align: middle;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #ffffff;
+  padding-left: 5px; 
+}
+
+.contact-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.contact-link:hover {
+  color: #ffffff; 
+  text-decoration: underline; 
+}

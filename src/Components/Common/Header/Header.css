@@ -351,48 +351,43 @@ body {
   }
 }
 /* HAMBURGER */
+/* HAMBURGER BASE STYLE */
 .hamburger {
-  display: none;
-  font-size: 22px;
+  display: none; /* Desktop pe hidden */
+  font-size: 24px;
   cursor: pointer;
   color: #ffd6b0;
+  z-index: 1001; /* Sabse upar dikhne ke liye */
+  transition: 0.3s ease;
 }
 
-/* MOBILE NAV */
+/* MOBILE VIEW (768px and below) */
 @media screen and (max-width: 768px) {
   .hamburger {
-    display: block;
+    display: block !important; /* Mobile pe show karega */
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   .nav-links {
-    display: none;
+    display: none; /* Default hidden */
     flex-direction: column;
+    position: absolute;
+    top: 70px; /* Header height ke barabar */
+    left: 0;
     width: 100%;
     background: #6b2e1f;
-    margin-top: 10px;
-    padding: 10px 0;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
+  /* Jab menu open ho (active class) */
   .nav-links.active {
     display: flex;
   }
 
-  .dropdown {
-    width: 100%;
+  .header-icons {
+    gap: 12px; /* Icons thode pass aa jayein */
   }
-
-  .products-dropdown-menu {
-    position: static;
-    box-shadow: none;
-    border-radius: 0;
-  }
-}
-
-.products-dropdown-menu {
-  position: absolute;
-  top: 100%; 
-  left: 0;
-  z-index: 999; 
-  background: white;
-  display: block;
 }

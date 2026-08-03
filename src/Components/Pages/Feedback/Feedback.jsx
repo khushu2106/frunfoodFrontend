@@ -110,7 +110,7 @@ const Feedback = () => {
               rows="4"
               required
             />
-            <button type="submit" className="btn-submit">
+            <button type="submit" className="btn-submit" style={{backgroundColor:"#e74c3c"}}>
               Submit Feedback
             </button>
           </form>
