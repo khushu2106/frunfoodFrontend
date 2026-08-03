@@ -7,15 +7,10 @@ const Refunds = () => {
 
   const fetchRefundableOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/sales", {
+      const response = await axios.get("http://localhost:5000/api/sales/admin/refunds", {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      // Filter: Sirf Cancelled orders jo Online/UPI payment the
-      const filtered = response.data.filter(order => 
-        order.order_status === 'cancelled' && order.payment_mode !== 'COD'
-      );
-      setRefunds(filtered);
+      setRefunds(response.data); 
     } catch (error) {
       console.error("Error fetching refunds:", error);
     }
@@ -25,16 +20,15 @@ const Refunds = () => {
     fetchRefundableOrders();
   }, []);
 
-  const handleRefundComplete = async (sales_id) => {
-    if (window.confirm("Mark this refund as completed? (Make sure you have sent money via Gateway/Bank)")) {
+  const handleRefundComplete = async (refund_id) => {
+    if (window.confirm("Mark this refund as completed?")) {
       try {
-        // Aap ek naya status 'refunded' use kar sakte hain
-        await axios.put(`http://localhost:5000/api/sales/status`, 
-          { sales_id, status: 'refunded' },
+        await axios.put(`http://localhost:5000/api/sales/admin/refunds/complete`, 
+          { refund_id }, // ✅ Send refund_id, not sales_id
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        alert("Refund status updated!");
-        fetchRefundableOrders();
+        alert("Refund Successful!");
+        fetchRefundableOrders(); 
       } catch (err) {
         alert("Update failed");
       }
@@ -58,10 +52,12 @@ const Refunds = () => {
         </thead>
         <tbody>
           {refunds.length > 0 ? refunds.map((order) => (
-            <tr key={order.sales_id} style={{ borderBottom: "1px solid #eee" }}>
+            <tr key={order.refund_id} style={{ borderBottom: "1px solid #eee" }}> {/* ✅ Use refund_id as key */}
               <td style={{ padding: "12px" }}>#{order.sales_id}</td>
               <td style={{ padding: "12px" }}>{order.fname}</td>
-              <td style={{ padding: "12px", color: "red", fontWeight: "bold" }}>₹{order.total_amount}</td>
+              <td style={{ padding: "12px", color: "red", fontWeight: "bold" }}>
+                ₹{order.amount} {/* ✅ FIXED: order.amount (matches your API response) */}
+              </td>
               <td style={{ padding: "12px" }}>
                 <span style={{ background: "#e3f2fd", color: "#0d47a1", padding: "3px 8px", borderRadius: "5px" }}>
                   {order.payment_mode}
@@ -69,7 +65,7 @@ const Refunds = () => {
               </td>
               <td style={{ padding: "12px" }}>
                 <button 
-                  onClick={() => handleRefundComplete(order.sales_id)}
+                  onClick={() => handleRefundComplete(order.refund_id)} 
                   style={{
                     padding: "6px 12px",
                     background: "#28a745",

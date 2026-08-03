@@ -94,8 +94,7 @@ const ProductDetails = () => {
       return `${weight} kg`; // Keep in kg
     }
   };
-  // ===================================================================
-  /* ================= ADD TO CART ================= */
+
   /* ================= ADD TO CART (Sync Support) ================= */
   const handleAddToCart = async () => {
     if (quantity > product.qty) {
@@ -332,7 +331,7 @@ const ProductDetails = () => {
               </div>
 
               <button
-                className="add-to-cart-btn"
+                className="add-to-cart-btn" style={{backgroundColor:"#e74c3c"}}
                 onClick={handleAddToCart}
                 disabled={product.qty_status === "Out of qty"}
               >

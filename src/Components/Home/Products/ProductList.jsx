@@ -189,7 +189,7 @@ const ProductList = () => {
                         <Heart size={18} />
                       </button>
 
-                      <button className="add-to-cart-btn" onClick={() => handleQuickAdd(product)}>
+                      <button className="add-to-cart-btn" onClick={() => handleQuickAdd(product)} style={{backgroundColor:"#e74c3c"}}>
                         <ShoppingCart size={18} /> Quick Add
                       </button>
 

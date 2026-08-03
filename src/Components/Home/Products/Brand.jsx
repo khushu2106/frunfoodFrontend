@@ -4,7 +4,7 @@ import axios from "axios";
 import "./Brand.css";
 
 import Pedigree from "../../../assets/Pedigree.png";
-import Whiskas from "../../../assets/Whiskas.png";
+// import Whiskas from "../../../assets/Whiskas.png";
 import RoyalCanin from "../../../assets/RoyalCanin.png";
 import Drools from "../../../assets/Drools.png";
 import Purepet from "../../../assets/Purepet.png";
@@ -16,7 +16,7 @@ import me_o from "../../../assets/me_o.png";
 
 const brandImages = {
   "Pedigree": Pedigree,
-  "Whiskas": Whiskas,
+  // "Whiskas": Whiskas,
   "Royal Canin": RoyalCanin,
   "Drools": Drools,
   "Purepet": Purepet,

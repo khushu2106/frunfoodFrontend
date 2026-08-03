@@ -99,11 +99,18 @@
 }
 
 .delete-icon {
-  background: none;
+  background-color: #e74c3c;
+  color: white;
   border: none;
-  color: #ffffff;
+  padding: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-left: 20px;
+  transition: background-color 0.3s ease; 
+}
+
+.delete-icon:hover {
+  background-color: #c0392b; 
+  transform: scale(1.1);
 }
 
 .cart-summary-card {
@@ -176,20 +183,6 @@
   font-weight: 600;
 
 }
-
-.delete-icon {
-  background: #ffecec;
-  border: none;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.delete-icon:hover {
-  background: #ffdddd;
-}
-
 
 @media (max-width: 768px) {
   .cart-layout { grid-template-columns: 1fr; }

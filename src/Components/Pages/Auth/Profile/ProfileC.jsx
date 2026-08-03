@@ -1,5 +1,6 @@
 import "./Profile.css";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function Profile() {
@@ -87,6 +88,11 @@ function Profile() {
 
   return (
     <div className="profile-container">
+      <div>
+        <h4>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" ,margin: "10px",padding: "10px"}}>← Back to Home</Link>
+        </h4>
+      </div>
       <form className="profile-card" onSubmit={handleSubmit}>
         <h2>My Profile</h2>
 
@@ -158,7 +164,7 @@ function Profile() {
           </div>
 
           <div>
-            <label>Area ID</label>
+            <label>Pincode no: </label>
             <input
               type="text"
               name="area_id"

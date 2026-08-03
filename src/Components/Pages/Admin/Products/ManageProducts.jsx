@@ -120,7 +120,7 @@ const AdminManageProducts = () => {
                     </button>
                     <button
                       onClick={() => handleDelete(p.product_id)}
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: "10px",backgroundColor: "#e74c3c"}}
                     >
                       Delete
                     </button>

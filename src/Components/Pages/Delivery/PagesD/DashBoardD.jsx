@@ -99,58 +99,14 @@ function Dashboard() {
       </div>
 
       <div className="today-orders">
-        <h3>Assigned Orders</h3>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Update</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {Array.isArray(orders) && orders.length > 0 ? (
-              orders.map((order) => (
-                <tr key={order.sales_id}>
-                  <td>#{order.sales_id}</td>
-                  <td>{order.fname || "N/A"}</td>
-                  <td>₹{order.total_amount}</td>
-
-                  <td>
-                    <span className={`status-badge ${order.order_status}`}>
-                      {order.order_status}
-                    </span>
-                  </td>
-
-                  {/* ✅ NEW: Update Button */}
-                  <td>
-                    <select
-                      value={order.order_status}
-                      onChange={(e) =>
-                        handleStatusChange(order.sales_id, e.target.value)
-                      }
-                    >
-                      <option value="assigned">Assigned</option>
-                      <option value="delivered">Delivered</option>
-                    </select>
-                  </td>
-
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                  No active orders found
-                </td>
-              </tr>
-            )}
-          </tbody>
-
-        </table>
+         <div className="info-banner">
+        <h3>💡 Quick Tips</h3>
+        <ul>
+          <li>Always call the customer before arriving.</li>
+          <li>Upload a photo of the bill for quick payment.</li>
+          <li>Report issues within 1 hour.</li>
+        </ul>
+      </div>
       </div>
     </div>
   );

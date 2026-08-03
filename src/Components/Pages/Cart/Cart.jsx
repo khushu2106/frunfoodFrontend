@@ -202,7 +202,7 @@ const Cart = () => {
                       </div>
 
                       <button
-                        className="delete-icon"
+                        className="delete-icon" style={{backgroundColor:"#e74c3c"}}
                         onClick={() => removeItem(item.product_id)}
                       >
                         <Trash2 size={18} />
