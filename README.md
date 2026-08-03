@@ -1,16 +1,58 @@
-# React + Vite
+# 🐾 Pet Shop E-Commerce Platform with AI Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack, feature-rich E-Commerce platform for pet products featuring a **Hybrid AI Assistant** powered by Google Gemini. It seamlessly integrates traditional e-commerce capabilities with an intelligent chatbot that remembers user preferences and assists in product discovery.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📊 Database Architecture (ER Diagram)
 
-## React Compiler
+> Here is the Entity-Relationship Diagram showing the complete database schema including Products, Categories, Users, Orders, and Chatbot Context memory:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![Pet Shop ER Diagram](src/assets/er-diagram.png)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Key Features
+
+- 🛒 **E-Commerce Operations:** Browse products, filter by categories & brands, add to cart, and checkout.
+- 🤖 **Hybrid AI Chatbot:**
+  - **Memory System:** Remembers user preferences (pet type, preferred brands, price range).
+  - **Database Integration:** Direct queries for FAQs, Categories, and Brands for instant responses.
+  - **Multimodal (Vision):** Accepts image inputs to identify pet products via Gemini AI.
+  - **Fallback System:** Automatic model fallback (`gemini-2.5-flash-lite` -> `gemini-2.0-flash`) with retry handling for 429 errors.
+- 📱 **Custom Routing Links:** Interactive chatbot replies with clickable app navigation routes (`route:product:id`).
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js (Vite) + CSS/Tailwind
+- **Backend:** Node.js + Express.js
+- **Database:** SQL / MySQL
+- **AI Integration:** Google Generative AI SDK (Gemini API)
+
+---
+
+## ⚙️ Chatbot Architecture Flow
+
+1. **User Message Received:** Captures text and optional image input.
+2. **Context Memory Update:** Extracts key entities (e.g., "dog", "pedigree") and stores user preferences in SQL database.
+3. **Waterfall Decision Tree:**
+   - Check **Database FAQs** ➡️ If found, reply immediately.
+   - Check **Brand/Category Intent** ➡️ If matched, return dynamic route links.
+   - Check **Smart Product Filter** ➡️ Match products based on saved user context.
+   - **Gemini AI Engine** ➡️ If no DB match, forward chat history + context to Gemini API.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+npm start
+
+cd frontend
+npm install
+npm run dev
